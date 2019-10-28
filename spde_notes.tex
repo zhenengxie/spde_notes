@@ -1,0 +1,340 @@
+\documentclass{report}
+
+\usepackage{fontspec}
+\usepackage{mathpazo}
+\setmainfont
+     [ BoldFont       = texgyrepagella-bold.otf ,
+       ItalicFont     = texgyrepagella-italic.otf ,
+       BoldItalicFont = texgyrepagella-bolditalic.otf ]
+     {texgyrepagella-regular.otf}
+     
+\usepackage{mathpazo}
+
+\usepackage{mathshort2}
+\usepackage{amsthm}
+
+\usepackage{varioref}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+
+\usepackage{mdframed}
+
+\newtheoremstyle{mydefn}% name of the style to be used
+  {\topsep}% measure of space to leave above the theorem. E.g.: 3pt
+  {\topsep}% measure of space to leave below the theorem. E.g.: 3pt
+  {}% name of font to use in the body of the theorem
+  {0pt}% measure of space to indent
+  {\bfseries}% name of head font
+  {. }% punctuation between head and body
+  { }% space after theorem head; " " = normal interword space
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}
+
+\theoremstyle{mydefn}
+
+\newtheorem{defn}{Definition}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{corollary}{Corollary}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\mdfdefinestyle{MyFrame}{
+	topline=false,
+	rightline=false,
+	leftline=true,
+	bottomline=false,
+	linewidth=0.05em,
+	innertopmargin=0,
+	innerbottommargin=0,
+	leftmargin=\parindent
+}
+
+\surroundwithmdframed[style=MyFrame]{defn}
+\surroundwithmdframed[style=MyFrame]{theorem}
+\surroundwithmdframed[style=MyFrame]{prop}
+\surroundwithmdframed[style=MyFrame]{corollary}
+
+\newcommand{\defeq}{:=}
+\let\C\relax
+\newcommand{\C}{\mathbb C}
+
+\title{Stochastic Partial Differential Equations}
+\author{Based on Lectures by Dr. A. Chandra and Dr. G. Cannizzaro}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\chapter{Gaussian Measures on Banach Spaces}
+
+\section{Introduction}
+
+Throughout these notes let $\calB$ be a real Banach space. Usually $\calB$ will also be seperable, but we'll say explicitly when this is the case. Let $\mu$ be a Borel probability measure on $\calB$ and $X$ be a $\calB$-valued random variable such that $X \sim \mu$. We'd like recover our finite dimensional tools for studying random variables. Let's start with the mean. From the $\R^n$-case, it's tempting to define the mean as
+\begin{equation}
+	m \defeq \int_{\calB} x \, \mu(\dif x).
+\end{equation}
+However this integral cannot be understand as a Lebesgue integral. After all, $x$ doesn't take values in $\R^n$. At this point we have two options.
+
+\subsection{Option One: The Bochner Integral}
+
+We could try and rigorously define this integral. The method of integration used for $\calB$-valued functions are Bochner integrals. The construction of the Bochner integral follows the same method as the Lebesgue integral; we define the integral for a class of simple functions and extend the integral by approximation. Rather than going into details on the construction, we'll list off some of the properties of the Bochner integral. Firstly let $(E, \calE, \nu)$ be a probability space and $f: E \to \calB$ be measurable. Then $f$ is integrable if and only if
+\begin{equation}
+	\int_E \norm{f(x)}_E \, \nu(\dif x) < \infty.
+\end{equation}
+The Bochner integral also behaves nicely with bounded linear operators. Let $\hat{\calB}$ be another Banach space and $L: \calB \to \hat{\calB}$ be a bounded linear operator. Then the Bochner integral can be exchanged with $L$, i.e.\ for all integrable $f: E \to \calB$,
+\begin{equation}
+	\int_E L(f(x)) \, \nu(\dif x) = L\left( \int_E f(x) \, \nu(\dif x)\right).
+\end{equation}
+Hence if we assume $\int_E \norm{x} \, \mu(\dif x) < \infty$ then the mean
+\begin{equation}
+	\bar{m}_{\mu} \defeq \int_E x \, \mu(\dif x)
+\end{equation}
+can be defined using the Bochner integral. This approach is valuable in how it carrys the intuition from the finite dimensional case. In addition, it makes clear that the mean is an element of $\calB$ without the use of reflexivity (as we will see in the next approach). 
+
+\subsection{Option Two: One-Dimensional Marginals}
+
+Alternatively, we've already developed a rich theory of Lebesgue integration for $\R$-valued functions. What if we instead used this theory? This would require a `natural' way to map $\calB$ to $\R$. Since $\calB$ is a normed vector space, we have exactly that: the space of bounded linear functionals $\calB^*$. For any $l \in \calB^*$, $\E[l(X)]$ is just given by a Lebesgue integral. So to define the mean, just gather all these values for diffent $l \in \calB^*$. Following this idea, we define the mean as $m: \calB^* \to \R$ where
+\begin{equation}
+	m(l) \defeq \E[l(X)] = \int_{\calB} l(x) \, \mu(\dif x).
+\end{equation}
+How can we recover a mean $\bar{m}_{\mu} \in \calB$? Suppose that $\int_E \norm{x} \, \mu(\dif x) < \infty$. We can then prove that $m_{\mu}: \calB^* \to \R$ is a bounded linear functional, in other words $m_{\mu} \in \calB^{**}$. At this point we could assume that $\calB$ were reflexive. Then we are guaranteed there exists $\bar{m}_{\mu} \in \calB$ such that
+\begin{equation}
+	m_{\mu}(l) = l(\bar{m}_{\mu}) \quad \forall l \in \calB^*.
+\end{equation}
+However, this is unnecessary. From our first approach of using Bochner integrals, we know in fact that $\int_{\mu} \norm{x} \, \mu(\dif x) < \infty$ is a sufficient condition to define $\bar{m}_{\mu}$ as in. Then since the Bochner integral can be exchanged with any $l \in \calB^*$, the property in holds. This shows two things. Firstly, it shows our two approaches recover the same mean. Secondly, it shows reflexivity is an extraneous assumption.
+
+The value of this second approach really shines when the concept we're describing becomes more intangible than a mean, for example when defining Gaussianity on a Banach space.
+
+\section{Random Variables on Banach Spaces}
+
+
+Seen as we're working with $l(X)$ so much, it's useful to have a notation for its law.
+\begin{defn}
+	Let $(E, \calE)$ and $(F, \calF)$ be measurable spaces. Let $\mu$ be a measure on $(E, \calE)$ and $f: (E, \calE) \to (F, \calF)$ be measurable. Then the \emph{pushforward} of $\mu$ be $f$ is the measure $f_* \mu$ on $(F, \calF)$ where
+	\begin{equation}
+		f_* \mu(A) \defeq \mu(f^{-1}(A)).
+	\end{equation}
+\end{defn}
+
+This is defined so that $l(X) \sim l_* \mu$. It is also sensible to have a name for the laws $\{l_* \mu : l \in \calB^*\}$.
+\begin{defn}
+	Let $\mu$ be a probability measure on $\calB$. Then the \emph{one-dimenional margins} of $\mu$ are the laws $l_* \mu$ for all $l \in \calB^*$.
+\end{defn}
+
+The next proposition shows that the one-dimensional marginals carry enough information to uniquely characterise a meaure $\mu$.
+\begin{prop}
+	\label{prop:one-dim-marginals}
+	Let $\mu$ and $\nu$ be Borel probability measures on a seperable Banach space $\calB$. Suppose $l_* \mu = l_* \nu$ for all $l \in \calB^*$. Then $\mu = \nu$.
+\end{prop}
+\begin{proof}
+	INSERT PROOF.
+\end{proof}
+
+Next we formalise what we said in the introduction.
+
+\begin{defn}
+	Let $\mu$ be a probability measure on $\calB$ and suppose $l_* \mu$ has finite mean for all $l \in \calB^*$. Then the \emph{mean operator} of $\mu$ is a linear operator $\mu: \calB^* \to \R$ where
+	\begin{equation}
+		m_{\mu}(l) \defeq \int_{\cal B} l(x) \, \mu(\dif x).
+	\end{equation}
+	$\mu$ is \emph{centered} if $m_{\mu} \equiv 0$.
+\end{defn}
+
+Similarly we can define the covariance.
+
+\begin{defn}
+	Let $\mu$ be a probability measure on $\calB$ and suppose $l_* \mu$ has finite second moment for all $l \in \calB^*$. Then the \emph{covariance operator} of $\mu$ is the bilinear operator $C_{\mu} : \calB^* \times \calB^* \to \R$ where
+	\begin{equation}
+		C_{\mu}(l, l') \defeq \int_{\calB} l(x) l'(x) \mu(\dif x).
+	\end{equation}
+\end{defn}
+\begin{remark}
+	Note that $C_{\mu}$ is a symmetric, positive semi-definite, bilinear operator.
+\end{remark}
+
+In the next section we'll show these operators are bounded for a Gaussian operator. Finally we'll define the Fourier transform.
+
+\begin{defn}
+	The \emph{Fourier transform} of a probabilty measure $\mu$ on $\calB$ is given by $\hat{\mu} \in \calB^* \to \C$ where
+	\begin{equation}
+		\hat{\mu}(l) = \int_{\calB} e^{i l(x)} \mu(\dif x).
+	\end{equation}
+\end{defn}
+\begin{remark}
+	Unlike the mean, the Fourier transform of a measure of $\R^n$ is normally a function to begin with, just a function $\R^n \to \R$ rather than $(\R^n)^* \to \R$. This is a use of the Hilbert space structure on $\R^n$. For a general Hilbert space $\cal H$, let $\mu$ be a probabilty measure on $\calH$. We can then instead define $\hat{\mu}: \calH \to \R$ by
+	\begin{equation}
+		\hat{\mu}(\xi) \defeq \int_{\calH} e^{i \inn{\xi}{x}} \mu(\dif x).
+	\end{equation}
+	This is then equivalent to our definition since by the Riesz representation theorem the map $\xi \to l_{\xi}$ where $l_{\xi}(x) = \inn{\xi}{x}$ is an isomorphism between $\calH$ and $(\calH)^*$.
+\end{remark}
+
+In the finite dimensional case, Fourier transforms uniquely determine distributions. This holds true in seperable Banach spaces.
+\begin{prop}
+	Let $\mu$ and $\nu$ be probability measures on $\calB$. If $\hat{\mu} = \hat{\nu}$ then $\mu = \nu$.
+\end{prop}
+\begin{proof}
+	$\hat{\mu}$ uniquely determines the (classical) Fourier transform of $l_* \mu$ since
+	\begin{equation}
+		\widehat{l_* \mu}(\xi) = \hat{\mu}(\xi l).
+	\end{equation}
+	From the finite dimensional case we know $\widehat{l_* \mu}$ uniquely determines $l_* \mu$. Therefore $\hat{\mu}$ uniquely determines the one-dimensional marginals of $\mu$, and thus $\mu$ itself by \vref{prop:one-dim-marginals}.
+\end{proof}
+
+Now we've got our tools ready, we start focusing specifically on Gaussian measures.
+
+\section{Gaussian Measures}
+
+We start by defining what a Gaussian measure is. As aluded to in the introduction, there is not an immediately obvious definition for what a Gaussian measure is on $\calB$. However we do know what Gaussian measures are on $\R$, so we can use our approach of considering one-dimensional marginals.
+\begin{defn}
+	A Borel probability measure $\mu$ on $\calB$ is a \emph{Gaussian measure} if $l_* \mu$ is a Gaussian measure \footnote{We count Dirac measures as Gaussian measures with zero variance} on $\R$ for all $l \in \calB^*$.
+\end{defn}
+
+Gaussian measures on $\R^n$ are uniquely characterised by their covariance and mean. This is true since they uniquely determine the Fourier transform. This remains true in infinite dimensions.
+\begin{prop}
+	Let $\mu$ be a Gaussian measure on $\calB$. Then
+	\begin{equation}
+		\hat{\mu}(l) = \exp\left\{i m_{\mu}(l) - \frac{1}{2} C_{\mu}(l, l) \right\}.
+	\end{equation}
+\end{prop}
+\begin{corollary}
+	A Gaussian measure on a seperable Banach space is uniquely determined by it's mean and covariance operators.
+\end{corollary}
+We've already stated that covariance operators need to be positive definite, symmetric and bilinear. But given such an operator, can we necessarily find a centered Gaussian measure with that covariance? As we show in the next section, this is false. Gaussian measures have such strong tail decay properties that the covariance can't just be bounded. In fact for general Banach spaces there is no easy characterisation of covariance operators that have a corresponding Gaussian measure, but we will give a characterisation for Hilbert spaces.
+
+\subsection{Integrability of Gaussian Measures}
+
+We now show decay properties of Gaussian measures. Suprisingly, this will come from rotational invariance of Gaussian measure. 
+
+\begin{defn}
+	Let $\mu$ be a measure on $\calB$. For each $\phi \in \R$, define $R_{\phi}: \calB \times \calB \to \calB \times \calB$ by
+	\begin{equation}
+		R_{\phi}(x, y) = (x \sin \phi + y \cos \phi, x \cos \phi - y \sin \phi).
+	\end{equation}
+	Then $\mu$ is \emph{invariant under rotations of $\phi$} if $(R_{\phi})_* (\mu \otimes \mu) = \mu \otimes \mu$.
+\end{defn}
+
+\begin{prop}
+	Centered Gaussian measures on a seperable Banach space $\calB$ are invariant under rotations by any angle.
+\end{prop}
+\begin{proof}
+	Check the Fourier transform of the rotated measure is equal to the fourier transform of the original measure.
+\end{proof}
+
+\begin{theorem}[Fernique]
+	Let $\mu$ a probability measure on $\calB$. Suppose $\mu$ is invariant under rotations by $\frac{\pi}{4}$. Then there exists $\alpha > 0$ such that $\norm{x}$ has doubly exponential moments, i.e.\
+	\begin{equation}
+		\int e^{\alpha \norm{x}^2} \, \mu(\dif x) < \infty.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	Take $t, \tau > 0$. Then
+	\begin{align}
+		\mu(\norm{x} \leq \tau) \mu(\norm{x} > t)
+		&= \mu \otimes \mu\left( \frac{\norm{x + y}}{\sqrt{2}} > t, \frac{\norm{x+y}}{\sqrt{2}} > \tau \right) \\
+		&\leq \mu \otimes \mu \left(\norm{x} > \frac{t - \tau}{2}, \norm{x} > \frac{t - \tau}{2}) \right) \\
+		&= \mu\left(\norm{x} > \frac{t - \tau}{2}\right)^2
+	\end{align}
+\end{proof}
+
+Fernique's theorem allows us to not only show all moments of a Gaussian measure are finite, it allows us to bound the higher moments using the first moment.
+
+\begin{prop}
+	Let $\mu$ be a centered Gaussian on $\calB$. Then there exists $\alpha, K > 0$ such that for all $n \in \N$
+	\begin{equation}
+		\int_{\calB} \abs{x}^{2n} \, \mu(\dif x) \leq n! K \alpha^{-n} M^{2n}.
+	\end{equation}
+	where $M = \int_{\calB} \norm{x} \, \mu(\dif x)$.
+\end{prop}
+\begin{proof}
+	Note using Markov's inequality we get that
+\end{proof}
+
+\begin{prop}
+	\label{prop:bounded-cov}
+	Let $\mu$ be a centered Gaussian measure on a seperable Banach space. Then there exists $\norm{C_{\mu}} < \infty$ such that $C_{\mu}(l, l') \leq \norm{C_{\mu}} \norm{l} \norm{l'}$. Moreover there exists continuous operator $\hat{C}_{\mu}: \calB^* \to \calB$ such that
+	\begin{equation}
+		C_{\mu}(l, l') = l'\left(C_{\mu}(l) \right).
+	\end{equation}
+\end{prop}
+\begin{proof}
+	The first part of the proof is clear by setting $\norm{C_{\mu}}$ to $\int_{\calB} \norm{x}^2 \, \mu(\dif x)$ and employing boundedness of $l$ and $l'$.
+
+	For the second part, we can formalise
+	\begin{equation}
+		\hat{C}_{\mu}(l) = \int_{\calB} x \, l(x) \, \mu(\dif x).
+	\end{equation}
+\end{proof}
+
+\subsection{Characterisation of Gaussian measures on Hilbert spaces}
+
+As promised, we now characterise the covariance operators  of Gaussian measures. In \vref{prop:bounded-cov} we've already shown there exists $\hat{C}_{\mu}: \calH^* \to \calH$ such that $C_{\mu}(l, l') = l'(\hat{C}_{\mu}(l))$ for all $l, l' \in \calB^*$. Then by the Riesz representation, there exists $\tilde{C}_{\mu}: \calH \to \calH$ such that
+\begin{equation}
+	C_{\mu}(\inn{\cdot}{x}, \inn{\cdot}{y}) = \inn{\tilde{C}_{\mu}x}{y}
+\end{equation}
+We will state our characterisation in terms of $\tilde{C}_{\mu}$. Firstly let's recall some definitions from functional analysis.
+\begin{defn}
+	Let $\calH$ be a seperable Hilbert space and let $L: \calH \to \calH$ be linear.
+	\begin{enumerate}
+		\item $L$ is \emph{positive definite} if $\inn{L h}{h} > 0$ for all non-zero $h \in \calH$
+		\item $L$ is \emph{trace-class} if for any\footnote{You can show that as long as this condition holds for one orthonomal basis, it must hold for all orthonormal bases} orthonormal basis $(e_n)$ of $\calH$ there exists a sequence of numbers $\{\lambda_n\}$ such that $\sum_n \abs{\lambda_n} < \infty$ and
+			\begin{equation}
+				\inn{x}{Lx} = \sum_n \lambda_n \inn{x}{e_n}^2.
+			\end{equation}
+			The \emph{trace} of $L$ is then $\tr L \defeq \sum_n \lambda _n$.
+	\end{enumerate}
+\end{defn}
+
+\begin{prop}
+	Let $\calH$ be a seperable Hilbert space and $\tilde{C}: \calH \to \calH$. Then the following are equivalent
+	\begin{enumerate}
+		\item There exists a Gaussian measure $\mu$ on $\calH$ such that
+			\begin{equation}
+				C_{\mu}(\inn{\cdot}{x}, \inn{\cdot}{y}) = \inn{\tilde{C} x}{y} \quad \forall x, y \in \calH.
+			\end{equation}
+		\item $\tilde{C}$ is a linear, positive semi-definite, trace class operator
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	INSERT PROOF
+\end{proof}
+
+\subsection{Regularity of Gaussian measures}
+
+This section focuses on Gaussian measures on $C([0,1]^d, \R)$ under the supremum norm. Hence it makes sense to talk about the regularity of the paths of a Gaussian measure.
+ 
+The following is both an existence result about Gaussian measures with sufficiently smooth paths.
+\begin{theorem}
+	\label{thm:kcc}
+	For $d \geq 1$, let $C: [0, 1]^d \times [0, 1]^d$ be a function\footnote{this is not a bilinear operator} such that:
+	\begin{enumerate}
+		\item For any finite collection of points $\{x_1, \ldots, x_n\} \subset [0, 1]^d$ the matrix
+			\begin{equation}
+				C_{ij} \defeq C(x_i, x_j)
+			\end{equation}
+			is symmetric, positive semi-definite.
+		\item There exists $\alpha > 0$ and $K > 0$ such that
+			\begin{equation}
+				C(x, x) - 2C(x, y) + C(y, y) \leq K \abs{x - y}^{2 \alpha}.
+			\end{equation}
+	\end{enumerate}
+	Then there exists a unique Gaussian measure $\mu$ on $C([0, 1]^d, \R)$ such that
+	\begin{equation}
+		C_{\mu}(\delta_x, \delta_y) \defeq \int_{C([0, 1]^d, \R)} f(x) f(y) \, \mu(\dif f) = C(x, y)
+	\end{equation}
+	for all $x, y \in [0, 1]^d$ and $\mu(C^{\beta}([0, 1]^d, \R)) = 1$ for all $\beta \in (0, \alpha)$.
+\end{theorem}
+
+Before we prove it, let's understand this theorem. This theorem have two main utilities. Firstly, note $C$ is a function $[0,1]^d \times [0, 1]^d \to \R$ rather than $C([0,1]^d, \R)^* \times C([0, 1]^d, \R)^* \to \R$. This can be understand as specifying the covariance structure of only $\{(\delta_x)_* \mu : x \in [0, 1]^d\}$ rather than for all one-dimensional marginals. We'll show this is sufficient to characterise a Gaussian measure.
+
+Secondly, let's understand the continuity statement better. Rather than working directly with the Gaussian measure $\mu$ on $C([0, 1]^d, \R)$, it's more intuitive to work with a continuous random process $F: \Omega \times [0, 1]^d \to \R$ that has law $\mu$. We'll use the notation $(\omega, x) \mapsto F_x(\omega)$. Then $C(x, y) = C_{\mu}(\delta_x, \delta_y) = \text{Cov}(F_x, F_y)$. Thus the condition (2) on $C$ is equivalent to requiring
+\begin{equation}
+	\norm{F_x - F_y}_2 \defeq \sqrt{\E[(F_y - F_y)^2]} \leq K \abs{x - y}^{\alpha} \quad \forall x, y \in [0, 1]^d.
+\end{equation}
+So condition (2) gives what looks like an $\alpha$-H\"older continuity condition in terms of the $\norm{\cdot}_2$ norm on $x \mapsto F_x$. We'd like this to instead be a pathwise statement on $x \mapsto F_x(\omega)$. While we can't get $\alpha$-H\"older continuity, the theorem says for all $\beta \in (0, \alpha)$ we have $\beta$-H\"older continuity condition on $x \mapsto F_x(\omega)$ for almost every $\omega$. 
+
+\end{document}
