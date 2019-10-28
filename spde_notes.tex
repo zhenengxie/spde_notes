@@ -1,4 +1,4 @@
-\documentclass{report}
+\documentclass[fontsize=12pt, DIV=10]{scrreprt}
 
 \usepackage{fontspec}
 \usepackage{mathpazo}
@@ -306,6 +306,8 @@ We will state our characterisation in terms of $\tilde{C}_{\mu}$. Firstly let's 
 
 \subsection{Regularity of Gaussian measures}
 
+\newcommand{\boxspace}{\ensuremath{\R^{[0, 1]^d}}}
+\newcommand{\unitbox}{\ensuremath{[0,1]^d}}
 This section focuses on Gaussian measures on $C([0,1]^d, \R)$ under the supremum norm. Hence it makes sense to talk about the regularity of the paths of a Gaussian measure.
  
 The following is both an existence result about Gaussian measures with sufficiently smooth paths.
@@ -330,7 +332,39 @@ The following is both an existence result about Gaussian measures with sufficien
 	for all $x, y \in [0, 1]^d$ and $\mu(C^{\beta}([0, 1]^d, \R)) = 1$ for all $\beta \in (0, \alpha)$.
 \end{theorem}
 
-Before we prove it, let's understand this theorem and give some intuition to the proof. Firstly, note $C$ is a function $[0,1]^d \times [0, 1]^d \to \R$ rather than $C([0,1]^d, \R)^* \times C([0, 1]^d, \R)^* \to \R$. This can be understand as specifying the covariance structure of only $\{(\delta_x)_* \mu : x \in [0, 1]^d\}$ rather than for all one-dimensional marginals. We'll show this is suffient to characterise $\mu$.
+Before we prove it, let's understand this theorem and give some intuition to the proof. Firstly, note $C$ is a function $[0,1]^d \times [0, 1]^d \to \R$ rather than $C([0,1]^d, \R)^* \times C([0, 1]^d, \R)^* \to \R$. This can be understand as specifying the covariance structure of only $\{(\delta_x)_* \mu : x \in [0, 1]^d\}$ rather than for all one-dimensional marginals. We'll first show this is enough to characterise $\mu$.
+
+\begin{prop}
+	\label{prop:weak-star-suff}
+	Let $\mu$ be a Borel probability measure on $\calB$ and let $\calA$ be weak-* dense in $\calB^*$. 
+	\begin{enumerate}
+		\item If $l_* \mu$ is Gaussian for all $l \in \calA$ then $\mu$ is Gaussian.
+		\item If $\calB$ is seperable then $\{l_* \mu : l \in \calB^*\}$ uniquely determines $\mu$.
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	Given any $l \in \calB^*$, take a sequence $l_n \in \calA$ such that $l_n \xrightharpoonup{w*} l$ as $n \to \infty$. Fix any $f: \R \to \R$ bounded and continuous, the by definition of weak-$*$ convergence $f(l_n(x)) \to f(l(x))$ as $n \to \infty$ for all $x \in \calB$. Therefore by the dominated convergence theorem
+	\begin{equation}
+		\int_{\calB} f(l_n(x)) \, \mu(\dif x) = \lim_{n \to \infty} \int_{\calB} f(l(x)) \, \mu(\dif x).
+	\end{equation}
+	Therefore $(l_n)_* \mu \towk l \mu$ as $n \to \infty$. Since the weak limit of Gaussians on $\R$ is Gaussian, $l_* \mu$ is Gaussian. Thus $\mu$ is a Gaussian measure.
+
+
+	The uniqueness statement follows from \vref{prop:one-dim-marginals} since the one-dimensional marginals are uniquely determined as weak limits of sequences in $\{l_* \mu : l \in \calA\}$.
+\end{proof}
+
+So we just need to show linear combinations of Dirac measures are weak-$*$ dense in $C(\unitbox, \R)^d$.
+
+\begin{prop}
+	Suppose that $\calD \subset \unitbox$ is dense in $\unitbox$. Then 
+	\begin{equation}
+		\calA \defeq \spn\{\delta_x : x \in \calD\}
+	\end{equation}
+	is weak-$*$ dense in $C(\unitbox, \R)^*$.
+\end{prop}
+\begin{proof}
+	By a corollary of the Hahn-Banach theorem, it if $\calA$ is not weak-$*$ dense in $C(\unitbox, \R)^*$ then there exists $L: C(\unitbox, \R)^* \to \R$ linear and continuous w.r.t.\ the weak-$*$ topology such that $L(l) = 0$ for all $l \in \calA$ but $L \not \equiv 0$. But $L$ is continuous w.r.t.\ the weak-$*$ topology if and only if there exists $f \in C(\unitbox, \R)$ such that $L(l) = l(f)$ for all $l \in \calB^*$. But then $f(x) = L(\delta_x) = 0$ for all $x \in \calD$. Thus $f \equiv 0$ by density of $\calD$ and continuity of $f$. Hence $L \equiv 0$, contradiction.
+\end{proof}
 
 Secondly, let's understand the continuity statement better. Suppose we've already proven there exists a Gaussian measure $\mu$ on $C([0, 1]^d, \R)$ such that $C(x, y) = C_{\mu}(\delta_x, \delta_y)$ for all $x, y \in [0, 1]^d$. Rather than working directly with $\mu$, it's more intuitive to work with a continuous random process $F: \Omega \times [0, 1]^d \to \R$ that has law $\mu$. We'll use the notation $(\omega, x) \mapsto F_x(\omega)$. Then $C(x, y) = C_{\mu}(\delta_x, \delta_y) = \text{Cov}(F_x, F_y)$. Thus the condition (2) on $C$ is equivalent to requiring
 \begin{equation}
@@ -340,7 +374,6 @@ So condition (2) gives $\alpha$-H\"older continuity of the map $[0, 1]^d \to L^2
 
 It should be noted that condition (2) isn't only used to show pathwise H\"older continuity, it is used to ensure there even exists a Gaussian measure $\mu$ on  the space $C([0, 1]^d, \R)$ such that $C_{\mu}(\delta_x, \delta_y) = C(x, y)$ in the first place. We've already seen in Hilbert spaces that covariance operators can't just be positive definite and symmetric, we need them to be trace class. The same is true here, condition (1) is not enough. If we didn't care about pathwise H\"older continuity then maybe we could weaken condition (2), but some continuity condition would still be required\footnote{though I have no idea what kind}.
 
-\newcommand{\boxspace}{\ensuremath{\R^{[0, 1]^d}}}
 \begin{proof}
 	By Kolmogorov's extension theorem, there exists a stochastic process $F: \Omega \to \boxspace$ such that for all $x_1, \ldots, x_n \in [0, 1]^d$, 
 	\begin{equation}
@@ -382,11 +415,16 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 	\end{align}
 	Thus
 	\begin{align}
-		& \{f \in \boxspace : \norm{\reg_{\beta}(f) - f_0}_{\infty} < r\} \\
-		&= \bigcap_{x \in \calD} \left\{ \abs{f(x) \regindi - f_0(x)} < r \right\} \\
-		&= \bigcap_{x \in \calD} \left( \{\abs{f(x) - f_0(x)} < r\} \cap \{M_{\beta}(f) < \infty\} \right)
+		&\{\norm{\reg_{\beta}(f) - f_0}_{\infty} < r\}
+		= \bigcap_{x \in \calD} \left\{ \abs{f(x) \regindi - f_0(x)} < r \right\} \\
+		=& \left[ \{M_{\beta}(f) = \infty\} \cap \{\norm{f_0}_{\infty} < r\} \right] \nonumber \\
+		 & \qquad \cup \left[ \{M_{\beta}(f) < \infty\} \cap \left( \cap_{x \in \calD} \{\abs{f(x) - f_0(x)} < r\} \right) \right].
 	\end{align}
-	which is measurable as a countable intersection of measurable sets.
+	The event $\{\norm{f_0}_{\infty} < r\}$ is an artifact of our construction and is always equal to $\emptyset$ or $\boxspace$, thus is measurable. Since $M_{\beta}$ is measurable, $\{M_{\beta}(f) < \infty\}$ and $\{M_{\beta}(f) = \infty\}$ is measurable. $\{\abs{f(x) - f_0(x)} < r\}$ depends only on pointwise evaluations of $f$ thus is measurable. Hence $\{\norm{\reg_{\beta}(f) - f_0} < r\}$ is measurable as a countable intesection and union of measurable sets.
+
+	Claim: $M_{\beta}(F) < \infty$ almost surely
+
+	Hence $\hat{F} = \reg_{\beta}(F)$ is a continuous stochastic process $\Omega \to C(\unitbox, \R)$. Let $\mu$ be the law of $\hat{F}$. By construction it is almost surely $\beta$-H\"older continuous thus $\mu(C^{\beta}(\unitbox, \R)) = 1$.
 \end{proof}
 
 \end{document}
