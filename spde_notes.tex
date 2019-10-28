@@ -329,12 +329,18 @@ The following is both an existence result about Gaussian measures with sufficien
 	for all $x, y \in [0, 1]^d$ and $\mu(C^{\beta}([0, 1]^d, \R)) = 1$ for all $\beta \in (0, \alpha)$.
 \end{theorem}
 
-Before we prove it, let's understand this theorem. This theorem have two main utilities. Firstly, note $C$ is a function $[0,1]^d \times [0, 1]^d \to \R$ rather than $C([0,1]^d, \R)^* \times C([0, 1]^d, \R)^* \to \R$. This can be understand as specifying the covariance structure of only $\{(\delta_x)_* \mu : x \in [0, 1]^d\}$ rather than for all one-dimensional marginals. We'll show this is sufficient to characterise a Gaussian measure.
+Before we prove it, let's understand this theorem and give some intuition to the proof. Firstly, note $C$ is a function $[0,1]^d \times [0, 1]^d \to \R$ rather than $C([0,1]^d, \R)^* \times C([0, 1]^d, \R)^* \to \R$. This can be understand as specifying the covariance structure of only $\{(\delta_x)_* \mu : x \in [0, 1]^d\}$ rather than for all one-dimensional marginals. We'll show this is suffient to characterise $\mu$.
 
-Secondly, let's understand the continuity statement better. Rather than working directly with the Gaussian measure $\mu$ on $C([0, 1]^d, \R)$, it's more intuitive to work with a continuous random process $F: \Omega \times [0, 1]^d \to \R$ that has law $\mu$. We'll use the notation $(\omega, x) \mapsto F_x(\omega)$. Then $C(x, y) = C_{\mu}(\delta_x, \delta_y) = \text{Cov}(F_x, F_y)$. Thus the condition (2) on $C$ is equivalent to requiring
+Secondly, let's understand the continuity statement better. Suppose we've already proven there exists a Gaussian measure $\mu$ on $C([0, 1]^d, \R)$ such that $C(x, y) = C_{\mu}(\delta_x, \delta_y)$ for all $x, y \in [0, 1]^d$. Rather than working directly with $\mu$, it's more intuitive to work with a continuous random process $F: \Omega \times [0, 1]^d \to \R$ that has law $\mu$. We'll use the notation $(\omega, x) \mapsto F_x(\omega)$. Then $C(x, y) = C_{\mu}(\delta_x, \delta_y) = \text{Cov}(F_x, F_y)$. Thus the condition (2) on $C$ is equivalent to requiring
 \begin{equation}
 	\norm{F_x - F_y}_2 \defeq \sqrt{\E[(F_y - F_y)^2]} \leq K \abs{x - y}^{\alpha} \quad \forall x, y \in [0, 1]^d.
 \end{equation}
-So condition (2) gives what looks like an $\alpha$-H\"older continuity condition in terms of the $\norm{\cdot}_2$ norm on $x \mapsto F_x$. We'd like this to instead be a pathwise statement on $x \mapsto F_x(\omega)$. While we can't get $\alpha$-H\"older continuity, the theorem says for all $\beta \in (0, \alpha)$ we have $\beta$-H\"older continuity condition on $x \mapsto F_x(\omega)$ for almost every $\omega$. 
+So condition (2) gives $\alpha$-H\"older continuity of the map $[0, 1]^d \to L^2(\Omega)$ where $x \mapsto F_x$. We'd like this to instead be a pathwise statement, for fixed $\omega$ is the map $x \mapsto F_x(\omega)$ H\"older continuous? While we can't get $\alpha$-H\"older continuity, the above theorem says for we can arbitary close. In particular for almost every $\omega$, $x \mapsto F_x(\omega)$ is $\beta$-H\"older continuous for all $\beta \in (0, \alpha)$.
+
+It should be noted that condition (2) isn't only used to show pathwise H\"older continuity, it is used to ensure there even exists a Gaussian measure $\mu$ on  the space $C([0, 1]^d, \R)$ such that $C_{\mu}(\delta_x, \delta_y) = C(x, y)$ in the first place. We've already seen in Hilbert spaces that covariance operators can't just be positive definite and symmetric, we need them to be trace class. Thus condition (1) is not enough. If we didn't care about pathwise H\"older continuity then maybe we could weaken condition (2), but some continuity condition would still be required\footnote{though I have no idea what kind}.
+
+\begin{proof}
+	
+\end{proof}
 
 \end{document}
