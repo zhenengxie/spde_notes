@@ -215,7 +215,7 @@ Gaussian measures on $\R^n$ are uniquely characterised by their covariance and m
 \begin{corollary}
 	A Gaussian measure on a seperable Banach space is uniquely determined by it's mean and covariance operators.
 \end{corollary}
-We've already stated that covariance operators need to be positive definite, symmetric and bilinear. But given such an operator, can we necessarily find a centered Gaussian measure with that covariance? As we show in the next section, this is false. Gaussian measures have such strong tail decay properties that the covariance can't just be bounded. In fact for general Banach spaces there is no easy characterisation of covariance operators that have a corresponding Gaussian measure, but we will give a characterisation for Hilbert spaces.
+We've already stated that covariance operators need to be positive definite, symmetric and bilinear. But is the converse true, can we get an existence result? Speficially given such an operator, can we necessarily find a centered Gaussian measure with that covariance? Unfortunately no, and we'll see one reason why in the next section.
 
 \subsection{Integrability of Gaussian Measures}
 
@@ -236,6 +236,7 @@ We now show decay properties of Gaussian measures. Suprisingly, this will come f
 	Check the Fourier transform of the rotated measure is equal to the fourier transform of the original measure.
 \end{proof}
 
+The following theorem shows as long as a measure is invariance under rotations of $\frac{\pi}{4}$ then it has double exponential tail decay.
 \begin{theorem}[Fernique]
 	Let $\mu$ a probability measure on $\calB$. Suppose $\mu$ is invariant under rotations by $\frac{\pi}{4}$. Then there exists $\alpha > 0$ such that $\norm{x}$ has doubly exponential moments, i.e.\
 	\begin{equation}
@@ -250,6 +251,8 @@ We now show decay properties of Gaussian measures. Suprisingly, this will come f
 		&\leq \mu \otimes \mu \left(\norm{x} > \frac{t - \tau}{2}, \norm{x} > \frac{t - \tau}{2}) \right) \\
 		&= \mu\left(\norm{x} > \frac{t - \tau}{2}\right)^2
 	\end{align}
+
+	INSERT REST OF PROOF
 \end{proof}
 
 Fernique's theorem allows us to not only show all moments of a Gaussian measure are finite, it allows us to bound the higher moments using the first moment.
@@ -262,9 +265,10 @@ Fernique's theorem allows us to not only show all moments of a Gaussian measure 
 	where $M = \int_{\calB} \norm{x} \, \mu(\dif x)$.
 \end{prop}
 \begin{proof}
-	Note using Markov's inequality we get that
+	INSERT PROOF
 \end{proof}
 
+Let's return to our question of showing existence of a Gaussian measure given a covariance operator. We already know they must be symmetric and PSD. The following theorem shows that they must further be bounded operators.
 \begin{prop}
 	\label{prop:bounded-cov}
 	Let $\mu$ be a centered Gaussian measure on a seperable Banach space. Then there exists $\norm{C_{\mu}} < \infty$ such that $C_{\mu}(l, l') \leq \norm{C_{\mu}} \norm{l} \norm{l'}$. Moreover there exists continuous operator $\hat{C}_{\mu}: \calB^* \to \calB$ such that
@@ -275,11 +279,25 @@ Fernique's theorem allows us to not only show all moments of a Gaussian measure 
 \begin{proof}
 	The first part of the proof is clear by setting $\norm{C_{\mu}}$ to $\int_{\calB} \norm{x}^2 \, \mu(\dif x)$ and employing boundedness of $l$ and $l'$.
 
-	For the second part, we can formalise
+	For the second part, since
 	\begin{equation}
-		\hat{C}_{\mu}(l) = \int_{\calB} x \, l(x) \, \mu(\dif x).
+		\int_{\calB} \norm{x l(x)} \, \mu(\dif x) \leq \norm{l} \int_{\calB} \norm{x}^2 \dif x < \infty
 	\end{equation}
+	we can formalise
+	\begin{equation}
+		\hat{C}_{\mu}(l) = \int_{\calB} x l(x) \, \mu(\dif x)
+	\end{equation}
+	as a Bochner integral. Then since the Bochner integral can be exchanged with continuous linear functionals
+	\begin{align}
+		l'(\hat{C}_{\mu}(l))
+		&= l' \left( \int_{\calB} x l(x) \, \mu(\dif x)\right)
+		= \int_{\calB} l'(x l(x)) \, \mu(\dif x) \nonumber \\
+		&= \int_{\calB} l(x) l'(x) \mu(\dif x)
+		= C_{\mu}(l, l')
+	\end{align}
+	as required.
 \end{proof}
+So now let's add boundedness to our list of assumptions. Is that enough to characterize covariance operators of Gaussian measures? Unfortunately the answer is still no. In fact for a general Banach space there is no nice characterisation. However for Hilbert spaces we can give an actual answer.
 
 \subsection{Characterisation of Gaussian measures on Hilbert spaces}
 
@@ -300,6 +318,7 @@ We will state our characterisation in terms of $\tilde{C}_{\mu}$. Firstly let's 
 	\end{enumerate}
 \end{defn}
 
+Trace-class is a stronger property than boundedness, in particular there exists operators that are bounded and not trace class. Hence we see symmetry, positive semi-definitess, and boundedess was truly insufficient to characterize Gaussian covariances.
 \begin{prop}
 	Let $\calH$ be a seperable Hilbert space and $\tilde{C}: \calH \to \calH$. Then the following are equivalent
 	\begin{enumerate}
@@ -342,7 +361,7 @@ The following is both an existence result about Gaussian measures with sufficien
 	for all $x, y \in [0, 1]^d$ and $\mu(C^{\beta}([0, 1]^d, \R)) = 1$ for all $\beta \in (0, \alpha)$.
 \end{theorem}
 
-Before we prove it, let's understand this theorem and give some intuition to the proof. Firstly, note $C$ is a function $[0,1]^d \times [0, 1]^d \to \R$ rather than $C([0,1]^d, \R)^* \times C([0, 1]^d, \R)^* \to \R$. This can be understand as specifying the covariance structure of only $\{(\delta_x)_* \mu : x \in [0, 1]^d\}$ rather than for all one-dimensional marginals. We'll first show this is enough to characterise $\mu$.
+Before we prove it, let's understand this theorem and give some intuition to the proof. Firstly, note $C$ is a function $[0,1]^d \times [0, 1]^d \to \R$ rather than $C([0,1]^d, \R)^* \times C([0, 1]^d, \R)^* \to \R$. This can be understand as specifying the covariance structure of only $\{(\delta_x)_* \mu : x \in [0, 1]^d\}$ rather than for all one-dimensional marginals. We'll first show this is enough to characterise and ensure Gaussianity of $\mu$.
 
 \begin{prop}
 	\label{prop:weak-star-suff}
@@ -380,33 +399,31 @@ So we just need to show linear combinations of Dirac measures are weak-$*$ dense
 	Then as $\calA$ is a vector space, for all $l \in \calA$ and $\lambda \in \R$ we have $\lambda L(l) = L(\lambda l) \leq \alpha$. Therefore $L(l) = 0$. Since $L$ is continuous w.r.t.\ the weak-$*$ topology there exists $f \in C(\unitbox, \R)$ such that $L(l) = l(f)$ for all $l \in \calB^*$. Then $f(x) = L(\delta_x) = 0$ for all $x \in \calD$. Thus $f \equiv 0$ by density of $\calD$ and continuity of $f$. Hence $L \equiv 0$, contradiction.
 \end{proof}
 
-Secondly, let's understand the continuity statement better. Suppose we've already proven there exists a Gaussian measure $\mu$ on $C([0, 1]^d, \R)$ such that $C(x, y) = C_{\mu}(\delta_x, \delta_y)$ for all $x, y \in [0, 1]^d$. Rather than working directly with $\mu$, it's more intuitive to work with a continuous random process $F: \Omega \times [0, 1]^d \to \R$ that has law $\mu$. We'll use the notation $(\omega, x) \mapsto F_x(\omega)$. Then $C(x, y) = C_{\mu}(\delta_x, \delta_y) = \text{Cov}(F_x, F_y)$. Thus the condition (2) on $C$ is equivalent to requiring
+Secondly, let's understand the continuity statement better. Suppose we've already proven there exists a Gaussian measure $\mu$ on $C([0, 1]^d, \R)$ such that $C(x, y) = C_{\mu}(\delta_x, \delta_y)$ for all $x, y \in [0, 1]^d$. Rather than working directly with $\mu$, it's more intuitive to work with a continuous random process $F: \Omega \to C([0, 1]^d, \R)$ that has law $\mu$. We'll use the notation $F_x(\omega) \defeq F(\omega)(x)$. Then $C(x, y) = C_{\mu}(\delta_x, \delta_y) = \text{Cov}(F_x, F_y)$. Thus the condition (2) on $C$ is equivalent to requiring
 \begin{equation}
 	\norm{F_x - F_y}_2 \defeq \sqrt{\E[(F_y - F_y)^2]} \leq K \abs{x - y}^{\alpha} \quad \forall x, y \in [0, 1]^d.
 \end{equation}
 So condition (2) gives $\alpha$-H\"older continuity of the map $[0, 1]^d \to L^2(\Omega)$ where $x \mapsto F_x$. We'd like this to instead be a pathwise statement, for fixed $\omega$ is the map $x \mapsto F_x(\omega)$ H\"older continuous? While we can't get $\alpha$-H\"older continuity, the above theorem says for we can arbitary close. In particular for almost every $\omega$, $x \mapsto F_x(\omega)$ is $\beta$-H\"older continuous for all $\beta \in (0, \alpha)$.
 
-It should be noted that condition (2) isn't only used to show pathwise H\"older continuity, it is used to ensure there even exists a Gaussian measure $\mu$ on  the space $C([0, 1]^d, \R)$ such that $C_{\mu}(\delta_x, \delta_y) = C(x, y)$ in the first place. We've already seen in Hilbert spaces that covariance operators can't just be positive definite and symmetric, we need them to be trace class. The same is true here, condition (1) is not enough. If we didn't care about pathwise H\"older continuity then maybe we could weaken condition (2), but some continuity condition would still be required\footnote{though I have no idea what kind}.
+It should be noted that condition (2) isn't only used to show pathwise H\"older continuity, it is used to ensure there even exists a Gaussian measure $\mu$ on  the space $C([0, 1]^d, \R)$ such that $C_{\mu}(\delta_x, \delta_y) = C(x, y)$ in the first place. We know Gaussian covariances are at least continuous so some continuity criterion is certainly needed. Maybe if we didn't need H\"older continuity we can give a weaker condition, but something needs to replace condition (2) to ensure existence.
 
 \begin{proof}
 	By Kolmogorov's extension theorem, there exists a stochastic process $F: \Omega \to \boxspace$ such that for all $x_1, \ldots, x_n \in [0, 1]^d$, 
 	\begin{equation}
-		\begin{pmatrix}
-			F_{x_1} \\ \vdots \\ F_{x_n}
-		\end{pmatrix}
+		(F_{x_1}, \ldots, F_{x_n})^T
 		\sim N(0, \Sigma)
 	\end{equation}
-	where $\Sigma_{i,j} = C(x_i, x_j)$. Condition (1) ensures that $\Sigma$ is a valid covariance matrix. However Kolmogorov's extension theorem only $F: \Omega \to \boxspace$ is measurable with respect to the product $\sigma$-algebra from $\boxspace$. This means we have to be careful about what events we consider.
+	where $\Sigma_{i,j} = C(x_i, x_j)$. Condition (1) ensures that $\Sigma$ is a valid covariance matrix. However Kolmogorov's extension theorem only gives that $F: \Omega \to \boxspace$ is measurable with respect to the product $\sigma$-algebra from $\boxspace$. This is a very weak $\sigma$-algebra, meaning we have to be careful about what events we consider.
 
 	We want to determine H\"older continuity of $F_{\cdot}(\omega)$. Fix $\beta \in (0, \alpha)$. Then $F_{\cdot}$ would be $\beta$-H\"older continuous if
 	\begin{equation}
 		\sup_{x, y \in [0, 1]^d, x \neq y} \frac{\abs{f(x) - f(y)}}{\norm{x - y}^{\beta}} < \infty.
 	\end{equation}
-	However the quantity on the left is not a measurable function of $F$, so we approximate it. Let $\calD$ be the grid of dyadic points in $[0, 1]^d$. Note $\calD$ is countable and dense in $[0, 1]^d$. Then since pointwise evaluations are measurable with respect to the product $\sigma$-alebgra, $M_{\beta}: \boxspace \to \R$ defined by 
+	However the quantity on the left is not a measurable function of $F$, so we approximate it. Let $\calD$ be the grid of dyadic points in $[0, 1]^d$. Note $\calD$ is countable and dense in $[0, 1]^d$. We consider the approximation $M_{\beta}(f): \boxspace \to \R$ by
 	\begin{equation}
-		M_{\beta}(f) = \sup_{x, y \in \calD, x \neq y} \frac{\abs{f(x) - f(y)}}{\norm{x - y}^{\beta}}
+		M_{\beta}(f) = \sup_{x, y \in \calD, x \neq y} \frac{\abs{f(x) - f(y)}}{\norm{x - y}^{\beta}}.
 	\end{equation}
-	is measurable as a countable supremum of measurable functions. If $M_{\beta}(f) < \infty$ then $f$ is $\beta$-H\"older continuous along the dyadic rationals, we want to extend this to the entirety of $f$. To assist with this we can define the regulariser function $\reg_{\beta}: \boxspace \to C([0, 1], \R)$ by
+	The function inside the supremum is measurable with respect to the product $\sigma$-algebra since it is a pointwise evaluation. Then $M_{\beta}$ is measurable with respect to the product $\sigma$-algebra as a countable supremum of measurable functions. If $M_{\beta}(f) < \infty$ then $f$ is $\beta$-H\"older continuous along the dyadic rationals, we want to extend this to the entirety of $f$. To assist with this we can define the regulariser $\reg_{\beta}: \boxspace \to C([0, 1], \R)$ by
 	\begin{equation}
 		\reg_{\beta}(f)(x) \defeq 
 		\begin{cases}
@@ -453,7 +470,7 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 		$\prob(\reg_{\beta}(F)_x = F_x) = 1$ for all $x \in [0, 1]^d$.
 	\end{claim}
 	\begin{subproof}
-		For any $x \in \unitbox$, let $x_n \to x$ where $x_n$ is a sequence in $\calD$. Then
+		For any $x \in \unitbox$, let $x_n \to x$ where $x_n$ is a sequence in $\calD$. Then by condition (2) on $C$
 		\begin{align}
 			\norm{F_{x_n} - F_x}_2^2
 			&= \var(F_{x_n} - F_x) \\
