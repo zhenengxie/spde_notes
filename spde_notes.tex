@@ -18,7 +18,6 @@
 \addbibresource{references.bib}
 
 % Setting up theorem, claim, proof, etc. environments
-\usepackage{amsthm}
 \usepackage{thmtools}
 \usepackage{thm-restate}
 
@@ -28,45 +27,23 @@
 
 \usepackage{mdframed}
 
-\newtheoremstyle{mydefn}% name of the style to be used
-  {\topsep}% measure of space to leave above the theorem. E.g.: 3pt
-  {\topsep}% measure of space to leave below the theorem. E.g.: 3pt
-  {}% name of font to use in the body of the theorem
-  {0pt}% measure of space to indent
-  {\bfseries}% name of head font
-  {. }% punctuation between head and body
-  { }% space after theorem head; " " = normal interword space
-  {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}
+\declaretheorem[name=Definition, numberwithin=chapter, thmbox=M]{defn}
+\declaretheorem[name=Theorem, thmbox=M, sibling=defn]{theorem}
+\declaretheorem[name=Lemma, thmbox=M]{lemma}
+\declaretheorem[
+	name=Proposition,
+	refname={proposition, propositions},
+	Refname={Proposition, Propositions},
+	thmbox=M,
+	sibling=defn]{prop}
+\declaretheorem[name=Corollary, thmbox=M, sibling=defn]{corollary}
 
-\theoremstyle{mydefn}
+\usepackage{amsthm}
 
-\newtheorem{defn}{Definition}
-
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
-\newtheorem{prop}{Proposition}
-\newtheorem{corollary}{Corollary}
 \newtheorem{claim}{Claim}
 
 \theoremstyle{remark}
 \newtheorem{remark}{Remark}
- 
-
-\mdfdefinestyle{MyFrame}{
-	topline=false,
-	rightline=false,
-	leftline=true,
-	bottomline=false,
-	linewidth=0.05em,
-	innertopmargin=0,
-	innerbottommargin=0,
-	leftmargin=\parindent
-}
-
-\surroundwithmdframed[style=MyFrame]{defn}
-\surroundwithmdframed[style=MyFrame]{theorem}
-\surroundwithmdframed[style=MyFrame]{prop}
-\surroundwithmdframed[style=MyFrame]{corollary}
 
 \newenvironment{subproof}[1][\proofname]{%
   \renewcommand{\qedsymbol}{$\blacksquare$}%
@@ -369,7 +346,7 @@ Trace-class is a stronger property than boundedness, in particular there exists 
 This section focuses on Gaussian measures on $C([0,1]^d, \R)$ under the supremum norm. Hence it makes sense to talk about the regularity of the paths of a Gaussian measure.
 
 The following is both an existence result about Gaussian measures with sufficiently smooth paths.
-\begin{theorem}
+\begin{theorem}[Kolmogorov Continuity Criterion]
 	\label{thm:kcc}
 	For $d \geq 1$, let $C: [0, 1]^d \times [0, 1]^d$ be a function\footnote{this is not a bilinear operator} such that:
 	\begin{enumerate}
@@ -411,22 +388,15 @@ Before we prove it, let's understand this theorem and give some intuition to the
 	The uniqueness statement follows from \vref{prop:one-dim-marginals} since the one-dimensional marginals are uniquely determined as weak limits of sequences in $\{l_* \mu : l \in \calA\}$.
 \end{proof}
 
-So we just need to show linear combinations of Dirac measures are weak-$*$ dense in $C(\unitbox, \R)^d$.
-\begin{prop}
+Thus we need linear combinations of Dirac measures to be weak-$*$ dense. This is true, and we'll shove the proof into the appendix.
+\begin{restatable}{prop}{dirac}
 	\label{prop:dirac-density}
 	Suppose that $\calD \subset \unitbox$ is dense in $\unitbox$. Then 
 	\begin{equation}
 		\calA \defeq \spn\{\delta_x : x \in \calD\}
 	\end{equation}
 	is weak-$*$ dense in $C(\unitbox, \R)^*$.
-\end{prop}
-\begin{proof}
-	Suppose $\calA$ were not dense in $C(\unitbox, \R)^*$, say $l_0$ is not in the weak-* closure of $\calA$. Then by the Hahn-Banach seperation, there exists a weak-* continuous linear functional $L: C(\unitbox, \R)^* \to \R$ that seperates the closed convex set $\bar{\calA}$ and the compact convex set $\{l_0\}$, i.e. there exists $\alpha \in \R$ such that
-	\begin{equation}
-		L(l) \leq \alpha \leq L(l_0) \quad \forall l \in \bar{\calA}.
-	\end{equation}
-	Then as $\calA$ is a vector space, for all $l \in \calA$ and $\lambda \in \R$ we have $\lambda L(l) = L(\lambda l) \leq \alpha$. Therefore $L(l) = 0$. Since $L$ is continuous w.r.t.\ the weak-$*$ topology there exists $f \in C(\unitbox, \R)$ such that $L(l) = l(f)$ for all $l \in \calB^*$. Then $f(x) = L(\delta_x) = 0$ for all $x \in \calD$. Thus $f \equiv 0$ by density of $\calD$ and continuity of $f$. Hence $L \equiv 0$, contradiction.
-\end{proof}
+\end{restatable}
 
 Secondly, let's understand the continuity statement better. Suppose we've already proven there exists a Gaussian measure $\mu$ on $C([0, 1]^d, \R)$ such that $C(x, y) = C_{\mu}(\delta_x, \delta_y)$ for all $x, y \in [0, 1]^d$. Rather than working directly with $\mu$, it's more intuitive to work with a continuous random process $F: \Omega \to C([0, 1]^d, \R)$ that has law $\mu$. We'll use the notation $F_x(\omega) \defeq F(\omega)(x)$. Then $C(x, y) = C_{\mu}(\delta_x, \delta_y) = \text{Cov}(F_x, F_y)$. Thus the condition (2) on $C$ is equivalent to requiring
 \begin{equation}
@@ -552,6 +522,16 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 \appendix
 
 \chapter{Miscellaneous Theorems}
+
+\dirac*
+
+\begin{proof}
+	Suppose $\calA$ were not dense in $C(\unitbox, \R)^*$, say $l_0$ is not in the weak-* closure of $\calA$. Then by the Hahn-Banach seperation, there exists a weak-* continuous linear functional $L: C(\unitbox, \R)^* \to \R$ that seperates the closed convex set $\bar{\calA}$ and the compact convex set $\{l_0\}$, i.e. there exists $\alpha \in \R$ such that
+	\begin{equation}
+		L(l) \leq \alpha \leq L(l_0) \quad \forall l \in \bar{\calA}.
+	\end{equation}
+	Then as $\calA$ is a vector space, for all $l \in \calA$ and $\lambda \in \R$ we have $\lambda L(l) = L(\lambda l) \leq \alpha$. Therefore $L(l) = 0$. Since $L$ is continuous w.r.t.\ the weak-$*$ topology there exists $f \in C(\unitbox, \R)$ such that $L(l) = l(f)$ for all $l \in \calB^*$. Then $f(x) = L(\delta_x) = 0$ for all $x \in \calD$. Thus $f \equiv 0$ by density of $\calD$ and continuity of $f$. Hence $L \equiv 0$, contradiction.
+\end{proof}
 
 \begin{prop}
 	\label{prop:weak-convergence-gaussians}
