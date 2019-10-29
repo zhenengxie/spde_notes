@@ -363,7 +363,11 @@ So we just need to show linear combinations of Dirac measures are weak-$*$ dense
 	is weak-$*$ dense in $C(\unitbox, \R)^*$.
 \end{prop}
 \begin{proof}
-	By a corollary of the Hahn-Banach theorem, it if $\calA$ is not weak-$*$ dense in $C(\unitbox, \R)^*$ then there exists $L: C(\unitbox, \R)^* \to \R$ linear and continuous w.r.t.\ the weak-$*$ topology such that $L(l) = 0$ for all $l \in \calA$ but $L \not \equiv 0$. But $L$ is continuous w.r.t.\ the weak-$*$ topology if and only if there exists $f \in C(\unitbox, \R)$ such that $L(l) = l(f)$ for all $l \in \calB^*$. But then $f(x) = L(\delta_x) = 0$ for all $x \in \calD$. Thus $f \equiv 0$ by density of $\calD$ and continuity of $f$. Hence $L \equiv 0$, contradiction.
+	Suppose $\calA$ were not dense in $C(\unitbox, \R)^*$, say $l_0$ is not in the weak-* closure of $\calA$. Then by the Hahn-Banach seperation theorem, there exists a weak-* continuous linear functional $L: C(\unitbox, \R)^* \to \R$ that seperates the closed convex set $\bar{\calA}$ and the compact convex set $\{l_0\}$, i.e. there exists $\alpha \in \R$ such that
+	\begin{equation}
+		L(l) \leq \alpha \leq L(l_0) \quad \forall l \in \bar{\calA}.
+	\end{equation}
+	Then as $\calA$ is a vector space, for all $l \in \calA$ and $\lambda \in \R$ we have $\lambda L(l) = L(\lambda l) \leq \alpha$. Therefore $L(l) = 0$. Since $L$ is continuous w.r.t.\ the weak-$*$ topology there exists $f \in C(\unitbox, \R)$ such that $L(l) = l(f)$ for all $l \in \calB^*$. Then $f(x) = L(\delta_x) = 0$ for all $x \in \calD$. Thus $f \equiv 0$ by density of $\calD$ and continuity of $f$. Hence $L \equiv 0$, contradiction.
 \end{proof}
 
 Secondly, let's understand the continuity statement better. Suppose we've already proven there exists a Gaussian measure $\mu$ on $C([0, 1]^d, \R)$ such that $C(x, y) = C_{\mu}(\delta_x, \delta_y)$ for all $x, y \in [0, 1]^d$. Rather than working directly with $\mu$, it's more intuitive to work with a continuous random process $F: \Omega \times [0, 1]^d \to \R$ that has law $\mu$. We'll use the notation $(\omega, x) \mapsto F_x(\omega)$. Then $C(x, y) = C_{\mu}(\delta_x, \delta_y) = \text{Cov}(F_x, F_y)$. Thus the condition (2) on $C$ is equivalent to requiring
@@ -422,9 +426,11 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 	\end{align}
 	The event $\{\norm{f_0}_{\infty} < r\}$ is an artifact of our construction and is always equal to $\emptyset$ or $\boxspace$, thus is measurable. Since $M_{\beta}$ is measurable, $\{M_{\beta}(f) < \infty\}$ and $\{M_{\beta}(f) = \infty\}$ is measurable. $\{\abs{f(x) - f_0(x)} < r\}$ depends only on pointwise evaluations of $f$ thus is measurable. Hence $\{\norm{\reg_{\beta}(f) - f_0} < r\}$ is measurable as a countable intesection and union of measurable sets.
 
-	Claim: $M_{\beta}(F) < \infty$ almost surely
-
-	Hence $\hat{F} = \reg_{\beta}(F)$ is a continuous stochastic process $\Omega \to C(\unitbox, \R)$. Let $\mu$ be the law of $\hat{F}$. By construction it is almost surely $\beta$-H\"older continuous thus $\mu(C^{\beta}(\unitbox, \R)) = 1$.
+	Hence $\hat{F} = \reg_{\beta}(F)$ is a continuous stochastic process $\Omega \to C(\unitbox, \R)$. Let $\mu$ be the law of $\hat{F}$, this will be a Borel probability measure on $C(\unitbox, \R)$. By construction $\reg_{\beta}(F)$ is almost surely $\beta$-H\"older continuous thus $\mu(C^{\beta}(\unitbox, \R)) = 1$. By property (2) of $\reg_{\beta}$ and since $M_{\beta}(F) < \infty$ almost surely, we know $\reg_{\beta}(F)_x = F_x$ for all $x \in \calD$ almost surely. In particular for any $l \in \calA$ where
+	\begin{equation}
+		\calA \defeq \spn\{\delta_x : x \in \calD\}
+	\end{equation}
+	we know $l(\reg_{\beta}(F))$ (and therefore $l_* \mu$) is Gaussian. Hence by $\mu$ is Gaussian.
 \end{proof}
 
 \end{document}
