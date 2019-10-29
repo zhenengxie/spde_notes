@@ -1,5 +1,8 @@
 \documentclass[fontsize=12pt, DIV=10]{scrreprt}
 
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
 \usepackage{fontspec}
 \usepackage{mathpazo}
 \setmainfont
@@ -10,8 +13,14 @@
      
 \usepackage{mathpazo}
 
-\usepackage{mathshort2}
+% Setting up referencing
+\usepackage[backend=biber]{biblatex}
+\addbibresource{references.bib}
+
+% Setting up theorem, claim, proof, etc. environments
 \usepackage{amsthm}
+\usepackage{thmtools}
+\usepackage{thm-restate}
 
 \usepackage{varioref}
 \usepackage[hidelinks]{hyperref}
@@ -68,9 +77,31 @@
 
 \newcommand{\defeq}{:=}
 \let\C\relax
+\newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\N}{\mathbb N}
+\newcommand{\prob}{\mathbb P}
+\newcommand{\indi}{\mathbb 1}
+\newcommand{\calA}{\mathcal A}
+\newcommand{\calB}{\mathcal B}
+\newcommand{\calD}{\mathcal D}
+\newcommand{\calE}{\mathcal E}
+\newcommand{\calF}{\mathcal F}
+\newcommand{\calH}{\mathcal H}
+\newcommand{\dif}[1]{\text{d} #1}
+\newcommand{\towk}{\Rightarrow}
 \DeclareMathOperator{\reg}{Reg}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
 \DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\tr}{Tr}
+\DeclarePairedDelimiterX{\abs}[1]{\lvert}{\rvert}{#1}
+\DeclarePairedDelimiterX{\norm}[1]{\lVert}{\rVert}{#1}
+\DeclarePairedDelimiterX{\inn}[2]{\langle}{\rangle}{#1, #2}
+\newcommand{\boxspace}{\ensuremath{\R^{[0, 1]^d}}}
+\newcommand{\unitbox}{\ensuremath{[0,1]^d}}
+\renewcommand{\phi}{\varphi}
 
 \title{Stochastic Partial Differential Equations}
 \author{Based on Lectures by Dr. A. Chandra and Dr. G. Cannizzaro}
@@ -198,7 +229,7 @@ In the finite dimensional case, Fourier transforms uniquely determine distributi
 
 Now we've got our tools ready, we start focusing specifically on Gaussian measures.
 
-\section{Gaussian Measures}
+\section{Basic definition of Gaussian Measures}
 
 We start by defining what a Gaussian measure is. As aluded to in the introduction, there is not an immediately obvious definition for what a Gaussian measure is on $\calB$. However we do know what Gaussian measures are on $\R$, so we can use our approach of considering one-dimensional marginals.
 \begin{defn}
@@ -217,7 +248,7 @@ Gaussian measures on $\R^n$ are uniquely characterised by their covariance and m
 \end{corollary}
 We've already stated that covariance operators need to be positive definite, symmetric and bilinear. But is the converse true, can we get an existence result? Speficially given such an operator, can we necessarily find a centered Gaussian measure with that covariance? Unfortunately no, and we'll see one reason why in the next section.
 
-\subsection{Integrability of Gaussian Measures}
+\section{Integrability of Gaussian Measures}
 
 We now show decay properties of Gaussian measures. Suprisingly, this will come from rotational invariance of Gaussian measure. 
 
@@ -299,7 +330,7 @@ Let's return to our question of showing existence of a Gaussian measure given a 
 \end{proof}
 So now let's add boundedness to our list of assumptions. Is that enough to characterize covariance operators of Gaussian measures? Unfortunately the answer is still no. In fact for a general Banach space there is no nice characterisation. However for Hilbert spaces we can give an actual answer.
 
-\subsection{Characterisation of Gaussian measures on Hilbert spaces}
+\section{Characterisation of Gaussian measures on Hilbert spaces}
 
 As promised, we now characterise the covariance operators  of Gaussian measures. In \vref{prop:bounded-cov} we've already shown there exists $\hat{C}_{\mu}: \calH^* \to \calH$ such that $C_{\mu}(l, l') = l'(\hat{C}_{\mu}(l))$ for all $l, l' \in \calB^*$. Then by the Riesz representation, there exists $\tilde{C}_{\mu}: \calH \to \calH$ such that
 \begin{equation}
@@ -333,10 +364,8 @@ Trace-class is a stronger property than boundedness, in particular there exists 
 	INSERT PROOF
 \end{proof}
 
-\subsection{Regularity of Gaussian measures}
+\section{Regularity of Gaussian measures}
 
-\newcommand{\boxspace}{\ensuremath{\R^{[0, 1]^d}}}
-\newcommand{\unitbox}{\ensuremath{[0,1]^d}}
 This section focuses on Gaussian measures on $C([0,1]^d, \R)$ under the supremum norm. Hence it makes sense to talk about the regularity of the paths of a Gaussian measure.
 
 The following is both an existence result about Gaussian measures with sufficiently smooth paths.
@@ -392,7 +421,7 @@ So we just need to show linear combinations of Dirac measures are weak-$*$ dense
 	is weak-$*$ dense in $C(\unitbox, \R)^*$.
 \end{prop}
 \begin{proof}
-	Suppose $\calA$ were not dense in $C(\unitbox, \R)^*$, say $l_0$ is not in the weak-* closure of $\calA$. Then by the Hahn-Banach seperation theorem, there exists a weak-* continuous linear functional $L: C(\unitbox, \R)^* \to \R$ that seperates the closed convex set $\bar{\calA}$ and the compact convex set $\{l_0\}$, i.e. there exists $\alpha \in \R$ such that
+	Suppose $\calA$ were not dense in $C(\unitbox, \R)^*$, say $l_0$ is not in the weak-* closure of $\calA$. Then by the Hahn-Banach seperation, there exists a weak-* continuous linear functional $L: C(\unitbox, \R)^* \to \R$ that seperates the closed convex set $\bar{\calA}$ and the compact convex set $\{l_0\}$, i.e. there exists $\alpha \in \R$ such that
 	\begin{equation}
 		L(l) \leq \alpha \leq L(l_0) \quad \forall l \in \bar{\calA}.
 	\end{equation}
@@ -519,5 +548,27 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 
 	This finishes the proof.
 \end{proof}
+
+\appendix
+
+\chapter{Miscellaneous Theorems}
+
+\begin{prop}
+	\label{prop:weak-convergence-gaussians}
+	Let $\mu_n$ be a sequence of Gaussian laws on $\R$. Suppose $\mu_n \towk \mu$. Then $\mu$ is Gaussian.
+\end{prop}
+\begin{proof}
+	Suppose each $\mu_n \sim N(\theta_n, \sigma_n)$. $(\mu_n)$ is a tight sequence since it is weakly convergent. By tightness there exists an bounded interval $[K, -K]$ such that for all $n$, $\mu_n([-K, K]) > \frac{1}{2}$. Then $\theta_n \in [-K, K]$ for all $n$ else over half the mass of some $\mu_n$ would lie outside $[-K, K]$. Similarly
+	\begin{equation}
+		\mu_n([-K, K]) = \int_{-K}^K \frac{1}{\sqrt{2 \pi \sigma^2}} e^{-\frac{1}{2\sigma^2}(x - \theta_n)^2} \dif x \leq K \sqrt{\frac{2}{\pi\sigma_n^2}}.
+		\end{equation}
+		Thus $(\sigma_n)$ must be bounded else the above quantity could be reduced below $\frac{1}{2}$. Hence there exist a subsequence along which $\theta = \lim_n \theta_{k_n}$ and $\sigma = \lim_n \sigma_{k_n}$ both exist. Then since $x \mapsto e^{i \xi x}$ is a continuous bounded function, by definition of weak convergence
+	\begin{equation}
+		\hat{\mu}(\xi) = \lim_n \hat{\mu_n}(\xi) = \lim_n \hat{\mu}_{k_n}(\xi) = \lim_n e^{i \theta_n \xi - \frac{1}{2} \sigma_n^2 \xi^2} = e^{i \theta \xi - \frac{1}{2} \sigma^2}.
+	\end{equation}
+	Since Fourier transforms uniquely determine distributions, $\mu \sim N(\theta, \sigma^2)$.
+\end{proof}
+
+\printbibliography
 
 \end{document}
