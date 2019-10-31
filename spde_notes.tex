@@ -351,13 +351,14 @@ We will state our characterisation in terms of $\tilde{C}_{\mu}$. Firstly let's 
 	Let $\calH$ be a seperable Hilbert space and let $L: \calH \to \calH$ be linear.
 	\begin{enumerate}
 		\item $L$ is \emph{positive definite} if $\inn{L h}{h} > 0$ for all non-zero $h \in \calH$
-		\item $L$ is \emph{trace-class} if for any\footnote{You can show that as long as this condition holds for one orthonomal basis, it must hold for all orthonormal bases} orthonormal basis $(e_n)$ of $\calH$ there exists a sequence of numbers $\{\lambda_n\}$ such that $\sum_n \abs{\lambda_n} < \infty$ and
+		\item $L$ is \emph{trace-class} if for any orthonormal basis $(e_n)$ of $\calH$ there exists a sequence of numbers $\{\lambda_n\}$ such that $\sum_n \abs{\lambda_n} < \infty$ and
 			\begin{equation}
 				\inn{x}{Lx} = \sum_n \lambda_n \inn{x}{e_n}^2.
 			\end{equation}
 			The \emph{trace} of $L$ is then $\tr L \defeq \sum_n \lambda _n$.
 	\end{enumerate}
 \end{defn}
+You can prove it is sufficient to check the trace-class property for any single orthonormal basis in order for it to hold for all orthonormal bases.
 
 Trace-class is a stronger property than boundedness, in particular there exists operators that are bounded and not trace class. Hence we see symmetry, positive semi-definitess, and boundedess was truly insufficient to characterize Gaussian covariances.
 \begin{prop}[Characterization of Gaussian covariances in Hilbert spaces]
@@ -422,7 +423,7 @@ The following is both an existence result about Gaussian measures with sufficien
 
 Before we prove it, let's understand this theorem and give some intuition to the proof. Firstly, note $C$ is a function $[0,1]^d \times [0, 1]^d \to \R$ rather than $C([0,1]^d, \R)^* \times C([0, 1]^d, \R)^* \to \R$. This can be understand as specifying the covariance structure of only $\{(\delta_x)_* \mu : x \in [0, 1]^d\}$ rather than for all one-dimensional marginals. We'll first show this is enough to characterise and ensure Gaussianity of $\mu$.
 
-\begin{prop}[Gaussianity via weak-$*$ dense maringals]
+\begin{prop}[Gaussianity via weak-$*$ dense marginals]
 	\label{prop:weak-star-suff}
 	Let $\mu$ be a Borel probability measure on $\calB$ and let $\calA$ be weak-* dense in $\calB^*$. 
 	\begin{enumerate}
@@ -455,7 +456,7 @@ Secondly, let's understand the continuity statement better. Suppose we've alread
 \begin{equation}
 	\norm{F_x - F_y}_2 \defeq \sqrt{\E[(F_y - F_y)^2]} \leq K \abs{x - y}^{\alpha} \quad \forall x, y \in [0, 1]^d.
 \end{equation}
-So condition (2) gives $\alpha$-H\"older continuity of the map $[0, 1]^d \to L^2(\Omega)$ where $x \mapsto F_x$. We'd like this to instead be a pathwise statement, for fixed $\omega$ is the map $x \mapsto F_x(\omega)$ H\"older continuous? While we can't get $\alpha$-H\"older continuity, the above theorem says for we can arbitary close. In particular for almost every $\omega$, $x \mapsto F_x(\omega)$ is $\beta$-H\"older continuous for all $\beta \in (0, \alpha)$.
+So condition (2) gives $\alpha$-H\"older continuity of the map $[0, 1]^d \to L^2(\Omega)$ where $x \mapsto F_x$. We'd like this to instead be a pathwise statement, for fixed $\omega$ is the map $x \mapsto F_x(\omega)$ H\"older continuous? While we can't get $\alpha$-H\"older continuity, the the Kolmogorov Continuity Criterion says we can get arbitary close. In particular for almost every $\omega$, $x \mapsto F_x(\omega)$ is $\beta$-H\"older continuous for all $\beta \in (0, \alpha)$.
 
 It should be noted that condition (2) isn't only used to show pathwise H\"older continuity, it is used to ensure there even exists a Gaussian measure $\mu$ on  the space $C([0, 1]^d, \R)$ such that $C_{\mu}(\delta_x, \delta_y) = C(x, y)$ in the first place. We know Gaussian covariances are at least continuous so some continuity criterion is certainly needed. Maybe if we didn't need H\"older continuity we can give a weaker condition, but something needs to replace condition (2) to ensure existence.
 
@@ -467,7 +468,7 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 	\end{equation}
 	where $\Sigma_{i,j} = C(x_i, x_j)$. Condition (1) ensures that $\Sigma$ is a valid covariance matrix. However Kolmogorov's extension theorem only gives that $F: \Omega \to \boxspace$ is measurable with respect to the product $\sigma$-algebra from $\boxspace$. This is a very weak $\sigma$-algebra, meaning we have to be careful about what events we consider.
 
-	We want to determine H\"older continuity of $F_{\cdot}(\omega)$. Fix $\beta \in (0, \alpha)$. Then $F_{\cdot}$ would be $\beta$-H\"older continuous if
+	We want to determine H\"older continuity of $x \mapsto F_{x}(\omega)$. Fix $\beta \in (0, \alpha)$. Then $f: \unitbox \to \R$ would be $\beta$-H\"older continuous if
 	\begin{equation}
 		\sup_{x, y \in [0, 1]^d, x \neq y} \frac{\abs{f(x) - f(y)}}{\norm{x - y}^{\beta}} < \infty.
 	\end{equation}
@@ -536,7 +537,7 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 		\end{equation}
 	\end{subproof}
 
-	Let $\mu$ be the law of $\reg_{\beta}(F)$ (this makes $\mu$ a measure on $C(\unitbox, \R)$). 
+	Let $\mu$ be the law of $\reg_{\beta}(F)$, this is a measure on $C(\unitbox, \R)$. 
 	\begin{claim}
 		$\mu$ satisfies the following properties.
 		\begin{enumerate}
