@@ -75,6 +75,7 @@
 \DeclareMathOperator{\spn}{span}
 \DeclareMathOperator{\cyl}{Cyl}
 \DeclareMathOperator{\tr}{Tr}
+\DeclareMathOperator{\supp}{supp}
 \DeclarePairedDelimiterX{\abs}[1]{\lvert}{\rvert}{#1}
 \DeclarePairedDelimiterX{\norm}[1]{\lVert}{\rVert}{#1}
 \DeclarePairedDelimiterX{\inn}[2]{\langle}{\rangle}{#1, #2}
@@ -103,7 +104,8 @@ However this integral cannot be understand as a Lebesgue integral. After all, $x
 
 \subsection{Option One: The Bochner Integral}
 
-We could try and rigorously define this integral. The method of integration used for $\calB$-valued functions are Bochner integrals. The construction of the Bochner integral follows the same method as the Lebesgue integral; we define the integral for a class of simple functions and extend the integral by approximation. Rather than going into details on the construction, we'll list off some of the properties of the Bochner integral. Firstly let $(E, \calE, \nu)$ be a probability space and $f: E \to \calB$ be measurable. Then $f$ is integrable if and only if
+We could try and rigorously define this integral. The method of integration used for $\calB$-valued functions are Bochner integrals. The construction of the Bochner integral follows the same method as the Lebesgue integral; we define the integral for a class of simple functions and extend the integral by approximation. Rather than going into details on the construction, we'll list off some of the properties of the Bochner integral. Firstly let $(E, \calE, \nu)$ be a probability space and $f: E \to \calB$ be measurable and $\calB$ be seperable\footnote{Seperability of $\calB$ is need to ensure $f$ is the pointwise limit of simple functions, i.e.\ strong measurablity. If we take strong measurability as an additional assumption on $f$ then seperability of $\calB$ can be relaxed}. Then $f$ is integrable if and only if
+
 \begin{equation}
 	\int_E \norm{f(x)}_E \, \nu(\dif x) < \infty.
 \end{equation}
@@ -127,7 +129,7 @@ How can we recover a mean $\bar{m}_{\mu} \in \calB$? Suppose that $\int_E \norm{
 \begin{equation}
 	m_{\mu}(l) = l(\bar{m}_{\mu}) \quad \forall l \in \calB^*.
 \end{equation}
-However, this is unnecessary. From our first approach of using Bochner integrals, we know in fact that $\int_{\mu} \norm{x} \, \mu(\dif x) < \infty$ is a sufficient condition to define $\bar{m}_{\mu}$ as in. Then since the Bochner integral can be exchanged with any $l \in \calB^*$, the property in holds. This shows two things. Firstly, it shows our two approaches recover the same mean. Secondly, it shows reflexivity is an extraneous assumption.
+However, this is unnecessary supposing $\calB$ is seperable. From our first approach of using Bochner integrals, we know in fact that $\int_{\mu} \norm{x} \, \mu(\dif x) < \infty$ is a sufficient condition to define $\bar{m}_{\mu}$ as in. Then since the Bochner integral can be exchanged with any $l \in \calB^*$, the property in holds. This shows two things. Firstly, it shows our two approaches recover the same mean. Secondly, it shows reflexivity is an extraneous assumption.
 
 The value of this second approach really shines when the concept we're describing becomes more intangible than a mean, for example when defining Gaussianity on a Banach space.
 
@@ -226,7 +228,7 @@ We'll leave the question of whether or not these operators are bounded till late
 
 In the finite dimensional case, Fourier transforms uniquely determine distributions. This holds true in seperable Banach spaces.
 \begin{prop}[Uniqueness of Fourier transforms]
-	Let $\mu$ and $\nu$ be probability measures on $\calB$. If $\hat{\mu} = \hat{\nu}$ then $\mu = \nu$.
+	Let $\mu$ and $\nu$ be probability measures on a seperable Banach space $\calB$. If $\hat{\mu} = \hat{\nu}$ then $\mu = \nu$.
 \end{prop}
 \begin{proof}
 	$\hat{\mu}$ uniquely determines the (classical) Fourier transform of $l_* \mu$ since
@@ -432,12 +434,7 @@ Before we prove it, let's understand this theorem and give some intuition to the
 	\end{enumerate}
 \end{prop}
 \begin{proof}
-	Given any $l \in \calB^*$, take a sequence $l_n \in \calA$ such that $l_n \xrightharpoonup{w*} l$ as $n \to \infty$. Fix any $f: \R \to \R$ bounded and continuous, the by definition of weak-$*$ convergence $f(l_n(x)) \to f(l(x))$ as $n \to \infty$ for all $x \in \calB$. Therefore by the dominated convergence theorem
-	\begin{equation}
-		\int_{\calB} f(l_n(x)) \, \mu(\dif x) = \lim_{n \to \infty} \int_{\calB} f(l(x)) \, \mu(\dif x).
-	\end{equation}
-	Therefore $(l_n)_* \mu \towk l \mu$ as $n \to \infty$. Since the weak limit of Gaussians on $\R$ is Gaussian, $l_* \mu$ is Gaussian. Thus $\mu$ is a Gaussian measure.
-
+	Given any $l \in \calB^*$, take a sequence $l_n \in \calA$ such that $l_n \xrightharpoonup{w*} l$ as $n \to \infty$. Let $X \sim \mu$. Then weak-$*$ convergence is exactly pointwise convergence therefore $l_n(X) \to l(X)$ almost surely. Thus $(l_n)_* \mu \towk l_* \mu$ by Skorokhod's representation theorem. Then since the weak limit of Gaussians is Gaussian, $l_* \mu$ is Gaussian. Hence $\mu$ is Gaussian.
 
 	The uniqueness statement follows from \vref{prop:one-dim-marginals} since the one-dimensional marginals are uniquely determined as weak limits of sequences in $\{l_* \mu : l \in \calA\}$.
 \end{proof}
@@ -609,6 +606,22 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 		&\leq \norm{x - x_n} + \abs{\norm{x_n}  - \norm{x}} \xrightarrow{n \to \infty} 0.
 	\end{align}
 	Therefore $l_n(x) \to \norm{x}$. Thus we have equality.
+\end{proof}
+
+\begin{prop}[Almost sure convergence implies weak convergence of laws]
+	Let $\mu_n, \mu$ be probability measures on a seperable metric space $S$. Suppose $\mu$ has seperable support. Then the following are equivalent:
+	\begin{enumerate}
+		\item There exists random variables $X_n, X$ defined on a common probability space such that $X_n \sim \mu_n$ for all $n$, $X \sim \mu$, and $X_n \to X$ almost surely.
+		\item $\mu_n \towk \mu$.
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	The $(2) \implies (1)$ direction is the hard part (this is the `representation' part) and where seperability of $\supp \mu$ is needed. We'll just need the $(1) \implies (2)$ direction though so that's all we'll prove. Let $f: S \to \R$ be bounded and continuous. Then
+	\begin{equation}
+		\int_S f(s) \, \mu_n(\dif x)
+		= \E[f(X_n)] \to E[f(X)] = \int_S f(x) \, \mu(\dif x)
+	\end{equation}
+	as $n \to \infty$ by the dominated convergence theorem. Thus $\mu_n \towk \mu$.
 \end{proof}
 
 \dirac*
