@@ -352,7 +352,7 @@ We will state our characterisation in terms of $\tilde{C}_{\mu}$. Firstly let's 
 \begin{defn}[Positive definiteness and trace-class]
 	Let $\calH$ be a seperable Hilbert space and let $L: \calH \to \calH$ be linear.
 	\begin{enumerate}
-		\item $L$ is \emph{positive definite} if $\inn{L h}{h} > 0$ for all non-zero $h \in \calH$
+		\item $L$ is \emph{positive definite} if $L$ is self-adjoint (symmetric) and $\inn{L h}{h} > 0$ for all non-zero $h \in \calH$
 		\item $L$ is \emph{trace-class} if for any orthonormal basis $(e_n)$ of $\calH$ there exists a sequence of numbers $\{\lambda_n\}$ such that $\sum_n \abs{\lambda_n} < \infty$ and
 			\begin{equation}
 				\inn{x}{Lx} = \sum_n \lambda_n \inn{x}{e_n}^2.
@@ -370,12 +370,7 @@ Trace-class is a stronger property than boundedness, in particular there exists 
 			\begin{equation}
 				C_{\mu}(\inn{\cdot}{x}, \inn{\cdot}{y}) = \inn{\tilde{C} x}{y} \quad \forall x, y \in \calH.
 			\end{equation}
-		\item $\tilde{C}$ is a linear operator that is
-			\begin{enumerate}
-				\item self-adjoint,
-				\item positive semi-definite, and
-				\item trace-class.
-			\end{enumerate}
+		\item $\tilde{C}$ is a linear operator that is positive semi-definite and trace-class.
 	\end{enumerate}
 \end{prop}
 \begin{proof}
@@ -569,6 +564,23 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 
 	This finishes the proof.
 \end{proof}
+
+\section{Cameron-Martin Space}
+
+\begin{defn}[Cameron-Martin Space]
+	The following are equivalent definitions of the \emph{Cameron-Martin space} $\calH_{\mu}$.
+	\begin{enumerate}
+	\item $\calH_{\mu}$ is the completion of
+		\begin{equation}
+			\mathring{\calH}_{\mu} \defeq \{h \in \calB : \exists h^* \in \calB^*\ \text{with}\ C_{\mu}(h^*, l) = l(h)\ \forall l \in \calB^*\}
+		\end{equation}
+		which is the image of $\hat{C}_{\mu}$. Set
+		\begin{equation}
+			\inn{h}{k}_{\mu} - C_{\mu}(h^*, k^*)
+		\end{equation}
+		where $hat{C}_{\mu}(h^*) = h$ and $\hat{C}_{\mu}(k^*) = k$. By polarisation, it suffices to check this is well defined when $h = k$.
+	\end{enumerate}
+\end{defn}
 
 \appendix
 
