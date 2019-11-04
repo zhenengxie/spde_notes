@@ -53,6 +53,7 @@
 }
 
 \newcommand{\defeq}{\coloneqq}
+\newcommand{\op}{\text{op}}
 \let\C\relax
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
@@ -67,6 +68,7 @@
 \newcommand{\calE}{\mathcal E}
 \newcommand{\calF}{\mathcal F}
 \newcommand{\calH}{\mathcal H}
+\newcommand{\calT}{\mathcal T}
 \newcommand{\dif}[1]{\text{d} #1}
 \newcommand{\towk}{\Rightarrow}
 \DeclareMathOperator{\reg}{Reg}
@@ -565,22 +567,25 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 	This finishes the proof.
 \end{proof}
 
-\section{Cameron-Martin Space}
+\section{Cameron-Martin Theory}
 
-\begin{defn}[Cameron-Martin Space]
-	The following are equivalent definitions of the \emph{Cameron-Martin space} $\calH_{\mu}$.
-	\begin{enumerate}
-	\item $\calH_{\mu}$ is the completion of
-		\begin{equation}
-			\mathring{\calH}_{\mu} \defeq \{h \in \calB : \exists h^* \in \calB^*\ \text{with}\ C_{\mu}(h^*, l) = l(h)\ \forall l \in \calB^*\}
-		\end{equation}
-		which is the image of $\hat{C}_{\mu}$. Set
-		\begin{equation}
-			\inn{h}{k}_{\mu} - C_{\mu}(h^*, k^*)
-		\end{equation}
-		where $hat{C}_{\mu}(h^*) = h$ and $\hat{C}_{\mu}(k^*) = k$. By polarisation, it suffices to check this is well defined when $h = k$.
-	\end{enumerate}
-\end{defn}
+Cameron-Martin theory can initially be confusing because the Cameron-Martin spaces pops up in unexpected ways. Personally, the most intuitive place to start is trying to impose a Hilbert space structure on $\calB$. The idea is that $C_{\mu}$ is almost an inner product on $\calB^*$, it's just positive semi-definite rather than positive definite. We'll first understand the structure $C_{\mu}$ induces on $\calB^*$, then move that structure onto $\calB$.
+
+$\calB^*$ consists of bounded operators $l: \calB \to \mu$. This can be viewed as just a random variable. Since Gaussian measures have finite second measures and $l$ is bounded, we have
+\begin{equation}
+	\calB^* \subset L^2(\calB, \mu) \defeq \left\{f: \calB \to \R : \int_{\calB} \abs{f(x)}^2 \, \mu(\dif x) < \infty \right\}.
+\end{equation}
+Then in $L^2$ space, we have
+\begin{equation}
+	\inn{l}{l'}_{L^2} = \int_{\calB} l(x) l'(x) \, \mu(\dif x) = C_{\mu}(l, l').
+\end{equation}
+Therefore inner product $C_{\mu}$ induces is exactly the $L^2$ structure on $\calB^*$. Note that \vref{prop:bounded-cov} shows that $\calB^*$ with the usual toplogy induced by $\norm{\cdot}_{\op}$, the operator norm, can be continuously embedded into the $L^2$ structure. This embedding is in fact compact.
+\begin{prop}
+	$(\calB^*, \norm{\cdot}_{op}) \xhookrightarrow{\text{cpt}} (L^2, \norm{\cdot}_2)$
+\end{prop}
+\begin{proof}
+\end{proof}
+We now transfer this to the dual.
 
 \appendix
 
@@ -621,20 +626,18 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 \end{proof}
 
 \begin{prop}[Almost sure convergence implies weak convergence of laws]
-	Let $\mu_n, \mu$ be probability measures on a seperable metric space $S$. Suppose $\mu$ has seperable support. Then the following are equivalent:
-	\begin{enumerate}
-		\item There exists random variables $X_n, X$ defined on a common probability space such that $X_n \sim \mu_n$ for all $n$, $X \sim \mu$, and $X_n \to X$ almost surely.
-		\item $\mu_n \towk \mu$.
-	\end{enumerate}
+	Let $\mu_n, \mu$ be probability measures on a metric space $S$. Suppose there exists random variables $X_n, X: \Omega \to S$ defined on a common probability space such that $X_n \sim \mu_n$, $X \sim \mu$, and $X_n \to X$ almost surely. Then $\mu_n \towk \mu$.
 \end{prop}
 \begin{proof}
-	The $(2) \implies (1)$ direction is the hard part (this is the `representation' part) and where seperability of $\supp \mu$ is needed. We'll just need the $(1) \implies (2)$ direction though so that's all we'll prove. Let $f: S \to \R$ be bounded and continuous. Then
+	Let $f: S \to \R$ be bounded and continuous. Then
 	\begin{equation}
 		\int_S f(s) \, \mu_n(\dif x)
 		= \E[f(X_n)] \to E[f(X)] = \int_S f(x) \, \mu(\dif x)
 	\end{equation}
 	as $n \to \infty$ by the dominated convergence theorem. Thus $\mu_n \towk \mu$.
 \end{proof}
+
+The converse is also true assuming $\mu$ has seperable support, that if we have weak convergence we can find representations which converge almost surely. This is the Skorokhod representation theorem.
 
 \dirac*
 
@@ -645,6 +648,8 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 	\end{equation}
 	Then as $\calA$ is a vector space, for all $l \in \calA$ and $\lambda \in \R$ we have $\lambda L(l) = L(\lambda l) \leq \alpha$. Therefore $L(l) = 0$. Since $L$ is continuous w.r.t.\ the weak-$*$ topology there exists $f \in C(\unitbox, \R)$ such that $L(l) = l(f)$ for all $l \in \calB^*$. Then $f(x) = L(\delta_x) = 0$ for all $x \in \calD$. Thus $f \equiv 0$ by density of $\calD$ and continuity of $f$. Hence $L \equiv 0$, contradiction.
 \end{proof}
+
+When we use this in the proof of KCC we actually have $\calD = \unitbox$ rendering density trivial.
 
 \begin{prop}[Gaussians converge weakly to Gaussians]
 	\label{prop:weak-convergence-gaussians}
