@@ -69,6 +69,7 @@
 \newcommand{\calF}{\mathcal F}
 \newcommand{\calH}{\mathcal H}
 \newcommand{\calT}{\mathcal T}
+\newcommand{\calL}{\mathcal L}
 \newcommand{\dif}[1]{\text{d} #1}
 \newcommand{\towk}{\Rightarrow}
 \DeclareMathOperator{\reg}{Reg}
@@ -84,6 +85,10 @@
 \newcommand{\boxspace}{\ensuremath{\R^{[0, 1]^d}}}
 \newcommand{\unitbox}{\ensuremath{[0,1]^d}}
 \renewcommand{\phi}{\varphi}
+\newcommand{\simiid}{\overset{\text{i.i.d.}}{\sim}}
+\newcommand{\mudif}{\ensuremath{\, \mu(\dif x)}}
+
+\usepackage{tikz-cd}
 
 \title{Stochastic Partial Differential Equations}
 \author{Based on Lectures by Dr. A. Chandra and Dr. G. Cannizzaro}
@@ -569,23 +574,20 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 
 \section{Cameron-Martin Theory}
 
-Cameron-Martin theory can initially be confusing because the Cameron-Martin spaces pops up in unexpected ways. Personally, the most intuitive place to start is trying to impose a Hilbert space structure on $\calB$. The idea is that $C_{\mu}$ is almost an inner product on $\calB^*$, it's just positive semi-definite rather than positive definite. We'll first understand the structure $C_{\mu}$ induces on $\calB^*$, then move that structure onto $\calB$.
+Cameron-Martin theory is best motiviated by the Hilbert space example. In that example we could express $\mu$ as the law of $\sum_{i=1}^{\infty} \alpha_n \lambda_n e_n$ where $\alpha_n \sim N(0, 1)$ i.i.d.\ and $\lambda_n$ are the eigenvalues of the covariance operator. Note the elements $\{\lambda_n e_n\}$ is an orthonormal basis of $\tilde{C}_{\mu}(\calH)$. The goal is to achieve this for a general Banach space $\calB$.
 
-$\calB^*$ consists of bounded operators $l: \calB \to \mu$. This can be viewed as just a random variable. Since Gaussian measures have finite second measures and $l$ is bounded, we have
+
+Unfortunately, orthonormality makes no sense in $\calB$, there is no Euclidean (inner product) structure. So our first goal is to find a subspace of $\calB$ that has a natural Hilbert space structure. In our theory so far what looks most like an inner product? The covariance structure $C_{\mu}: \calB^* \to \calB^*$; it is a symmetric, bilinear, positive semi-definite form on $\calB^*$. Let's explore this structure, 
 \begin{equation}
-	\calB^* \subset L^2(\calB, \mu) \defeq \left\{f: \calB \to \R : \int_{\calB} \abs{f(x)}^2 \, \mu(\dif x) < \infty \right\}.
+	C_{\mu}(l, l') = \int_{\calB} l(x) l'(x) \mudif = \inn{l}{l'}_{\calL^2}.
 \end{equation}
-Then in $L^2$ space, we have
+This is just the usual $\calL^2$ structure when we view $\calB^*$ as a subset of
 \begin{equation}
-	\inn{l}{l'}_{L^2} = \int_{\calB} l(x) l'(x) \, \mu(\dif x) = C_{\mu}(l, l').
+	\calL^2 \defeq \{f: \calB \to \R : \int_{\calB} \norm{f(x)}^2 \mudif < \infty \}.
 \end{equation}
-Therefore inner product $C_{\mu}$ induces is exactly the $L^2$ structure on $\calB^*$. Note that \vref{prop:bounded-cov} shows that $\calB^*$ with the usual toplogy induced by $\norm{\cdot}_{\op}$, the operator norm, can be continuously embedded into the $L^2$ structure. This embedding is in fact compact.
-\begin{prop}
-	$(\calB^*, \norm{\cdot}_{op}) \xhookrightarrow{\text{cpt}} (L^2, \norm{\cdot}_2)$
-\end{prop}
-\begin{proof}
-\end{proof}
-We now transfer this to the dual.
+Formally, we have an embedding $i: \calB^* \to \calL^2$.
+
+Recall $i$ has a corresponding dual embedding $i^*: (\calL^2)^* \to \calB^{**}$
 
 \appendix
 
