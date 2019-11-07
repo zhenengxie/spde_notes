@@ -70,6 +70,7 @@
 \newcommand{\calH}{\mathcal H}
 \newcommand{\calT}{\mathcal T}
 \newcommand{\calL}{\mathcal L}
+\newcommand{\calR}{\mathcal R}
 \newcommand{\dif}[1]{\text{d} #1}
 \newcommand{\towk}{\Rightarrow}
 \DeclareMathOperator{\reg}{Reg}
@@ -574,20 +575,23 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 
 \section{Cameron-Martin Theory}
 
-Cameron-Martin theory is best motiviated by the Hilbert space example. In that example we could express $\mu$ as the law of $\sum_{i=1}^{\infty} \alpha_n \lambda_n e_n$ where $\alpha_n \sim N(0, 1)$ i.i.d.\ and $\lambda_n$ are the eigenvalues of the covariance operator. Note the elements $\{\lambda_n e_n\}$ is an orthonormal basis of $\tilde{C}_{\mu}(\calH)$. The goal is to achieve this for a general Banach space $\calB$.
+Cameron-Martin theory is, for me, best motiviated by the Hilbert space example. In that example we could express $\mu$ as the law of $\sum_{i=1}^{\infty} \alpha_n \lambda_n e_n$ where $\alpha_n \sim N(0, 1)$ i.i.d.\ and $\lambda_n$ are the eigenvalues of the covariance operator. The goal is to achieve this for a general Banach space $\calB$.
 
-
-Unfortunately, orthonormality makes no sense in $\calB$, there is no Euclidean (inner product) structure. So our first goal is to find a subspace of $\calB$ that has a natural Hilbert space structure. In our theory so far what looks most like an inner product? The covariance structure $C_{\mu}: \calB^* \to \calB^*$; it is a symmetric, bilinear, positive semi-definite form on $\calB^*$. Let's explore this structure, 
+Unfortunately, orthonormality makes no sense in $\calB$, there is no Euclidean (inner product) structure. So our first goal is to find a subspace of $\calB$ that has a natural Hilbert space structure. In our theory so far, the covariance structure $C_{\mu}: \calB^* \to \calB^*$ is the best candidate for an inner product; it is a symmetric, bilinear, positive semi-definite form on $\calB^*$. Let's explore this structure, 
 \begin{equation}
-	C_{\mu}(l, l') = \int_{\calB} l(x) l'(x) \mudif = \inn{l}{l'}_{\calL^2}.
+	C_{\mu}(l, l') = \int_{\calB} l(x) l'(x) \mudif = \inn{l}{l'}_{L^2}
 \end{equation}
-This is just the usual $\calL^2$ structure when we view $\calB^*$ as a subset of
+so this is just the usual $L^2$ structure when we view $\calB^*$ as a subset of
 \begin{equation}
-	\calL^2 \defeq \{f: \calB \to \R : \int_{\calB} \norm{f(x)}^2 \mudif < \infty \}.
+	L^2(\calB, \mu) \defeq \{f: \calB \to \R : \int_{\calB} \norm{f(x)}^2 \mudif < \infty \}.
 \end{equation}
-Formally, we have an embedding $i: \calB^* \to \calL^2$.
-
-Recall $i$ has a corresponding dual embedding $i^*: (\calL^2)^* \to \calB^{**}$
+Formally we have an embedding $i: \calB^* \to L^2(\calB, \mu)$. By \vref{prop:bounded-cov}, $i$ is a continuous embedding.
+\begin{defn}[Reproducing Kernel Hilbert Space]
+	The \emph{reproducing kernel Hilbert space} ($RKHS$) of a Gaussian measure $\mu$ on $\calB$ is the $L^2$ closure of $\calB^*$. In other words
+	\begin{equation}
+		\calR_{\mu} = \overline{i(\calB^*)}
+	\end{equation}
+\end{defn}
 
 \appendix
 
