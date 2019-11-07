@@ -80,6 +80,8 @@
 \DeclareMathOperator{\cyl}{Cyl}
 \DeclareMathOperator{\tr}{Tr}
 \DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\ev}{ev}
+\DeclareMathOperator{\eq}{eq}
 \DeclarePairedDelimiterX{\abs}[1]{\lvert}{\rvert}{#1}
 \DeclarePairedDelimiterX{\norm}[1]{\lVert}{\rVert}{#1}
 \DeclarePairedDelimiterX{\inn}[2]{\langle}{\rangle}{#1, #2}
@@ -577,23 +579,43 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 
 Cameron-Martin theory is, for me, best motiviated by the Hilbert space example. In that example we could express $\mu$ as the law of $\sum_{i=1}^{\infty} \alpha_n \lambda_n e_n$ where $\alpha_n \sim N(0, 1)$ i.i.d.\ and $\lambda_n$ are the eigenvalues of the covariance operator. The goal is to achieve this for a general Banach space $\calB$.
 
-Unfortunately, orthonormality makes no sense in $\calB$, there is no Euclidean (inner product) structure. So our first goal is to find a subspace of $\calB$ that has a natural Hilbert space structure. In our theory so far, the covariance structure $C_{\mu}: \calB^* \to \calB^*$ is the best candidate for an inner product; it is a symmetric, bilinear, positive semi-definite form on $\calB^*$. Let's explore this structure, 
-\begin{equation}
-	C_{\mu}(l, l') = \int_{\calB} l(x) l'(x) \mudif = \inn{l}{l'}_{L^2}
-\end{equation}
-so this is just the usual $L^2$ structure when we view $\calB^*$ as a subset of
-\begin{equation}
-	L^2(\calB, \mu) \defeq \{f: \calB \to \R : \int_{\calB} \norm{f(x)}^2 \mudif < \infty \}.
-\end{equation}
-Formally we have an embedding $i: \calB^* \to L^2(\calB, \mu)$. By \vref{prop:bounded-cov}, $i$ is a continuous embedding.
-\begin{defn}[Reproducing Kernel Hilbert Space]
-	The \emph{reproducing kernel Hilbert space} ($RKHS$) of a Gaussian measure $\mu$ on $\calB$ is the $L^2$ closure of $\calB^*$. In other words
-	\begin{equation}
-		\calR_{\mu} = \overline{i(\calB^*)}
-	\end{equation}
-\end{defn}
-
 \appendix
+
+\chapter{Cameron-Martin Theory: A stupidly abstract approach}
+
+The way I like to think about Cameron-Martin theory is perhaps a bit too abstract. Recall $\calB^*$ can be `embedded' into $\calL^2(\calB, \mu)$. Rigirously consider the map $i: \calB^* \to \calL^2$
+\begin{equation}
+	i(f) = [f]
+\end{equation}
+which maps $f$ to the equivalence class of $f$ under almost sure equality. We're using $\calL^2$ instead of $L^2$ to distinguish the space of equivalence classes from the space of functions. Then $i$ is a continuous map and the RKHS $\calR_{\mu}$ is $\overline{i(\calB)}$. 
+
+We then want embed $\calR_{\mu}$ into $\calB$. Embedding $\calR_{\mu}$ into $\calB^{**}$ is not too difficult. $i$ has an adjoint map $i^*: (\calL^2)^* \to \calB^{**}$ where $i^*(\phi) = \phi \circ i$ for all $\phi \in (\calL^2)^*$. We don't know if $i^*$ is injective. For that the following proposition from functional analysis helps.
+\begin{prop}[Injective of the adjoint map]
+	Let $X$ and $Y$ be Banach spaces and $i:X \to Y$ be a bounded linear map. Then the following are equivalent:
+	\begin{enumerate}
+		\item $i^*: Y^* \to X^*$ is injective.
+		\item $i(X)$ is dense in $Y$.
+	\end{enumerate}
+\end{prop}
+This tells us that $\calL^2$ is too big a space to look at, instead we should restrict the range of $i$ from $\calL^2$ to $R_{\mu}$. Then the above proposition tells us that $i^*: \calR_{\mu}^* \to \calB^{**}$ is an injection thus is an embedding of $\calR_{\mu}^* \to \calB^{**}$. Recall by Riesz representation there is a natural bijective linear isometry $\eq : \calR_{\mu} \to \calR_{\mu}^*$ where $\eq(f) \defeq \inn{\cdot}{f}_{L^2}$. Then $i^* \circ \eq$ embeds $\calR_{\mu}$ into $\calB^{**}$. Now let's unravel the action of this embedding, for $l \in \calB^*$.
+\begin{align}
+	i^* \circ \eq (f)(l) = \inn{i(l)}{f}_{L^2} = \int_{\calB} l(x) f(x) \mudif = l\left(\int_{\calB} x f(x) \mudif \right).
+\end{align}
+The integral inside the last quantity is a well defined Bochner integral since $\norm{f}_{L^2} < \infty$ guarantees that $x f(x)$ is integrable. This tells us that $i \circ \eq(\calB^*) \subset \ev(\calB)$ thus we can embed $\calR_{\mu}$ into $\calB$ by $k = \ev^{-1} \circ i^* \circ \eq$.
+
+\begin{figure}
+	\centering
+	\begin{tikzcd}
+		\calB^* \ar[r, "i"] &
+		\calR_{\mu} \ar[r, <->, "\cong"] \ar[<->]{rrd}[sloped, below]{f \mapsto \int_{\calB} x f(x) \mudif} &
+		\calR_{\mu}^* \ar[r, "i^*", <->] &
+		\ev(\calH_{\mu}) \\
+						 & & &\calH_{\mu} \ar[<->]{u}[right]{\ev}
+	\end{tikzcd}
+	\label{fig:cm-diagram}
+	\caption{Diagram of the maps involved in Cameron-Martin theory}
+\end{figure}
+
 
 \chapter{Miscellaneous Theorems}
 
