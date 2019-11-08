@@ -579,6 +579,21 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 
 Cameron-Martin theory is, for me, best motiviated by the Hilbert space example. In that example we could express $\mu$ as the law of $\sum_{i=1}^{\infty} \alpha_n \lambda_n e_n$ where $\alpha_n \sim N(0, 1)$ i.i.d.\ and $\lambda_n$ are the eigenvalues of the covariance operator. The goal is to achieve this for a general Banach space $\calB$.
 
+Note that the $\lambda_n e_n = \hat{C}_{\mu}(\inn{\cdot}{e_n})$ are in the image of $\hat{C}_{\mu}$. Following this idea:
+\begin{defn}
+	Let $\mu$ be a Gaussian measure on $\calB$. Then define
+	\begin{equation}
+		\calH_{\mu} \defeq \left\{ \int_{\calB} x l(x) \mudiff : l \in \calB^* \right\}
+		= \hat{C}_{\mu}(\calB^*)
+	\end{equation}
+	with inner product
+	\begin{equation}
+		\inn{h}{k}_{\mu} \defeq C_{\mu}(h^*, k^*) = \int_{\calB} h(x) k(x) \mudif
+	\end{equation}
+	where $h = \hat{C}_{\mu}(h^*)$ and $k = \hat{C}_{\mu}(k^*)$.
+\end{defn}
+It's not a priori clear that this inner product is well defined.
+
 \appendix
 
 \chapter{Cameron-Martin Theory: A stupidly abstract approach}
@@ -622,10 +637,10 @@ Note that $k \circ j$ is exactly $\hat{C}_{\mu}$.Then $k$ is a bijection onto it
 	\centering
 	\begin{tikzcd}
 		\calB^* \ar[r, "j"] &
-		\calR_{\mu} \ar[r, <->, "\cong"] \ar[<->]{rrd}[sloped, below]{f \mapsto \int_{\calB} x f(x) \mudif} &
-		\calR_{\mu}^* \ar[r, "j^*", <->] &
+		\calR_{\mu} \ar[r, "\eq"] \ar{rrd}[sloped, below]{f \mapsto \int_{\calB} x f(x) \mudif} &
+		\calR_{\mu}^* \ar[r, "j^*"] &
 		\ev(\calH_{\mu}) \\
-						 & & &\calH_{\mu} \ar[<->]{u}[right]{\ev}
+						 & & &\calH_{\mu} \ar{u}[right]{\ev}
 	\end{tikzcd}
 	\label{fig:cm-diagram}
 	\caption{Diagram of the maps involved in Cameron-Martin theory}
@@ -633,18 +648,17 @@ Note that $k \circ j$ is exactly $\hat{C}_{\mu}$.Then $k$ is a bijection onto it
 We've drawn the sequence of maps use in \vref{fig:cm-diagram}. The downside of this approach of constructing the Cameron-Martin space is in how long it takes to set up all the structure involved. However it does have benefits. For me, it justifies why we consider the image of $\hat{C}_{\mu}$. It's because, up to isometric isomorphisms, it is the adjoint map of the embedding of $\calR_{\mu}$ into $\calL^2$. It also allows us to reuse theorems from functional analysis. The following corollaries are immediate or can be proved very quickly from the construction of $\calH_{\mu}$.
 
 \begin{corollary}
-	We have the bound
+	There exists $C \geq 0$ such that
 	\begin{equation}
-		\norm{h}^2 \leq \norm{C_{\mu}} \inn{h}{h}_{\mu}, \quad \forall h \in \calH_{\mu}.
+		\norm{h}^2 \leq C \inn{h}{h}_{\mu}, \quad \forall h \in \calH_{\mu}.
 	\end{equation}
 \end{corollary}
 \begin{proof}
-	By definition of the Cameron-Martin space
+	By definition of the Cameron-Martin space and since $k$ is bounded
 	\begin{align}
-		\norm{h}^2 \leq \norm{k} \norm{k^{-1}(h)}_{L^2}
+		\norm{h}^2 \leq \norm{k}_{\op}^2 \norm{k^{-1}(h)}_{L^2}
 		\defeq \norm{k}^2 \inn{h}{h}_{\mu}.
 	\end{align}
-	We have $\norm{k}^2 = \norm{C_{\mu}}$ since $k$ and $\hat{C}_{\mu}$ agree on $\calB^*$ which is dense in $\calR_{\mu}$.
 \end{proof}
 \begin{corollary}
 	There is a natural isometric isomorphism between $\calH_{\mu}$ and $\calR_{\mu}$.
@@ -657,6 +671,7 @@ We've drawn the sequence of maps use in \vref{fig:cm-diagram}. The downside of t
 	\begin{equation}
 		\inn{h}{h}_{\mu} = \sup \left\{ l(h) : C_{\mu}(h, h) \leq 1\right\}, \quad \forall h \in \calH_{\mu}.
 	\end{equation}
+	Moreover $\calH_{\mu} = \{x \in \calB : \inn{h}{h}_{\mu} < \infty\}$ exactly.
 \end{corollary}
 \begin{proof}
 	Unravelling definitions gives
@@ -753,6 +768,37 @@ When we use this in the proof of KCC we actually have $\calD = \unitbox$ renderi
 	Since Fourier transforms uniquely determine probability measures, $\mu \sim N(\theta, \sigma^2)$.
 
 	For general $\calB$, if $\mu_n \towk \mu$ then $l_* \mu_n \to l_* \mu$ for all $l \in \calB^*$. Therefore $l_* \mu$ is Gaussian by the $\calB = \R$ case. Hence $\mu$ is Gaussian.
+\end{proof}
+
+\begin{prop}[Mutual Singularity and Total Variation]
+	Let $\mu$ and $\nu$ be probability measures on the measurable space $(E, \calE)$. Recall the total variation
+	\begin{equation}
+		\norm{\mu - \nu}_{TV} = \sup_{A \in \calE} \abs{\mu(A) - \nu(A)}.
+	\end{equation}
+	Then the following are equivalent:
+	\begin{enumerate}
+		\item $\mu$ and $\nu$ are mutually singular.
+		\item $\norm{\mu - \nu}_{TV} = 1$.
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	If (1) holds then there exists $A, B \in \calE$ such that $\mu(A) = 1$, $\nu(B) = 1$ and $A$ and $B$ are disjoint. Then $\nu(A) \leq \nu(B^c) = 0$. Thus $\norm{\mu - \nu}_{TV} \geq \abs{\mu(A) - \nu(A)} = 1$.
+
+	Conversely if $\norm{\mu - \nu}_{TV} = 1$ then there exists $\{A_n\} \subset \calE$ such that
+	\begin{equation}
+		\lim_n \abs{\mu(A_n) - \nu(A_n)} = 1
+	\end{equation}
+	The sequence $(\mu(A_n))$ and $(\nu(A_n))$ are bounded so by Bolzano-Weierstrass we can pass to a subsequence along which $\alpha \defeq \lim_n \mu(A_n)$ and $\beta \defeq \lim_n \nu(A_n)$ both exist. Then $\alpha, \beta \in [0, 1]$ thus $\abs{\alpha - \beta} = 1$ means we must have either $\alpha = 0$ or $\beta = 1$.
+
+	WLOG $\alpha = 0$ such that $\lim_n \mu(A_n) \to 0$ and $\lim_n \nu(A_n) = 1$. Then by passing to a subseq WLOG
+	\begin{equation}
+		\mu(A_n) \leq 2^{-n}.
+	\end{equation}
+	 Let $A = \{A_n\ \text{i.o.}\}$. Then by the Borel Cantelli lemma, $\mu(A) = 0$. Also
+	 \begin{equation}
+		 \nu(A) = \lim_n \nu(\cup_{k \geq n} A_k) \geq \lim_n \nu(A_n) = 1.
+	 \end{equation}
+	 Thus $\mu(A) = 0$ and $\nu(A) = 1$, hence $\mu$ and $\nu$ are mutually singular.
 \end{proof}
 
 \printbibliography
