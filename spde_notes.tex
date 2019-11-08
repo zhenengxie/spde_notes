@@ -512,7 +512,7 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 	The event $\{\norm{f_0}_{\infty} < r\}$ is an artifact of our construction and is always equal to $\emptyset$ or $\boxspace$, thus is measurable. Since $M_{\beta}$ is measurable, $\{M_{\beta}(f) < \infty\}$ and $\{M_{\beta}(f) = \infty\}$ is measurable. $\{\abs{f(x) - f_0(x)} < r\}$ depends only on pointwise evaluations of $f$ thus is measurable. Hence $\{\norm{\reg_{\beta}(f) - f_0} < r\}$ is measurable as a countable intesection and union of measurable sets.
 	\end{subproof}
 
-	Hence $\hat{F} = \reg_{\beta}(F)$ is a continuous stochastic process $\Omega \to C(\unitbox, \R)$. There's no point defining $\reg_{\beta}(F)$ if it doesn't carry over properties of $F$, so the first thing we'll do is show the two processes are modifications of each other. Rigirously we show that for all $x \in [0, 1]^d$, $\reg_{\beta}(F)_x = F_x$ almost surely\footnote{Note this means $\prob(\reg_{\beta}(F)_x = F_x) = 1$ for all $x$, not $\prob(\reg_{\beta}(F)_x = F_x \ \forall x) = 1$}. We do this is two steps, firstly for $x \in \calD$ and then for all $x \in [0, 1]^d$. When $x \in \calD$, $\reg_{\beta}(F)_x = F_x \indi_{\{M_{\beta}(F) < \infty\}}$. Thus it suffices to show $M_{\beta}(F) < \infty$ almost surely.
+	Hence $\hat{F} = \reg_{\beta}(F)$ is a continuous stochastic process $\Omega \to C(\unitbox, \R)$. There's no point defining $\reg_{\beta}(F)$ if it doesn't carry over properties of $F$, so the first thing we'll do is show the two processes are modifications of each other. Rigorously we show that for all $x \in [0, 1]^d$, $\reg_{\beta}(F)_x = F_x$ almost surely\footnote{Note this means $\prob(\reg_{\beta}(F)_x = F_x) = 1$ for all $x$, not $\prob(\reg_{\beta}(F)_x = F_x \ \forall x) = 1$}. We do this is two steps, firstly for $x \in \calD$ and then for all $x \in [0, 1]^d$. When $x \in \calD$, $\reg_{\beta}(F)_x = F_x \indi_{\{M_{\beta}(F) < \infty\}}$. Thus it suffices to show $M_{\beta}(F) < \infty$ almost surely.
 	\begin{claim}
 		$M_{\beta}(F) < \infty$ almost surely.
 	\end{claim}
@@ -583,38 +583,96 @@ Cameron-Martin theory is, for me, best motiviated by the Hilbert space example. 
 
 \chapter{Cameron-Martin Theory: A stupidly abstract approach}
 
-The way I like to think about Cameron-Martin theory is perhaps a bit too abstract. Recall $\calB^*$ can be `embedded' into $\calL^2(\calB, \mu)$. Rigirously consider the map $i: \calB^* \to \calL^2$
+The way I like to think about Cameron-Martin theory is perhaps a bit too abstract. Recall $\calB^*$ can be `embedded' into $\calL^2(\calB, \mu)$. Rigorously consider the map $j: \calB^* \to \calL^2$ (we're not using $i$ since that's used later).
 \begin{equation}
-	i(f) = [f]
+	j(f) = [f]
 \end{equation}
-which maps $f$ to the equivalence class of $f$ under almost sure equality. We're using $\calL^2$ instead of $L^2$ to distinguish the space of equivalence classes from the space of functions. Then $i$ is a continuous map and the RKHS $\calR_{\mu}$ is $\overline{i(\calB)}$. 
+which maps $f$ to the equivalence class of $f$ under almost sure equality. We're using $\calL^2$ instead of $L^2$ to distinguish the space of equivalence classes from the space of functions. Then $j$ is a continuous map and the RKHS $\calR_{\mu}$ is $\overline{j(\calB)}$. 
 
-We then want embed $\calR_{\mu}$ into $\calB$. Embedding $\calR_{\mu}$ into $\calB^{**}$ is not too difficult. $i$ has an adjoint map $i^*: (\calL^2)^* \to \calB^{**}$ where $i^*(\phi) = \phi \circ i$ for all $\phi \in (\calL^2)^*$. We don't know if $i^*$ is injective. For that the following proposition from functional analysis helps.
+We then want embed $\calR_{\mu}$ into $\calB$. Embedding $\calR_{\mu}$ into $\calB^{**}$ is not too difficult. $j$ has an adjoint map $j^*: (\calL^2)^* \to \calB^{**}$ where $j^*(\phi) = \phi \circ j$ for all $\phi \in (\calL^2)^*$. We don't know if $j^*$ is injective. For that the following proposition from functional analysis helps.
 \begin{prop}[Injective of the adjoint map]
-	Let $X$ and $Y$ be Banach spaces and $i:X \to Y$ be a bounded linear map. Then the following are equivalent:
+	Let $X$ and $Y$ be Banach spaces and $j:X \to Y$ be a bounded linear map. Then the following are equivalent:
 	\begin{enumerate}
-		\item $i^*: Y^* \to X^*$ is injective.
-		\item $i(X)$ is dense in $Y$.
+		\item $j^*: Y^* \to X^*$ is injective.
+		\item $j(X)$ is dense in $Y$.
 	\end{enumerate}
 \end{prop}
-This tells us that $\calL^2$ is too big a space to look at, instead we should restrict the range of $i$ from $\calL^2$ to $R_{\mu}$. Then the above proposition tells us that $i^*: \calR_{\mu}^* \to \calB^{**}$ is an injection thus is an embedding of $\calR_{\mu}^* \to \calB^{**}$. Recall by Riesz representation there is a natural bijective linear isometry $\eq : \calR_{\mu} \to \calR_{\mu}^*$ where $\eq(f) \defeq \inn{\cdot}{f}_{L^2}$. Then $i^* \circ \eq$ embeds $\calR_{\mu}$ into $\calB^{**}$. Now let's unravel the action of this embedding, for $l \in \calB^*$.
+This tells us that $\calL^2$ is too big a space to look at, instead we should restrict the range of $j$ from $\calL^2$ to $R_{\mu}$. Then the above proposition tells us that $j^*: \calR_{\mu}^* \to \calB^{**}$ is an injection thus is an embedding of $\calR_{\mu}^* \to \calB^{**}$. Recall by Riesz representation there is a natural bijective linear isometry $\eq : \calR_{\mu} \to \calR_{\mu}^*$ where $\eq(f) \defeq \inn{\cdot}{f}_{L^2}$. Then $j^* \circ \eq$ embeds $\calR_{\mu}$ into $\calB^{**}$. Now let's unravel the action of this embedding, for $l \in \calB^*$.
 \begin{align}
-	i^* \circ \eq (f)(l) = \inn{i(l)}{f}_{L^2} = \int_{\calB} l(x) f(x) \mudif = l\left(\int_{\calB} x f(x) \mudif \right).
+	j^* \circ \eq (f)(l) = \inn{j(l)}{f}_{L^2} = \int_{\calB} l(x) f(x) \mudif = l\left(\int_{\calB} x f(x) \mudif \right).
 \end{align}
-The integral inside the last quantity is a well defined Bochner integral since $\norm{f}_{L^2} < \infty$ guarantees that $x f(x)$ is integrable. This tells us that $i \circ \eq(\calB^*) \subset \ev(\calB)$ thus we can embed $\calR_{\mu}$ into $\calB$ by $k = \ev^{-1} \circ i^* \circ \eq$.
-
+The integral inside the last quantity is a well defined Bochner integral since $\norm{f}_{L^2} < \infty$ guarantees that $x f(x)$ is integrable. This tells us that $j \circ \eq(\calB^*) \subset \ev(\calB)$ thus we can embed $\calR_{\mu}$ into $\calB$ by $k \defeq \ev^{-1} \circ j^* \circ \eq$. Removing the abstraction
+\begin{equation}
+	k(f) = \int_{\calB} x f(x) \mudif.
+\end{equation}
+Note that $k \circ j$ is exactly $\hat{C}_{\mu}$.Then $k$ is a bijection onto it's image. This gives us the Cameron-Martin space.
+\begin{defn}
+	Let $\mu$ be a Gaussian measure on $\calB$ with RKHS $\calR_{\mu}$ and $k$ as defined in this chapter. Then the \emph{Cameron-Martin space} of $\mu$ is
+	\begin{equation}
+		\calH_{\mu} \defeq k(\calR_{\mu}) \subset \calB.
+	\end{equation}
+	This is a Hilbert space equipped with inner product $\inn{\cdot}{\cdot}_{\mu}$ inherited from the $\inn{\cdot}{\cdot}_{L^2}$ inner product $\calR_{\mu}$ by $k$, explicitly
+	\begin{equation}
+		\inn{h}{k}_{\mu} \defeq \inn{k^{-1}(h)}{k^{-1}(k)}_{L^2}
+		= \int_{\calB} h^*(x) k^*(x) \mudif
+	\end{equation}
+	where $h = \int_{\calB} x h^*(x) \mudif$ and $k = \int_{\calB} x k^*(x) \mudif$.
+\end{defn}
 \begin{figure}
 	\centering
 	\begin{tikzcd}
-		\calB^* \ar[r, "i"] &
+		\calB^* \ar[r, "j"] &
 		\calR_{\mu} \ar[r, <->, "\cong"] \ar[<->]{rrd}[sloped, below]{f \mapsto \int_{\calB} x f(x) \mudif} &
-		\calR_{\mu}^* \ar[r, "i^*", <->] &
+		\calR_{\mu}^* \ar[r, "j^*", <->] &
 		\ev(\calH_{\mu}) \\
 						 & & &\calH_{\mu} \ar[<->]{u}[right]{\ev}
 	\end{tikzcd}
 	\label{fig:cm-diagram}
 	\caption{Diagram of the maps involved in Cameron-Martin theory}
 \end{figure}
+We've drawn the sequence of maps use in \vref{fig:cm-diagram}. The downside of this approach of constructing the Cameron-Martin space is in how long it takes to set up all the structure involved. However it does have benefits. For me, it justifies why we consider the image of $\hat{C}_{\mu}$. It's because, up to isometric isomorphisms, it is the adjoint map of the embedding of $\calR_{\mu}$ into $\calL^2$. It also allows us to reuse theorems from functional analysis. The following corollaries are immediate or can be proved very quickly from the construction of $\calH_{\mu}$.
+
+\begin{corollary}
+	We have the bound
+	\begin{equation}
+		\norm{h}^2 \leq \norm{C_{\mu}} \inn{h}{h}_{\mu}, \quad \forall h \in \calH_{\mu}.
+	\end{equation}
+\end{corollary}
+\begin{proof}
+	By definition of the Cameron-Martin space
+	\begin{align}
+		\norm{h}^2 \leq \norm{k} \norm{k^{-1}(h)}_{L^2}
+		\defeq \norm{k}^2 \inn{h}{h}_{\mu}.
+	\end{align}
+	We have $\norm{k}^2 = \norm{C_{\mu}}$ since $k$ and $\hat{C}_{\mu}$ agree on $\calB^*$ which is dense in $\calR_{\mu}$.
+\end{proof}
+\begin{corollary}
+	There is a natural isometric isomorphism between $\calH_{\mu}$ and $\calR_{\mu}$.
+\end{corollary}
+\begin{proof}
+	$k$ is the natural isometric isomorphism. $i = k^{-1}: \calH_{\mu} \to \calR_{\mu}$ is the notation used in Prof.\ Hairer's notes.
+\end{proof}
+\begin{corollary}
+	We have the alternate characterisation
+	\begin{equation}
+		\inn{h}{h}_{\mu} = \sup \left\{ l(h) : C_{\mu}(h, h) \leq 1\right\}, \quad \forall h \in \calH_{\mu}.
+	\end{equation}
+\end{corollary}
+\begin{proof}
+	Unravelling definitions gives
+	\begin{align}
+		\inn{h}{h}_{\mu}
+		&= \norm{k^{-1}(h)}_{L^2}
+		= \norm{(\eq^{-1} \circ (j^*)^{-1} \circ \ev)(h)}_{L^2} \\
+		&= \norm{((j^*)^{-1} \circ \ev)(h)}_{\op, L^2}
+		= \norm{\ev(h) \circ j^{-1}}_{\op, L^2} \\
+		&= \sup \left\{ (\ev(h)(j^{-1}(f)) : f \in \calR_{\mu}, \norm{f}_{L^2} \leq 1\right\} \\
+		&= \sup \left\{ \ev(h)(l) : l \in \calB^*, C_{\mu}(l, l) \leq 1\right\} \\
+		&= \sup \left\{ l(h) : C_{\mu}(l, l) \leq 1\right\}
+	\end{align}
+	where the second to last line uses density of $j(\calB^*)$ in $\calR_{\mu}$.
+\end{proof}
+
 
 
 \chapter{Miscellaneous Theorems}
