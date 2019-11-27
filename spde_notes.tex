@@ -106,15 +106,20 @@
 
 \section{Introduction}
 
-The driving motivation throughout this chapter is defining a Banach space valued Wiener process and defining how to integrate against it. Recall a $\R^n$-valued stochastic process $(W_t)_{t \geq 0}$ is a Wiener process if and only if it is a continuous Gaussian process with mean 0 and covariance function $C(s, t) = s \wedge t$. 
+The driving motivation throughout this chapter is defining a Banach space valued Wiener process and defining how to integrate against it. Recall a $\R^n$-valued stochastic process $(W_t)_{t \geq 0}$ is a Wiener process if and only if it is a continuous Gaussian process with mean 0 and covariance function $C(s, t) = s \wedge t$. This is a nice short definition, and it's easy to take for granted the amount of measure theory it took to get to this definition. Let's spell some of those steps out.
+\begin{enumerate}
+	\item We developed tools like mean, covariance and Fourier transforms.
+	\item We defined what a Gaussian random variable was and proved properties of Gaussian random variables.
+	\item We showed existence of a Gaussian process with the correct covariance structure.
+	\item We proved a continuity criterion in order to modify our Gaussian process to a continuous Gaussan process.
+\end{enumerate}
+For a Banach space $\calB$-valued stochastic process, we currently have none of these tools. The goal of this chapter is to remedy that.
 
-Now let $(B_t)_{t \geq 0}$ be a $\calB$-valued stochastic process. We'd like to just copy the above definition, but we immediately run into a problem. What even is a Gaussian random variable on $\calB$? This is what the next section shows.
-
-\section{Basics of Banach space valued random variables}
+\section{Analysis of $\calB$-valued random variables}
 
 \subsection{Two approaches}
 
-Throughout these notes let $\calB$ be a real Banach space. Usually $\calB$ will also be seperable, but we'll try and say explicitly when this is the case. Let $\mu$ be a Borel probability measure on $\calB$ and $X$ be a $\calB$-valued random variable such that $X \sim \mu$. We'd like recover our finite dimensional tools for studying random variables. Let's start with the mean. From the $\R^n$-case, it's tempting to define the mean as
+Throughout these notes $\calB$ be a real Banach space. Usually $\calB$ will also be seperable, but we'll try and say explicitly when this is the case. Let $\mu$ be a Borel probability measure on $\calB$ and $X$ be a $\calB$-valued random variable such that $X \sim \mu$. We'd like recover tools like means and Fourier transforms. Let's start with the mean, say $m$. From the finite dimensional case it's tempting to define
 \begin{equation}
 	m \defeq \int_{\calB} x \, \mu(\dif x).
 \end{equation}
@@ -256,15 +261,15 @@ In the finite dimensional case, Fourier transforms uniquely determine distributi
 	From the finite dimensional case we know $\widehat{l_* \mu}$ uniquely determines $l_* \mu$. Therefore $\hat{\mu}$ uniquely determines the one-dimensional marginals of $\mu$, and thus $\mu$ itself by \vref{prop:one-dim-marginals}.
 \end{proof}
 
-Now we've got our tools ready, we start focusing specifically on Gaussian measures.
-
 \section{Gaussian measures}
+
+We've now got our tools ready. Now we'll move onto the next step, defining what a Gaussian random variable is.
 
 \subsection{Basic definition}
 
-We start by defining what a Gaussian measure is. As aluded to in the introduction, there is not an immediately obvious definition for what a Gaussian measure is on $\calB$. However we do know what Gaussian measures are on $\R$, so we can use our approach of considering one-dimensional marginals.
+As aluded to in the section on analysis of $\calB$-valued random variables, there is not an immediately obvious definition for what a Gaussian measure is on $\calB$ using Bochner integrals. We can't really hope for a density function after all, there's no generalisation of the Lebesgue measure to general Banach spaces. However we do know what Gaussian measures are on $\R$, so we can use our approach of considering one-dimensional marginals.
 \begin{defn}[Gaussian measures]
-	A Borel probability measure $\mu$ on $\calB$ is a \emph{Gaussian measure} if $l_* \mu$ is a Gaussian measure \footnote{We count Dirac measures as Gaussian measures with zero variance} on $\R$ for all $l \in \calB^*$.
+	A Borel probability measure $\mu$ on $\calB$ is a \emph{Gaussian measure} if $l_* \mu$ is a Gaussian measure. Note we consider Dirac measures to be variance 0 Gaussian measures in this definition.
 \end{defn}
 
 Gaussian measures on $\R^n$ are uniquely characterised by their covariance and mean. This is true since they uniquely determine the Fourier transform. This remains true in infinite dimensions.
@@ -281,7 +286,7 @@ We've already stated that covariance operators need to be positive definite, sym
 
 \subsection{Integrability of Gaussian Measures}
 
-We now show decay properties of Gaussian measures. Suprisingly, this will come from rotational invariance of Gaussian measure. 
+It's hopefully somewhat intuitive that boundedness of the covariance operator will be related to boundedness of the second moment of the corresponding measure. In finite dimensions, Gaussian random variables are nice because of the rapid tail decay of the probability density function. We now show a similar statement is true for general Gaussian measures. Suprisingly, this will come from rotational invariance of Gaussian measure. 
 
 \begin{defn}[Rotational invariance]
 	Let $\mu$ be a measure on $\calB$. For each $\phi \in \R$, define $R_{\phi}: \calB \times \calB \to \calB \times \calB$ by
@@ -412,7 +417,11 @@ Trace-class is a stronger property than boundedness, in particular there exists 
 	There exists a probability space on which we can define $X_1, X_2, \ldots$ a sequence of i.i.d.\ $N(0, 1)$ random variables. Then let $\mu_n$ be the law of $\sum_{i=1}^n \sqrt{\lambda_i} X_i e_i$. We can show $\mu_n$ converges weakly to a limit $\mu$ and that $\mu$ is a Gaussian measure with the required covariance.
 \end{proof}
 
-\subsection{Regularity of Gaussian measures}
+\subsection{Abstract Wiener Spaces and Cameron-Martin Theory - what is a standard normal?}
+
+\section{Existence of Gaussian Processes}
+
+\Section{Continuity Criterions}
 
 This section focuses on Gaussian measures on $C([0,1]^d, \R)$ under the supremum norm. Hence it makes sense to talk about the regularity of the paths of a Gaussian measure.
 
