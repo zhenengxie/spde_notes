@@ -102,17 +102,25 @@
 
 \tableofcontents
 
-\chapter{Gaussian Measures on Banach Spaces}
+\chapter{Gaussian Measure Theory}
 
 \section{Introduction}
 
-Throughout these notes let $\calB$ be a real Banach space. Usually $\calB$ will also be seperable, but we'll say explicitly when this is the case. Let $\mu$ be a Borel probability measure on $\calB$ and $X$ be a $\calB$-valued random variable such that $X \sim \mu$. We'd like recover our finite dimensional tools for studying random variables. Let's start with the mean. From the $\R^n$-case, it's tempting to define the mean as
+The driving motivation throughout this chapter is defining a Banach space valued Wiener process and defining how to integrate against it. Recall a $\R^n$-valued stochastic process $(W_t)_{t \geq 0}$ is a Wiener process if and only if it is a continuous Gaussian process with mean 0 and covariance function $C(s, t) = s \wedge t$. 
+
+Now let $(B_t)_{t \geq 0}$ be a $\calB$-valued stochastic process. We'd like to just copy the above definition, but we immediately run into a problem. What even is a Gaussian random variable on $\calB$? This is what the next section shows.
+
+\section{Basics of Banach space valued random variables}
+
+\subsection{Two approaches}
+
+Throughout these notes let $\calB$ be a real Banach space. Usually $\calB$ will also be seperable, but we'll try and say explicitly when this is the case. Let $\mu$ be a Borel probability measure on $\calB$ and $X$ be a $\calB$-valued random variable such that $X \sim \mu$. We'd like recover our finite dimensional tools for studying random variables. Let's start with the mean. From the $\R^n$-case, it's tempting to define the mean as
 \begin{equation}
 	m \defeq \int_{\calB} x \, \mu(\dif x).
 \end{equation}
 However this integral cannot be understand as a Lebesgue integral. After all, $x$ doesn't take values in $\R^n$. At this point we have two options.
 
-\subsection{Option One: The Bochner Integral}
+\subsubsection{Option One: The Bochner Integral}
 
 We could try and rigorously define this integral. The method of integration used for $\calB$-valued functions are Bochner integrals. The construction of the Bochner integral follows the same method as the Lebesgue integral; we define the integral for a class of simple functions and extend the integral by approximation. Rather than going into details on the construction, we'll list off some of the properties of the Bochner integral. Firstly let $(E, \calE, \nu)$ be a probability space and $f: E \to \calB$ be measurable and $\calB$ be seperable\footnote{Seperability of $\calB$ is need to ensure $f$ is the pointwise limit of simple functions, i.e.\ strong measurablity. If we take strong measurability as an additional assumption on $f$ then seperability of $\calB$ can be relaxed}. Then $f$ is integrable if and only if
 
@@ -129,7 +137,7 @@ Hence if we assume $\int_E \norm{x} \, \mu(\dif x) < \infty$ then the mean
 \end{equation}
 can be defined using the Bochner integral. This approach is valuable in how it carrys the intuition from the finite dimensional case. In addition, it makes clear that the mean is an element of $\calB$ without the use of reflexivity (as we will see in the next approach). 
 
-\subsection{Option Two: One-Dimensional Marginals}
+\subsubsection{Option Two: One-Dimensional Marginals}
 
 Alternatively, we've already developed a rich theory of Lebesgue integration for $\R$-valued functions. What if we instead used this theory? This would require a `natural' way to map $\calB$ to $\R$. Since $\calB$ is a normed vector space, we have exactly that: the space of bounded linear functionals $\calB^*$. For any $l \in \calB^*$, $\E[l(X)]$ is just given by a Lebesgue integral. So to define the mean, just gather all these values for diffent $l \in \calB^*$. Following this idea, we define the mean as $m: \calB^* \to \R$ where
 \begin{equation}
@@ -143,7 +151,7 @@ However, this is unnecessary supposing $\calB$ is seperable. From our first appr
 
 The value of this second approach really shines when the concept we're describing becomes more intangible than a mean, for example when defining Gaussianity on a Banach space.
 
-\section{Random Variables on Banach Spaces}
+\subsection{Random Variables on Banach Spaces}
 
 
 Seen as we're working with $l(X)$ so much, it's useful to have a notation for its law.
@@ -250,7 +258,9 @@ In the finite dimensional case, Fourier transforms uniquely determine distributi
 
 Now we've got our tools ready, we start focusing specifically on Gaussian measures.
 
-\section{Basic definition of Gaussian Measures}
+\section{Gaussian measures}
+
+\subsection{Basic definition}
 
 We start by defining what a Gaussian measure is. As aluded to in the introduction, there is not an immediately obvious definition for what a Gaussian measure is on $\calB$. However we do know what Gaussian measures are on $\R$, so we can use our approach of considering one-dimensional marginals.
 \begin{defn}[Gaussian measures]
@@ -267,9 +277,9 @@ Gaussian measures on $\R^n$ are uniquely characterised by their covariance and m
 \begin{corollary}[Gaussian measures are determined by mean and covariance]
 	A Gaussian measure on a seperable Banach space is uniquely determined by it's mean and covariance operators.
 \end{corollary}
-We've already stated that covariance operators need to be positive definite, symmetric and bilinear. But is the converse true, can we get an existence result? Speficially given such an operator, can we necessarily find a centered Gaussian measure with that covariance? Unfortunately no, and we'll see one reason why in the next section.
+We've already stated that covariance operators need to be positive definite, symmetric and bilinear. But is the converse true, can we get an existence result? Speficially given such an operator, can we necessarily find a centered Gaussian measure with that covariance? Unfortunately no, and we'll see one reason why in the next subsection.
 
-\section{Integrability of Gaussian Measures}
+\subsection{Integrability of Gaussian Measures}
 
 We now show decay properties of Gaussian measures. Suprisingly, this will come from rotational invariance of Gaussian measure. 
 
@@ -352,7 +362,7 @@ Let's return to our question of showing existence of a Gaussian measure given a 
 \end{proof}
 So now let's add boundedness to our list of assumptions. Is that enough to characterize covariance operators of Gaussian measures? Unfortunately the answer is still no. In fact for a general Banach space there is no nice characterisation. However for Hilbert spaces we can give an actual answer.
 
-\section{Characterisation of Gaussian measures on Hilbert spaces}
+\subsection{Characterisation of Gaussian measures on Hilbert spaces}
 
 As promised, we now characterise the covariance operators of Gaussian measures in Hilbert spaces. In \vref{prop:bounded-cov} we've already shown there exists $\hat{C}_{\mu}: \calH^* \to \calH$ such that $C_{\mu}(l, l') = l'(\hat{C}_{\mu}(l))$ for all $l, l' \in \calB^*$. Then by the Riesz representation, there exists $\tilde{C}_{\mu}: \calH \to \calH$ such that
 \begin{equation}
@@ -402,7 +412,7 @@ Trace-class is a stronger property than boundedness, in particular there exists 
 	There exists a probability space on which we can define $X_1, X_2, \ldots$ a sequence of i.i.d.\ $N(0, 1)$ random variables. Then let $\mu_n$ be the law of $\sum_{i=1}^n \sqrt{\lambda_i} X_i e_i$. We can show $\mu_n$ converges weakly to a limit $\mu$ and that $\mu$ is a Gaussian measure with the required covariance.
 \end{proof}
 
-\section{Regularity of Gaussian measures}
+\subsection{Regularity of Gaussian measures}
 
 This section focuses on Gaussian measures on $C([0,1]^d, \R)$ under the supremum norm. Hence it makes sense to talk about the regularity of the paths of a Gaussian measure.
 
@@ -575,24 +585,17 @@ It should be noted that condition (2) isn't only used to show pathwise H\"older 
 	This finishes the proof.
 \end{proof}
 
-\section{Cameron-Martin Theory}
+\subsection{Abstract Wiener Spaces}
 
-Cameron-Martin theory is, for me, best motiviated by the Hilbert space example. In that example we could express $\mu$ as the law of $\sum_{i=1}^{\infty} \alpha_n \lambda_n e_n$ where $\alpha_n \sim N(0, 1)$ i.i.d.\ and $\lambda_n$ are the eigenvalues of the covariance operator. The goal is to achieve this for a general Banach space $\calB$.
-
-Note that the $\lambda_n e_n = \hat{C}_{\mu}(\inn{\cdot}{e_n})$ are in the image of $\hat{C}_{\mu}$. Following this idea:
+To motivate this section, let us try and recover a definition of a Wiener process in higher dimensions. First we define a Gaussian process. Fortunately this definition is a direct translation of the finite dimensional version.
 \begin{defn}
-	Let $\mu$ be a Gaussian measure on $\calB$. Then define
+	Let $(B_t)_{t \geq 0}$ be a time indexed sequence of random variables such that $B_t$ takes values in $\calB$ a seperable Banach space. Then $(B_t)$ is a \emph{Gaussian process} if the law of
 	\begin{equation}
-		\calH_{\mu} \defeq \left\{ \int_{\calB} x l(x) \mudiff : l \in \calB^* \right\}
-		= \hat{C}_{\mu}(\calB^*)
+		(B_{t_1}, \ldots, B_{t_n})
 	\end{equation}
-	with inner product
-	\begin{equation}
-		\inn{h}{k}_{\mu} \defeq C_{\mu}(h^*, k^*) = \int_{\calB} h(x) k(x) \mudif
-	\end{equation}
-	where $h = \hat{C}_{\mu}(h^*)$ and $k = \hat{C}_{\mu}(k^*)$.
+	is a Gaussian measure on $\calB^n$ w.r.t.\ the product topology for all finite sets of times $t_1, \ldots, t_n$.
 \end{defn}
-It's not a priori clear that this inner product is well defined.
+Now recall the definition of a Wiener process.
 
 \appendix
 
@@ -782,23 +785,19 @@ When we use this in the proof of KCC we actually have $\calD = \unitbox$ renderi
 	\end{enumerate}
 \end{prop}
 \begin{proof}
-	If (1) holds then there exists $A, B \in \calE$ such that $\mu(A) = 1$, $\nu(B) = 1$ and $A$ and $B$ are disjoint. Then $\nu(A) \leq \nu(B^c) = 0$. Thus $\norm{\mu - \nu}_{TV} \geq \abs{\mu(A) - \nu(A)} = 1$.
-
-	Conversely if $\norm{\mu - \nu}_{TV} = 1$ then there exists $\{A_n\} \subset \calE$ such that
+	$(1) \implies (2)$ is clear. For the converse if $\norm{\mu - \nu}_{TV} = 1$ then there exists $\{A_n\} \subset \calE$ such that
 	\begin{equation}
 		\lim_n \abs{\mu(A_n) - \nu(A_n)} = 1
 	\end{equation}
-	The sequence $(\mu(A_n))$ and $(\nu(A_n))$ are bounded so by Bolzano-Weierstrass we can pass to a subsequence along which $\alpha \defeq \lim_n \mu(A_n)$ and $\beta \defeq \lim_n \nu(A_n)$ both exist. Then $\alpha, \beta \in [0, 1]$ thus $\abs{\alpha - \beta} = 1$ means we must have either $\alpha = 0$ or $\beta = 1$.
-
-	WLOG $\alpha = 0$ such that $\lim_n \mu(A_n) \to 0$ and $\lim_n \nu(A_n) = 1$. Then by passing to a subseq WLOG
+	The sequence $(\mu(A_n))$ and $(\nu(A_n))$ are bounded so by Bolzano-Weierstrass we can pass to a subsequence along which $\alpha \defeq \lim_n \mu(A_n)$ and $\beta \defeq \lim_n \nu(A_n)$ both exist. Then $\alpha, \beta \in [0, 1]$ but also $\abs{\alpha - \beta} = 1$. The only way this holds is if $\alpha = 0$ and $\beta = 1$ or $\alpha = 1$ and $\beta = 0$. WLOG we have the case $\alpha = 0$ and $\beta = 1$. In other words $\lim_n \mu(A_n) = 0$ so by passing to a further subsequence we can WLOG that
 	\begin{equation}
 		\mu(A_n) \leq 2^{-n}.
 	\end{equation}
-	 Let $A = \{A_n\ \text{i.o.}\}$. Then by the Borel Cantelli lemma, $\mu(A) = 0$. Also
+	Let $A = \{A_n\ \text{occurs infinitely often}\} = \cap_{n \geq 1} \cup_{k \geq n} A_k$. Then $\sum_n \mu(A_n) < \infty$ thus $\mu(A) = 0$ by the first Borel Cantelli lemma. Finally
 	 \begin{equation}
 		 \nu(A) = \lim_n \nu(\cup_{k \geq n} A_k) \geq \lim_n \nu(A_n) = 1.
 	 \end{equation}
-	 Thus $\mu(A) = 0$ and $\nu(A) = 1$, hence $\mu$ and $\nu$ are mutually singular.
+	 Thus $\mu(A) = 0$ and $\nu(A) = 1$, showing that $\mu$ and $\nu$ are mutually singular.
 \end{proof}
 
 \printbibliography
