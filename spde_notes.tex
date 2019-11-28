@@ -97,14 +97,14 @@
 
 The driving motivation throughout this chapter is defining a Banach space valued Wiener process and defining how to integrate against it. Recall a $\R^n$-valued stochastic process $(W_t)_{t \geq 0}$ is a Wiener process if and only if it is a continuous Gaussian process with mean 0 and covariance function $C(s, t) = (s \wedge t) I$ where $I$ is the $d \times d$ identity matrix. This is a nice short definition, and it's easy to take for granted the amount of measure theory it took to get to this definition. Let's spell some of those steps out.
 \begin{enumerate}
-	\item We developed tools like mean, covariance and Fourier transforms to analysis real random variables
-	\item We defined what a Gaussian random variable was and proved properties of Gaussian random variables such as moment bounds
-	\item We showed existence of a Gaussian process with the correct covariance structure
-	\item We proved a continuity criterion in order to modify our Gaussian process to a continuous Gaussan process
+	\item We developed tools like mean, covariance and Fourier transforms to analysis real random variables.
+	\item We defined what a Gaussian random variable was and used our tools to analyse their properties.
+	\item We showed existence of a Gaussian process with the correct covariance structure.
+	\item We proved a continuity criterion showing our Gaussian process has a continuous modification.
 \end{enumerate}
 For a Banach space $\calB$-valued stochastic process, we currently have none of these tools. The goal of this chapter is to remedy that.
 
-\section{Analysis of $\calB$-valued random variables}
+\section{Analysis of Banach-valued random variables}
 
 \subsection{Two approaches}
 
@@ -114,7 +114,7 @@ Throughout these notes $\calB$ be a real Banach space. Usually $\calB$ will also
 \end{equation}
 However this integral cannot be understand as a Lebesgue integral. After all, $x$ doesn't take values in $\R^n$. At this point we have two options.
 
-\subsubsection{Option One: The Bochner Integral}
+\subsubsection{Option one: the Bochner integral}
 
 We could try and rigorously define this integral. The method of integration used for $\calB$-valued functions are Bochner integrals. The construction of the Bochner integral follows the same method as the Lebesgue integral; we define the integral for a class of simple functions and extend the integral by approximation. Rather than going into details on the construction, we'll list off some of the properties of the Bochner integral. Firstly let $(E, \calE, \nu)$ be a probability space and $f: E \to \calB$ be measurable and $\calB$ be seperable\footnote{Seperability of $\calB$ is need to ensure $f$ is the pointwise limit of simple functions, i.e.\ strong measurablity. If we take strong measurability as an additional assumption on $f$ then seperability of $\calB$ can be relaxed}. Then $f$ is integrable if and only if
 
@@ -131,7 +131,7 @@ Hence if we assume $\int_E \norm{x} \, \mu(\dif x) < \infty$ then the mean
 \end{equation}
 can be defined using the Bochner integral. This approach is valuable in how it carrys the intuition from the finite dimensional case. In addition, it makes clear that the mean is an element of $\calB$ without the use of reflexivity (as we will see in the next approach). 
 
-\subsubsection{Option Two: One-Dimensional Marginals}
+\subsubsection{Option two: one-dimensional marginals}
 
 Alternatively, we've already developed a rich theory of Lebesgue integration for $\R$-valued functions. What if we instead used this theory? This would require a `natural' way to map $\calB$ to $\R$. Since $\calB$ is a normed vector space, we have exactly that: the space of bounded linear functionals $\calB^*$. For any $l \in \calB^*$, $\E[l(X)]$ is just given by a Lebesgue integral. So to define the mean, just gather all these values for diffent $l \in \calB^*$. Following this idea, we define the mean as $m: \calB^* \to \R$ where
 \begin{equation}
@@ -225,7 +225,7 @@ Similarly we can define the covariance.
 
 We'll leave the question of whether or not these operators are bounded till later.
 
-\subsection{Fourier Transforms}
+\subsection{Fourier transforms}
 
 \begin{defn}[Fourier Transform]
 	The \emph{Fourier transform} of a probabilty measure $\mu$ on $\calB$ is given by $\hat{\mu} \in \calB^* \to \C$ where
@@ -274,9 +274,8 @@ Gaussian measures on $\R^n$ are uniquely characterised by their covariance and m
 \begin{corollary}[Mean and cov.\ uniquely characterise Gaussian measures]
 	A Gaussian measure on a seperable Banach space is uniquely determined by it's mean and covariance operators.
 \end{corollary}
-We've already stated that covariance operators need to be positive definite, symmetric and bilinear. But is the converse true, can we get an existence result? Speficially given such an operator, can we necessarily find a centered Gaussian measure with that covariance? Unfortunately no, and we'll see one reason why in the next subsection.
 
-\subsection{Integrability of Gaussian Measures}
+\subsection{Integrability of Gaussian measures}
 
 It's hopefully somewhat intuitive that boundedness of the covariance operator will be related to boundedness of the second moment of the corresponding measure. In finite dimensions, Gaussian random variables are nice because of the rapid tail decay of the probability density function. We now show a similar statement is true for general Gaussian measures. Suprisingly, this will come from rotational invariance of Gaussian measure. 
 
@@ -328,7 +327,12 @@ Fernique's theorem allows us to not only show all moments of a Gaussian measure 
 	INSERT PROOF
 \end{proof}
 
-Let's return to our question of showing existence of a Gaussian measure given a covariance operator. We already know they must be symmetric and PSD. The following theorem shows that they must further be bounded operators.
+\section{Existence of Gaussian Measures}
+
+Existence of Gaussian measures is hard. First let us recall the method in finite dimensions. Given any symmetric, positive semi-definite matrix $\Sigma$ it is possible to compute its Cholesky factorisation $L$ such that $\Sigma = LL^T$. Then by taking product measures we can construct a standard Gaussian $X \sim N(0, I)$. Then $LX \sim N(0, \Sigma)$.
+
+This section is our first foray into existence results. All our Gaussians will be centered so we just need to worry about the covariance operator. In finite dimensions, we know covariance matrices must be symmetric and positive semi-definite. The first thing we show is that boundedness is required as well when working in infinite dimensions.
+
 \begin{prop}[Boundedness of covariance operators]
 	\label{prop:bounded-cov}
 	Let $\mu$ be a centered Gaussian measure on a seperable Banach space. Then there exists $\norm{C_{\mu}} < \infty$ such that $C_{\mu}(l, l') \leq \norm{C_{\mu}} \norm{l} \norm{l'}$. Moreover there exists continuous operator $\hat{C}_{\mu}: \calB^* \to \calB$ such that
@@ -357,10 +361,8 @@ Let's return to our question of showing existence of a Gaussian measure given a 
 	\end{align}
 	as required.
 \end{proof}
+
 So now let's add boundedness to our list of assumptions. Is that enough to characterize covariance operators of Gaussian measures? Unfortunately the answer is still no. In fact for a general Banach space there is no nice characterisation. However for Hilbert spaces we can give an actual answer.
-
-\subsection{Characterisation of Gaussian measures on Hilbert spaces}
-
 As promised, we now characterise the covariance operators of Gaussian measures in Hilbert spaces. In \vref{prop:bounded-cov} we've already shown there exists $\hat{C}_{\mu}: \calH^* \to \calH$ such that $C_{\mu}(l, l') = l'(\hat{C}_{\mu}(l))$ for all $l, l' \in \calB^*$. Then by the Riesz representation, there exists $\tilde{C}_{\mu}: \calH \to \calH$ such that
 \begin{equation}
 	C_{\mu}(\inn{\cdot}{x}, \inn{\cdot}{y}) = \inn{\tilde{C}_{\mu}x}{y}
@@ -409,31 +411,9 @@ Trace-class is a stronger property than boundedness, in particular there exists 
 	There exists a probability space on which we can define $X_1, X_2, \ldots$ a sequence of i.i.d.\ $N(0, 1)$ random variables. Then let $\mu_n$ be the law of $\sum_{i=1}^n \sqrt{\lambda_i} X_i e_i$. We can show $\mu_n$ converges weakly to a limit $\mu$ and that $\mu$ is a Gaussian measure with the required covariance.
 \end{proof}
 
-\subsection{Abstract Wiener Spaces and Cameron-Martin Theory - what is a standard normal?}
-
-\section{Existence of Gaussian Processes}
-
-\subsection{Abstract Wiener Spaces}
-
-To motivate this section, let us try and recover a definition of a Wiener process in higher dimensions. First we define a Gaussian process. Fortunately this definition is a direct translation of the finite dimensional version.
-\begin{defn}
-	Let $(B_t)_{t \geq 0}$ be a time indexed sequence of random variables such that $B_t$ takes values in $\calB$ a seperable Banach space. Then $(B_t)$ is a \emph{Gaussian process} if the law of
-	\begin{equation}
-		(B_{t_1}, \ldots, B_{t_n})
-	\end{equation}
-	is a Gaussian measure on $\calB^n$ w.r.t.\ the product topology for all finite sets of times $t_1, \ldots, t_n$.
-\end{defn}
-Now recall the definition of a Wiener process.
-
-\section{Continuity Criterion}
-
-\input{continuity-criterion.tex}
-
-\section{Integration Theory}
+\subsection{Cameron-Martin theory}
 
 \appendix
-
-\input{cameron-martin.tex}
 
 \input{misc-theorems.tex}
 
