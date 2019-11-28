@@ -1,17 +1,8 @@
-\documentclass[fontsize=12pt, DIV=10]{scrreprt}
+\documentclass[fontsize=12pt, DIV=12]{scrreprt}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{mathtools}
-\usepackage{fontspec}
-\usepackage{mathpazo}
-\setmainfont
-     [ BoldFont       = texgyrepagella-bold.otf ,
-       ItalicFont     = texgyrepagella-italic.otf ,
-       BoldItalicFont = texgyrepagella-bolditalic.otf ]
-     {texgyrepagella-regular.otf}
-     
-\usepackage{mathpazo}
 
 % Setting up referencing
 \usepackage[backend=biber]{biblatex}
@@ -27,23 +18,21 @@
 
 \usepackage{mdframed}
 
-\declaretheorem[name=Definition, numberwithin=chapter, thmbox=M]{defn}
-\declaretheorem[name=Theorem, thmbox=M, sibling=defn]{theorem}
-\declaretheorem[name=Lemma, thmbox=M]{lemma}
+\declaretheorem[name=Definition, numberwithin=chapter, thmbox=L]{defn}
+\declaretheorem[name=Theorem, thmbox=L, sibling=defn]{theorem}
+\declaretheorem[name=Lemma, thmbox=L]{lemma}
 \declaretheorem[
 	name=Proposition,
 	refname={proposition, propositions},
 	Refname={Proposition, Propositions},
-	thmbox=M,
+	thmbox=L,
 	sibling=defn]{prop}
-\declaretheorem[name=Corollary, thmbox=M, sibling=defn]{corollary}
+\declaretheorem[name=Corollary, thmbox=L, sibling=defn]{corollary}
+\declaretheorem[name=Remark, thmbox=S, sibling=defn]{remark}
 
 \usepackage{amsthm}
 
 \newtheorem{claim}{Claim}
-
-\theoremstyle{remark}
-\newtheorem{remark}{Remark}
 
 \newenvironment{subproof}[1][\proofname]{%
   \renewcommand{\qedsymbol}{$\blacksquare$}%
@@ -106,12 +95,12 @@
 
 \section{Introduction}
 
-The driving motivation throughout this chapter is defining a Banach space valued Wiener process and defining how to integrate against it. Recall a $\R^n$-valued stochastic process $(W_t)_{t \geq 0}$ is a Wiener process if and only if it is a continuous Gaussian process with mean 0 and covariance function $C(s, t) = s \wedge t$. This is a nice short definition, and it's easy to take for granted the amount of measure theory it took to get to this definition. Let's spell some of those steps out.
+The driving motivation throughout this chapter is defining a Banach space valued Wiener process and defining how to integrate against it. Recall a $\R^n$-valued stochastic process $(W_t)_{t \geq 0}$ is a Wiener process if and only if it is a continuous Gaussian process with mean 0 and covariance function $C(s, t) = (s \wedge t) I$ where $I$ is the $d \times d$ identity matrix. This is a nice short definition, and it's easy to take for granted the amount of measure theory it took to get to this definition. Let's spell some of those steps out.
 \begin{enumerate}
-	\item We developed tools like mean, covariance and Fourier transforms.
-	\item We defined what a Gaussian random variable was and proved properties of Gaussian random variables.
-	\item We showed existence of a Gaussian process with the correct covariance structure.
-	\item We proved a continuity criterion in order to modify our Gaussian process to a continuous Gaussan process.
+	\item We developed tools like mean, covariance and Fourier transforms to analysis real random variables
+	\item We defined what a Gaussian random variable was and proved properties of Gaussian random variables such as moment bounds
+	\item We showed existence of a Gaussian process with the correct covariance structure
+	\item We proved a continuity criterion in order to modify our Gaussian process to a continuous Gaussan process
 \end{enumerate}
 For a Banach space $\calB$-valued stochastic process, we currently have none of these tools. The goal of this chapter is to remedy that.
 
@@ -154,10 +143,9 @@ How can we recover a mean $\bar{m}_{\mu} \in \calB$? Suppose that $\int_E \norm{
 \end{equation}
 However, this is unnecessary supposing $\calB$ is seperable. From our first approach of using Bochner integrals, we know in fact that $\int_{\mu} \norm{x} \, \mu(\dif x) < \infty$ is a sufficient condition to define $\bar{m}_{\mu}$ as in. Then since the Bochner integral can be exchanged with any $l \in \calB^*$, the property in holds. This shows two things. Firstly, it shows our two approaches recover the same mean. Secondly, it shows reflexivity is an extraneous assumption.
 
-The value of this second approach really shines when the concept we're describing becomes more intangible than a mean, for example when defining Gaussianity on a Banach space.
+The value of this second approach really shines when the concept we're describing becomes more intangible than a mean, in particular later when we define a Gaussian measure on $\calB$
 
-\subsection{Random Variables on Banach Spaces}
-
+\subsection{Marginals characterise measures}
 
 Seen as we're working with $l(X)$ so much, it's useful to have a notation for its law.
 \begin{defn}[Pushforward measures]
@@ -211,7 +199,9 @@ The next proposition shows that the one-dimensional marginals carry enough infor
 	\end{align}
 \end{proof}
 
-Next we formalise what we said in the introduction.
+\subsection{Mean and covariance}
+
+We formalise what we said in the introduction.
 
 \begin{defn}[Mean Operator]
 	Let $\mu$ be a probability measure on $\calB$ and suppose $l_* \mu$ has finite mean for all $l \in \calB^*$. Then the \emph{mean operator} of $\mu$ is a linear operator $\mu: \calB^* \to \R$ where
@@ -234,6 +224,8 @@ Similarly we can define the covariance.
 \end{remark}
 
 We'll leave the question of whether or not these operators are bounded till later.
+
+\subsection{Fourier Transforms}
 
 \begin{defn}[Fourier Transform]
 	The \emph{Fourier transform} of a probabilty measure $\mu$ on $\calB$ is given by $\hat{\mu} \in \calB^* \to \C$ where
@@ -265,7 +257,7 @@ In the finite dimensional case, Fourier transforms uniquely determine distributi
 
 We've now got our tools ready. Now we'll move onto the next step, defining what a Gaussian random variable is.
 
-\subsection{Basic definition}
+\subsection{Basic definition and mean-covariance characterisation}
 
 As aluded to in the section on analysis of $\calB$-valued random variables, there is not an immediately obvious definition for what a Gaussian measure is on $\calB$ using Bochner integrals. We can't really hope for a density function after all, there's no generalisation of the Lebesgue measure to general Banach spaces. However we do know what Gaussian measures are on $\R$, so we can use our approach of considering one-dimensional marginals.
 \begin{defn}[Gaussian measures]
@@ -279,7 +271,7 @@ Gaussian measures on $\R^n$ are uniquely characterised by their covariance and m
 		\hat{\mu}(l) = \exp\left\{i m_{\mu}(l) - \frac{1}{2} C_{\mu}(l, l) \right\}.
 	\end{equation}
 \end{prop}
-\begin{corollary}[Gaussian measures are determined by mean and covariance]
+\begin{corollary}[Mean and cov.\ uniquely characterise Gaussian measures]
 	A Gaussian measure on a seperable Banach space is uniquely determined by it's mean and covariance operators.
 \end{corollary}
 We've already stated that covariance operators need to be positive definite, symmetric and bilinear. But is the converse true, can we get an existence result? Speficially given such an operator, can we necessarily find a centered Gaussian measure with that covariance? Unfortunately no, and we'll see one reason why in the next subsection.
@@ -337,7 +329,7 @@ Fernique's theorem allows us to not only show all moments of a Gaussian measure 
 \end{proof}
 
 Let's return to our question of showing existence of a Gaussian measure given a covariance operator. We already know they must be symmetric and PSD. The following theorem shows that they must further be bounded operators.
-\begin{prop}[Boundedness and representation of covariance operators]
+\begin{prop}[Boundedness of covariance operators]
 	\label{prop:bounded-cov}
 	Let $\mu$ be a centered Gaussian measure on a seperable Banach space. Then there exists $\norm{C_{\mu}} < \infty$ such that $C_{\mu}(l, l') \leq \norm{C_{\mu}} \norm{l} \norm{l'}$. Moreover there exists continuous operator $\hat{C}_{\mu}: \calB^* \to \calB$ such that
 	\begin{equation}
@@ -388,7 +380,7 @@ We will state our characterisation in terms of $\tilde{C}_{\mu}$. Firstly let's 
 You can prove it is sufficient to check the trace-class property for any single orthonormal basis in order for it to hold for all orthonormal bases.
 
 Trace-class is a stronger property than boundedness, in particular there exists operators that are bounded and not trace class. Hence we see symmetry, positive semi-definitess, and boundedess was truly insufficient to characterize Gaussian covariances.
-\begin{prop}[Characterization of Gaussian covariances in Hilbert spaces]
+\begin{prop}[Characterisation of Gaussian covariances in Hilbert Spaces]
 	Let $\calH$ be a seperable Hilbert space and $\tilde{C}: \calH \to \calH$. Then the following are equivalent
 	\begin{enumerate}
 		\item There exists a Gaussian measure $\mu$ on $\calH$ such that
@@ -421,179 +413,6 @@ Trace-class is a stronger property than boundedness, in particular there exists 
 
 \section{Existence of Gaussian Processes}
 
-\section{Continuity Criterions}
-
-This section focuses on Gaussian measures on $C([0,1]^d, \R)$ under the supremum norm. Hence it makes sense to talk about the regularity of the paths of a Gaussian measure.
-
-The following is both an existence and uniqueness result about Gaussian measures with sufficiently smooth paths.
-\begin{theorem}[Kolmogorov Continuity Criterion]
-	\label{thm:kcc}
-	For $d \geq 1$, let $C: [0, 1]^d \times [0, 1]^d$ be a function\footnote{this is not a bilinear operator} such that:
-	\begin{enumerate}
-		\item For any finite collection of points $\{x_1, \ldots, x_n\} \subset [0, 1]^d$ the matrix
-			\begin{equation}
-				C_{ij} \defeq C(x_i, x_j)
-			\end{equation}
-			is symmetric, positive semi-definite.
-		\item There exists $\alpha > 0$ and $K > 0$ such that
-			\begin{equation}
-				C(x, x) - 2C(x, y) + C(y, y) \leq K \abs{x - y}^{2 \alpha}.
-			\end{equation}
-	\end{enumerate}
-	Then there exists a unique Gaussian measure $\mu$ on $C([0, 1]^d, \R)$ such that
-	\begin{equation}
-		C_{\mu}(\delta_x, \delta_y) \defeq \int_{C([0, 1]^d, \R)} f(x) f(y) \, \mu(\dif f) = C(x, y)
-	\end{equation}
-	for all $x, y \in [0, 1]^d$ and $\mu(C^{\beta}([0, 1]^d, \R)) = 1$ for all $\beta \in (0, \alpha)$.
-\end{theorem}
-
-Before we prove it, let's understand this theorem and give some intuition to the proof. Firstly, note $C$ is a function $[0,1]^d \times [0, 1]^d \to \R$ rather than $C([0,1]^d, \R)^* \times C([0, 1]^d, \R)^* \to \R$. This can be understand as specifying the covariance structure of only $\{(\delta_x)_* \mu : x \in [0, 1]^d\}$ rather than for all one-dimensional marginals. We'll first show this is enough to characterise and ensure Gaussianity of $\mu$.
-
-\begin{prop}[Gaussianity via weak-$*$ dense marginals]
-	\label{prop:weak-star-suff}
-	Let $\mu$ be a Borel probability measure on $\calB$ and let $\calA$ be weak-* dense in $\calB^*$. 
-	\begin{enumerate}
-		\item If $l_* \mu$ is Gaussian for all $l \in \calA$ then $\mu$ is Gaussian.
-		\item If $\calB$ is seperable then $\{l_* \mu : l \in \calB^*\}$ uniquely determines $\mu$.
-	\end{enumerate}
-\end{prop}
-\begin{proof}
-	Given any $l \in \calB^*$, take a sequence $l_n \in \calA$ such that $l_n \xrightharpoonup{w*} l$ as $n \to \infty$. Let $X \sim \mu$. Then weak-$*$ convergence is exactly pointwise convergence therefore $l_n(X) \to l(X)$ almost surely. Thus $(l_n)_* \mu \towk l_* \mu$ by Skorokhod's representation theorem. Then since the weak limit of Gaussians is Gaussian, $l_* \mu$ is Gaussian. Hence $\mu$ is Gaussian.
-
-	The uniqueness statement follows from \vref{prop:one-dim-marginals} since the one-dimensional marginals are uniquely determined as weak limits of sequences in $\{l_* \mu : l \in \calA\}$.
-\end{proof}
-
-Thus we need linear combinations of Dirac measures to be weak-$*$ dense. This is true, and we'll shove the proof into the appendix.
-\begin{restatable}[Weak-$*$ density of Dirac measures]{prop}{dirac}
-	\label{prop:dirac-density}
-	Suppose that $\calD \subset \unitbox$ is dense in $\unitbox$. Then 
-	\begin{equation}
-		\calA \defeq \spn\{\delta_x : x \in \calD\}
-	\end{equation}
-	is weak-$*$ dense in $C(\unitbox, \R)^*$.
-\end{restatable}
-
-Secondly, let's understand the continuity statement better. Suppose we've already proven there exists a Gaussian measure $\mu$ on $C([0, 1]^d, \R)$ such that $C(x, y) = C_{\mu}(\delta_x, \delta_y)$ for all $x, y \in [0, 1]^d$. Rather than working directly with $\mu$, it's more intuitive to work with a continuous random process $F: \Omega \to C([0, 1]^d, \R)$ that has law $\mu$. We'll use the notation $F_x(\omega) \defeq F(\omega)(x)$. Then $C(x, y) = C_{\mu}(\delta_x, \delta_y) = \text{Cov}(F_x, F_y)$. Thus the condition (2) on $C$ is equivalent to requiring
-\begin{equation}
-	\norm{F_x - F_y}_2 \defeq \sqrt{\E[(F_y - F_y)^2]} \leq K \abs{x - y}^{\alpha} \quad \forall x, y \in [0, 1]^d.
-\end{equation}
-So condition (2) gives $\alpha$-H\"older continuity of the map $[0, 1]^d \to L^2(\Omega)$ where $x \mapsto F_x$. We'd like this to instead be a pathwise statement, for fixed $\omega$ is the map $x \mapsto F_x(\omega)$ H\"older continuous? While we can't get $\alpha$-H\"older continuity, the the Kolmogorov Continuity Criterion says we can get arbitary close. In particular for almost every $\omega$, $x \mapsto F_x(\omega)$ is $\beta$-H\"older continuous for all $\beta \in (0, \alpha)$.
-
-It should be noted that condition (2) isn't only used to show pathwise H\"older continuity, it is used to ensure there even exists a Gaussian measure $\mu$ on  the space $C([0, 1]^d, \R)$ such that $C_{\mu}(\delta_x, \delta_y) = C(x, y)$ in the first place. We know Gaussian covariances are at least continuous so some continuity criterion is certainly needed. Maybe if we didn't need H\"older continuity we can give a weaker condition, but something needs to replace condition (2) to ensure existence.
-
-\begin{proof}[Proof of KCC]
-	By Kolmogorov's extension theorem, there exists a stochastic process $F: \Omega \to \boxspace$ such that for all $x_1, \ldots, x_n \in [0, 1]^d$, 
-	\begin{equation}
-		(F_{x_1}, \ldots, F_{x_n})^T
-		\sim N(0, \Sigma)
-	\end{equation}
-	where $\Sigma_{i,j} = C(x_i, x_j)$. Condition (1) ensures that $\Sigma$ is a valid covariance matrix. However Kolmogorov's extension theorem only gives that $F: \Omega \to \boxspace$ is measurable with respect to the product $\sigma$-algebra on $\boxspace$. This is a weak $\sigma$-algebra, meaning we have to be careful about what events we consider.
-
-	We want to determine H\"older continuity of $x \mapsto F_{x}(\omega)$. Fix $\beta \in (0, \alpha)$. Then $f: \unitbox \to \R$ would be $\beta$-H\"older continuous if
-	\begin{equation}
-		\sup_{x, y \in [0, 1]^d, x \neq y} \frac{\abs{f(x) - f(y)}}{\norm{x - y}^{\beta}} < \infty.
-	\end{equation}
-	However the quantity on the left is not a measurable function of $F$, so we approximate it. Let $\calD$ be the grid of dyadic points in $[0, 1]^d$. Note $\calD$ is countable and dense in $[0, 1]^d$. We consider the approximation $M_{\beta}(f): \boxspace \to \R$ by
-	\begin{equation}
-		M_{\beta}(f) = \sup_{x, y \in \calD, x \neq y} \frac{\abs{f(x) - f(y)}}{\norm{x - y}^{\beta}}.
-	\end{equation}
-	The function inside the supremum is measurable with respect to the product $\sigma$-algebra since it is a pointwise evaluation. Then $M_{\beta}$ is measurable with respect to the product $\sigma$-algebra as a countable supremum of measurable functions. If $M_{\beta}(f) < \infty$ then $f$ is $\beta$-H\"older continuous along the dyadic rationals, we want to extend this to the entirety of $f$. To assist with this we can define the regulariser $\reg_{\beta}: \boxspace \to C([0, 1], \R)$ by
-	\begin{equation}
-		\reg_{\beta}(f)(x) \defeq 
-		\begin{cases}
-			\lim_{s \in \calD, s \to x} f(s) & \text{if}\ M_{\beta}(f) < \infty \\
-			0 & \text{otherwise}.
-		\end{cases}
-	\end{equation}
-	\newcommand{\regindi}{\ensuremath{\indi_{\{M_{\beta}(f) < \infty\}}}}
-	\begin{claim}
-		$\reg_{\beta}: \boxspace \to C([0, 1]^d, \R)$ is well defined (in particular the limit in the definition exists and is independent of the sequence taken) and 
-		\begin{enumerate}
-			\item For all $f \in \boxspace$, $\reg_{\beta}(f) \in C^{\beta}([0, 1]^d, \R)$
-			\item $\reg_{\beta}(f)(x) = f(x) \regindi$ for all $x \in \calD$
-			\item $\reg_{\beta}$ is measurable with respect to the product $\sigma$-algebra on $\boxspace$ and the Borel $\sigma$-algebra on $C([0, 1]^d, \R)$ (under supremum norm).
-		\end{enumerate}
-	\end{claim}
-	\begin{subproof}
-	We'll only show (3) here. Since the Borel algebra on $C([0, 1]^d, \R)$ is generated by balls, it suffices to check that $\{f \in \boxspace : \norm{\reg_{\beta}(f) - f_0}_{\infty} < r\}$ is measurable for all $f_0 \in C([0, 1]^d, \R)$ and $r > 0$. By continuity of $\reg_{\beta}(f)$ and density of $\calD$,
-	\begin{align}
-		\norm{\reg_{\beta}(f) - f_0}_{\infty}
-		&= \sup_{x \in \calD} \abs{\reg_{\beta}f(x) - f_0(x)} \\
-		&= \sup_{x \in \calD} \abs{f(x) \regindi - f_0(x)}.
-	\end{align}
-	Thus
-	\begin{align}
-		&\{\norm{\reg_{\beta}(f) - f_0}_{\infty} < r\}
-		= \bigcap_{x \in \calD} \left\{ \abs{f(x) \regindi - f_0(x)} < r \right\} \\
-		=& \left[ \{M_{\beta}(f) = \infty\} \cap \{\norm{f_0}_{\infty} < r\} \right] \nonumber \\
-		 & \qquad \cup \left[ \{M_{\beta}(f) < \infty\} \cap \left( \cap_{x \in \calD} \{\abs{f(x) - f_0(x)} < r\} \right) \right].
-	\end{align}
-	The event $\{\norm{f_0}_{\infty} < r\}$ is an artifact of our construction and is always equal to $\emptyset$ or $\boxspace$, thus is measurable. Since $M_{\beta}$ is measurable, $\{M_{\beta}(f) < \infty\}$ and $\{M_{\beta}(f) = \infty\}$ is measurable. $\{\abs{f(x) - f_0(x)} < r\}$ depends only on pointwise evaluations of $f$ thus is measurable. Hence $\{\norm{\reg_{\beta}(f) - f_0} < r\}$ is measurable as a countable intesection and union of measurable sets.
-	\end{subproof}
-
-	Hence $\hat{F} = \reg_{\beta}(F)$ is a continuous stochastic process $\Omega \to C(\unitbox, \R)$. There's no point defining $\reg_{\beta}(F)$ if it doesn't carry over properties of $F$, so the first thing we'll do is show the two processes are modifications of each other. Rigorously we show that for all $x \in [0, 1]^d$, $\reg_{\beta}(F)_x = F_x$ almost surely\footnote{Note this means $\prob(\reg_{\beta}(F)_x = F_x) = 1$ for all $x$, not $\prob(\reg_{\beta}(F)_x = F_x \ \forall x) = 1$}. We do this is two steps, firstly for $x \in \calD$ and then for all $x \in [0, 1]^d$. When $x \in \calD$, $\reg_{\beta}(F)_x = F_x \indi_{\{M_{\beta}(F) < \infty\}}$. Thus it suffices to show $M_{\beta}(F) < \infty$ almost surely.
-	\begin{claim}
-		$M_{\beta}(F) < \infty$ almost surely.
-	\end{claim}
-	\begin{subproof}
-		We can actually show the stronger statement $\E[M_{\beta}(F)] < \infty$. INSERT REST OF PROOF.
-	\end{subproof}
-	
-	Now we extend this to all $x \in \unitbox$.
-	\begin{claim}
-		$\prob(\reg_{\beta}(F)_x = F_x) = 1$ for all $x \in [0, 1]^d$.
-	\end{claim}
-	\begin{subproof}
-		For any $x \in \unitbox$, let $x_n \to x$ where $x_n$ is a sequence in $\calD$. Then by condition (2) on $C$
-		\begin{align}
-			\norm{F_{x_n} - F_x}_2^2
-			&= \var(F_{x_n} - F_x) \\
-			&= C(x_n, x_n) - 2C(x_n, x) + C(x, x) \\
-			&\leq K \norm{x - x_n}^{\alpha} \xrightarrow{n \to \infty} 0.
-		\end{align}
-		Thus $F_{x_n} \to F_x$ in $L^2$. So there is some subsequence along which $F_x = \lim_n F_{x_{k_n}}$ almost surely. By continuity $\reg_{\beta}(F)_x = \lim_n \reg_{\beta}(F)_{x_{k_n}}$ always. Thus almost surely
-		\begin{equation}
-			\reg_{\beta}(F)_x = \lim_n \reg_{\beta}(F)_{x_{k_n}}
-			= \lim_n F_{x_{k_n}} = F_x.
-		\end{equation}
-	\end{subproof}
-
-	Let $\mu$ be the law of $\reg_{\beta}(F)$, this is a measure on $C(\unitbox, \R)$. 
-	\begin{claim}
-		$\mu$ satisfies the following properties.
-		\begin{enumerate}
-			\item $\mu$ is Gaussian.
-			\item For all $x, y \in \unitbox$, $C_{\mu}(\delta_x, \delta_y) = C(x, y)$.
-			\item $\mu(C^{\beta}(\unitbox, \R)) = 1$.
-			\item $\mu$ is uniquely determined by $C$ and independent of the $\beta \in (0, \alpha)$ chosen in the construction.
-		\end{enumerate}
-	\end{claim}
-	\begin{subproof}
-		For any finite set $x_1, \ldots, x_n \in \unitbox$, almost surely
-		\begin{equation}
-			(\reg_{\beta}(F)_{x_1}, \ldots, \reg_{\beta}(F)_{x_n})
-			= (F_{x_1}, \ldots, F_{x_n})
-		\end{equation}
-		thus is jointly Gaussian. Thus for all $\lambda \in \R^n$, $(\sum_{i=1}^n \lambda_i \delta_{x_i})_* \mu$ is Gaussian. In other words if we define
-		\begin{equation}
-			\calA \defeq \spn\{ \delta_x : x \in [0, 1]^d\}
-		\end{equation}
-		then $l_* \mu$ is Gaussian for all $l \in \calA$. Since $\calA$ is weak-$*$ dense in $C([0, 1]^d, \R)^*$ by \vref{prop:dirac-density}, $\mu$ is Gaussian by \vref{prop:weak-star-suff}.
-
-		For all $x, y \in [0, 1]^d$ we have
-		\begin{equation}
-			C_{\mu}(\delta_x, \delta_y) = \E[\reg_{\beta}(F)_x \reg_{\beta}(F)_y]
-			= \E[F_x F_y] = C(x, y).
-		\end{equation}
-
-		By construction, $\reg_{\beta}(F)$ is $\beta$-H\"older continuous thus $\mu(C^{\beta}(\unitbox, \R)) = 1$.
-
-		Finally since $C$ determines $l_* \mu$ for all $l \in \calA$, $\mu$ is uniquely determined by \vref{prop:weak-star-suff}. In particular $C$ is independent of $\beta$ thus $\mu$ is independent of $\beta$.
-	\end{subproof}
-
-	This finishes the proof.
-\end{proof}
-
 \subsection{Abstract Wiener Spaces}
 
 To motivate this section, let us try and recover a definition of a Wiener process in higher dimensions. First we define a Gaussian process. Fortunately this definition is a direct translation of the finite dimensional version.
@@ -606,208 +425,17 @@ To motivate this section, let us try and recover a definition of a Wiener proces
 \end{defn}
 Now recall the definition of a Wiener process.
 
+\section{Continuity Criterion}
+
+\input{continuity-criterion.tex}
+
+\section{Integration Theory}
+
 \appendix
 
-\chapter{Cameron-Martin Theory: A stupidly abstract approach}
+\input{cameron-martin.tex}
 
-The way I like to think about Cameron-Martin theory is perhaps a bit too abstract. Recall $\calB^*$ can be `embedded' into $\calL^2(\calB, \mu)$. Rigorously consider the map $j: \calB^* \to \calL^2$ (we're not using $i$ since that's used later).
-\begin{equation}
-	j(f) = [f]
-\end{equation}
-which maps $f$ to the equivalence class of $f$ under almost sure equality. We're using $\calL^2$ instead of $L^2$ to distinguish the space of equivalence classes from the space of functions. Then $j$ is a continuous map and the RKHS $\calR_{\mu}$ is $\overline{j(\calB)}$. 
-
-We then want embed $\calR_{\mu}$ into $\calB$. Embedding $\calR_{\mu}$ into $\calB^{**}$ is not too difficult. $j$ has an adjoint map $j^*: (\calL^2)^* \to \calB^{**}$ where $j^*(\phi) = \phi \circ j$ for all $\phi \in (\calL^2)^*$. We don't know if $j^*$ is injective. For that the following proposition from functional analysis helps.
-\begin{prop}[Injective of the adjoint map]
-	Let $X$ and $Y$ be Banach spaces and $j:X \to Y$ be a bounded linear map. Then the following are equivalent:
-	\begin{enumerate}
-		\item $j^*: Y^* \to X^*$ is injective.
-		\item $j(X)$ is dense in $Y$.
-	\end{enumerate}
-\end{prop}
-This tells us that $\calL^2$ is too big a space to look at, instead we should restrict the range of $j$ from $\calL^2$ to $R_{\mu}$. Then the above proposition tells us that $j^*: \calR_{\mu}^* \to \calB^{**}$ is an injection thus is an embedding of $\calR_{\mu}^* \to \calB^{**}$. Recall by Riesz representation there is a natural bijective linear isometry $\eq : \calR_{\mu} \to \calR_{\mu}^*$ where $\eq(f) \defeq \inn{\cdot}{f}_{L^2}$. Then $j^* \circ \eq$ embeds $\calR_{\mu}$ into $\calB^{**}$. Now let's unravel the action of this embedding, for $l \in \calB^*$.
-\begin{align}
-	j^* \circ \eq (f)(l) = \inn{j(l)}{f}_{L^2} = \int_{\calB} l(x) f(x) \mudif = l\left(\int_{\calB} x f(x) \mudif \right).
-\end{align}
-The integral inside the last quantity is a well defined Bochner integral since $\norm{f}_{L^2} < \infty$ guarantees that $x f(x)$ is integrable. This tells us that $j \circ \eq(\calB^*) \subset \ev(\calB)$ thus we can embed $\calR_{\mu}$ into $\calB$ by $k \defeq \ev^{-1} \circ j^* \circ \eq$. Removing the abstraction
-\begin{equation}
-	k(f) = \int_{\calB} x f(x) \mudif.
-\end{equation}
-Note that $k \circ j$ is exactly $\hat{C}_{\mu}$.Then $k$ is a bijection onto it's image. This gives us the Cameron-Martin space.
-\begin{defn}
-	Let $\mu$ be a Gaussian measure on $\calB$ with RKHS $\calR_{\mu}$ and $k$ as defined in this chapter. Then the \emph{Cameron-Martin space} of $\mu$ is
-	\begin{equation}
-		\calH_{\mu} \defeq k(\calR_{\mu}) \subset \calB.
-	\end{equation}
-	This is a Hilbert space equipped with inner product $\inn{\cdot}{\cdot}_{\mu}$ inherited from the $\inn{\cdot}{\cdot}_{L^2}$ inner product $\calR_{\mu}$ by $k$, explicitly
-	\begin{equation}
-		\inn{h}{k}_{\mu} \defeq \inn{k^{-1}(h)}{k^{-1}(k)}_{L^2}
-		= \int_{\calB} h^*(x) k^*(x) \mudif
-	\end{equation}
-	where $h = \int_{\calB} x h^*(x) \mudif$ and $k = \int_{\calB} x k^*(x) \mudif$.
-\end{defn}
-\begin{figure}
-	\centering
-	\begin{tikzcd}
-		\calB^* \ar[r, "j"] &
-		\calR_{\mu} \ar[r, "\eq"] \ar{rrd}[sloped, below]{f \mapsto \int_{\calB} x f(x) \mudif} &
-		\calR_{\mu}^* \ar[r, "j^*"] &
-		\ev(\calH_{\mu}) \\
-						 & & &\calH_{\mu} \ar{u}[right]{\ev}
-	\end{tikzcd}
-	\label{fig:cm-diagram}
-	\caption{Diagram of the maps involved in Cameron-Martin theory}
-\end{figure}
-We've drawn the sequence of maps use in \vref{fig:cm-diagram}. The downside of this approach of constructing the Cameron-Martin space is in how long it takes to set up all the structure involved. However it does have benefits. For me, it justifies why we consider the image of $\hat{C}_{\mu}$. It's because, up to isometric isomorphisms, it is the adjoint map of the embedding of $\calR_{\mu}$ into $\calL^2$. It also allows us to reuse theorems from functional analysis. The following corollaries are immediate or can be proved very quickly from the construction of $\calH_{\mu}$.
-
-\begin{corollary}
-	There exists $C \geq 0$ such that
-	\begin{equation}
-		\norm{h}^2 \leq C \inn{h}{h}_{\mu}, \quad \forall h \in \calH_{\mu}.
-	\end{equation}
-\end{corollary}
-\begin{proof}
-	By definition of the Cameron-Martin space and since $k$ is bounded
-	\begin{align}
-		\norm{h}^2 \leq \norm{k}_{\op}^2 \norm{k^{-1}(h)}_{L^2}
-		\defeq \norm{k}^2 \inn{h}{h}_{\mu}.
-	\end{align}
-\end{proof}
-\begin{corollary}
-	There is a natural isometric isomorphism between $\calH_{\mu}$ and $\calR_{\mu}$.
-\end{corollary}
-\begin{proof}
-	$k$ is the natural isometric isomorphism. $i = k^{-1}: \calH_{\mu} \to \calR_{\mu}$ is the notation used in Prof.\ Hairer's notes.
-\end{proof}
-\begin{corollary}
-	We have the alternate characterisation
-	\begin{equation}
-		\inn{h}{h}_{\mu} = \sup \left\{ l(h) : C_{\mu}(h, h) \leq 1\right\}, \quad \forall h \in \calH_{\mu}.
-	\end{equation}
-	Moreover $\calH_{\mu} = \{x \in \calB : \inn{h}{h}_{\mu} < \infty\}$ exactly.
-\end{corollary}
-\begin{proof}
-	Unravelling definitions gives
-	\begin{align}
-		\inn{h}{h}_{\mu}
-		&= \norm{k^{-1}(h)}_{L^2}
-		= \norm{(\eq^{-1} \circ (j^*)^{-1} \circ \ev)(h)}_{L^2} \\
-		&= \norm{((j^*)^{-1} \circ \ev)(h)}_{\op, L^2}
-		= \norm{\ev(h) \circ j^{-1}}_{\op, L^2} \\
-		&= \sup \left\{ (\ev(h)(j^{-1}(f)) : f \in \calR_{\mu}, \norm{f}_{L^2} \leq 1\right\} \\
-		&= \sup \left\{ \ev(h)(l) : l \in \calB^*, C_{\mu}(l, l) \leq 1\right\} \\
-		&= \sup \left\{ l(h) : C_{\mu}(l, l) \leq 1\right\}
-	\end{align}
-	where the second to last line uses density of $j(\calB^*)$ in $\calR_{\mu}$.
-\end{proof}
-
-
-
-\chapter{Miscellaneous Theorems}
-
-\begin{prop}[Seperable metric spaces have a countable base of balls]
-	Let $(X, d)$ be a seperable metric space and $A \subset X$ be open. Let $D$ be a countable dense set of $X$. Then
-	\begin{equation}
-		A = \bigcup_{x \in D \cap A} \bigcup_{\substack{q \in \Q \\ B_q(x) \subset A}} B_q(x).
-	\end{equation}
-	In other words $\{B_q(x) : q \in \Q, x \in D\}$ is a countable base of the topology on $(X, d)$.
-\end{prop}
-
-\begin{proof}
-	Fix any $y \in A$. Then by openess there exists $r > 0$ such that $B_r(y) \subset A$. By density there exists $x \in B_{r/4}(y) \cap D$. Pick rational $q \in \left(\frac{1}{4}r, \frac{3}{4}r \right)$. Then $y \in B_q(x)$ and by triangle inequality $B_q(x) \subset B_{\frac{r}{4} + q}(y) \subset B_r(y) \subset A$.
-\end{proof}
-
-\begin{prop}[Approximation of norm in seperable spaces]
-	Suppose $\calB$ is a seperable Banach space. Then there exists countable many linear functions $l_n \in \calB^*$ such that
-	\begin{equation}
-		\norm{x} = \sup_n l_n(x) \quad \forall x \in \calB.
-	\end{equation}
-\end{prop}
-\begin{proof}
-	Let $\calD = \{x_n\}$ be a countable dense set of $\calB$. Then by Hahn-Banach, for each $x_n$ there exists $l_n \in \calB^*$ such that $\norm{l_n} \leq 1$ and $l_n(x_n) = \norm{x_n}$. Since $\norm{l_n} \leq 1$
-	\begin{equation}
-		\norm{x} \geq \sup_n l_n(x) \quad \forall x \in \calB.
-	\end{equation}
-	To show equality, for any $x \in \calB$ take a sequence $\{x_n\} \subset \calD$ such that $x_n \to x$ in $\calB$. Then
-	\begin{align}
-		\abs{l_n(x) - \norm{x}}
-		&= \abs{l_n(x) - \norm{x_n} + \norm{x_n} - \norm{x}} \\
-		&= \abs{l_n(x) - l_n(x_n) + \norm{x_n} - \norm{x}} \\
-		&\leq \abs{l_n(x - x_n)} + \abs{\norm{x_n} - \norm{x}} \\
-		&\leq \norm{x - x_n} + \abs{\norm{x_n}  - \norm{x}} \xrightarrow{n \to \infty} 0.
-	\end{align}
-	Therefore $l_n(x) \to \norm{x}$. Thus we have equality.
-\end{proof}
-
-\begin{prop}[Almost sure convergence implies weak convergence of laws]
-	Let $\mu_n, \mu$ be probability measures on a metric space $S$. Suppose there exists random variables $X_n, X: \Omega \to S$ defined on a common probability space such that $X_n \sim \mu_n$, $X \sim \mu$, and $X_n \to X$ almost surely. Then $\mu_n \towk \mu$.
-\end{prop}
-\begin{proof}
-	Let $f: S \to \R$ be bounded and continuous. Then
-	\begin{equation}
-		\int_S f(s) \, \mu_n(\dif x)
-		= \E[f(X_n)] \to E[f(X)] = \int_S f(x) \, \mu(\dif x)
-	\end{equation}
-	as $n \to \infty$ by the dominated convergence theorem. Thus $\mu_n \towk \mu$.
-\end{proof}
-
-The converse is also true assuming $\mu$ has seperable support, that if we have weak convergence we can find representations which converge almost surely. This is the Skorokhod representation theorem.
-
-\dirac*
-
-\begin{proof}
-	Suppose $\calA$ were not dense in $C(\unitbox, \R)^*$, say $l_0$ is not in the weak-* closure of $\calA$. Then by the Hahn-Banach seperation, there exists a weak-* continuous linear functional $L: C(\unitbox, \R)^* \to \R$ that seperates the closed convex set $\bar{\calA}$ and the compact convex set $\{l_0\}$, i.e. there exists $\alpha \in \R$ such that
-	\begin{equation}
-		L(l) \leq \alpha \leq L(l_0) \quad \forall l \in \bar{\calA}.
-	\end{equation}
-	Then as $\calA$ is a vector space, for all $l \in \calA$ and $\lambda \in \R$ we have $\lambda L(l) = L(\lambda l) \leq \alpha$. Therefore $L(l) = 0$. Since $L$ is continuous w.r.t.\ the weak-$*$ topology there exists $f \in C(\unitbox, \R)$ such that $L(l) = l(f)$ for all $l \in \calB^*$. Then $f(x) = L(\delta_x) = 0$ for all $x \in \calD$. Thus $f \equiv 0$ by density of $\calD$ and continuity of $f$. Hence $L \equiv 0$, contradiction.
-\end{proof}
-
-When we use this in the proof of KCC we actually have $\calD = \unitbox$ rendering density trivial.
-
-\begin{prop}[Gaussians converge weakly to Gaussians]
-	\label{prop:weak-convergence-gaussians}
-	Let $\mu_n$ be a sequence of Gaussian laws on $\calB$. Suppose $\mu_n \towk \mu$. Then $\mu$ is Gaussian.
-\end{prop}
-\begin{proof}
-	Start with $\calB = \R$, suppose each $\mu_n \sim N(\theta_n, \sigma_n)$. $(\mu_n)$ is a tight sequence since it is weakly convergent. By tightness there exists an bounded interval $[K, -K]$ such that for all $n$, $\mu_n([-K, K]) > \frac{1}{2}$. Then $\theta_n \in [-K, K]$ for all $n$ else over half the mass of some $\mu_n$ would lie outside $[-K, K]$. Similarly
-	\begin{equation}
-		\mu_n([-K, K]) = \int_{-K}^K \frac{1}{\sqrt{2 \pi \sigma^2}} e^{-\frac{1}{2\sigma^2}(x - \theta_n)^2} \dif x \leq K \sqrt{\frac{2}{\pi\sigma_n^2}}.
-		\end{equation}
-		Thus $(\sigma_n)$ must be bounded else the above quantity could be reduced below $\frac{1}{2}$. Hence there exist a subsequence along which $\theta = \lim_n \theta_{k_n}$ and $\sigma = \lim_n \sigma_{k_n}$ both exist. Then since $x \mapsto e^{i \xi x}$ is a continuous bounded function, by definition of weak convergence
-	\begin{equation}
-		\hat{\mu}(\xi) = \lim_n \hat{\mu_n}(\xi) = \lim_n \hat{\mu}_{k_n}(\xi) = \lim_n e^{i \theta_n \xi - \frac{1}{2} \sigma_n^2 \xi^2} = e^{i \theta \xi - \frac{1}{2} \sigma^2}.
-	\end{equation}
-	Since Fourier transforms uniquely determine probability measures, $\mu \sim N(\theta, \sigma^2)$.
-
-	For general $\calB$, if $\mu_n \towk \mu$ then $l_* \mu_n \to l_* \mu$ for all $l \in \calB^*$. Therefore $l_* \mu$ is Gaussian by the $\calB = \R$ case. Hence $\mu$ is Gaussian.
-\end{proof}
-
-\begin{prop}[Mutual Singularity and Total Variation]
-	Let $\mu$ and $\nu$ be probability measures on the measurable space $(E, \calE)$. Recall the total variation
-	\begin{equation}
-		\norm{\mu - \nu}_{TV} = \sup_{A \in \calE} \abs{\mu(A) - \nu(A)}.
-	\end{equation}
-	Then the following are equivalent:
-	\begin{enumerate}
-		\item $\mu$ and $\nu$ are mutually singular.
-		\item $\norm{\mu - \nu}_{TV} = 1$.
-	\end{enumerate}
-\end{prop}
-\begin{proof}
-	$(1) \implies (2)$ is clear. For the converse if $\norm{\mu - \nu}_{TV} = 1$ then there exists $\{A_n\} \subset \calE$ such that
-	\begin{equation}
-		\lim_n \abs{\mu(A_n) - \nu(A_n)} = 1
-	\end{equation}
-	The sequence $(\mu(A_n))$ and $(\nu(A_n))$ are bounded so by Bolzano-Weierstrass we can pass to a subsequence along which $\alpha \defeq \lim_n \mu(A_n)$ and $\beta \defeq \lim_n \nu(A_n)$ both exist. Then $\alpha, \beta \in [0, 1]$ but also $\abs{\alpha - \beta} = 1$. The only way this holds is if $\alpha = 0$ and $\beta = 1$ or $\alpha = 1$ and $\beta = 0$. WLOG we have the case $\alpha = 0$ and $\beta = 1$. In other words $\lim_n \mu(A_n) = 0$ so by passing to a further subsequence we can WLOG that
-	\begin{equation}
-		\mu(A_n) \leq 2^{-n}.
-	\end{equation}
-	Let $A = \{A_n\ \text{occurs infinitely often}\} = \cap_{n \geq 1} \cup_{k \geq n} A_k$. Then $\sum_n \mu(A_n) < \infty$ thus $\mu(A) = 0$ by the first Borel Cantelli lemma. Finally
-	 \begin{equation}
-		 \nu(A) = \lim_n \nu(\cup_{k \geq n} A_k) \geq \lim_n \nu(A_n) = 1.
-	 \end{equation}
-	 Thus $\mu(A) = 0$ and $\nu(A) = 1$, showing that $\mu$ and $\nu$ are mutually singular.
-\end{proof}
+\input{misc-theorems.tex}
 
 \printbibliography
 

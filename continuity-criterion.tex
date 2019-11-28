@@ -1,0 +1,170 @@
+This section focuses on Gaussian measures on $C([0,1]^d, \R)$ under the supremum norm. Hence it makes sense to talk about the regularity of the paths of a Gaussian measure.
+
+The following is both an existence and uniqueness result about Gaussian measures with sufficiently smooth paths.
+\begin{theorem}[Kolmogorov Continuity Criterion]
+	\label{thm:kcc}
+	For $d \geq 1$, let $C: [0, 1]^d \times [0, 1]^d$ be a function\footnote{this is not a bilinear operator} such that:
+	\begin{enumerate}
+		\item For any finite collection of points $\{x_1, \ldots, x_n\} \subset [0, 1]^d$ the matrix
+			\begin{equation}
+				C_{ij} \defeq C(x_i, x_j)
+			\end{equation}
+			is symmetric, positive semi-definite.
+		\item There exists $\alpha > 0$ and $K > 0$ such that
+			\begin{equation}
+				C(x, x) - 2C(x, y) + C(y, y) \leq K \abs{x - y}^{2 \alpha}.
+			\end{equation}
+	\end{enumerate}
+	Then there exists a unique Gaussian measure $\mu$ on $C([0, 1]^d, \R)$ such that
+	\begin{equation}
+		C_{\mu}(\delta_x, \delta_y) \defeq \int_{C([0, 1]^d, \R)} f(x) f(y) \, \mu(\dif f) = C(x, y)
+	\end{equation}
+	for all $x, y \in [0, 1]^d$ and $\mu(C^{\beta}([0, 1]^d, \R)) = 1$ for all $\beta \in (0, \alpha)$.
+\end{theorem}
+
+Before we prove it, let's understand this theorem and give some intuition to the proof. Firstly, note $C$ is a function $[0,1]^d \times [0, 1]^d \to \R$ rather than $C([0,1]^d, \R)^* \times C([0, 1]^d, \R)^* \to \R$. This can be understand as specifying the covariance structure of only $\{(\delta_x)_* \mu : x \in [0, 1]^d\}$ rather than for all one-dimensional marginals. We'll first show this is enough to characterise and ensure Gaussianity of $\mu$.
+
+\begin{prop}[Gaussianity via weak-$*$ dense marginals]
+	\label{prop:weak-star-suff}
+	Let $\mu$ be a Borel probability measure on $\calB$ and let $\calA$ be weak-* dense in $\calB^*$. 
+	\begin{enumerate}
+		\item If $l_* \mu$ is Gaussian for all $l \in \calA$ then $\mu$ is Gaussian.
+		\item If $\calB$ is seperable then $\{l_* \mu : l \in \calB^*\}$ uniquely determines $\mu$.
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	Given any $l \in \calB^*$, take a sequence $l_n \in \calA$ such that $l_n \xrightharpoonup{w*} l$ as $n \to \infty$. Let $X \sim \mu$. Then weak-$*$ convergence is exactly pointwise convergence therefore $l_n(X) \to l(X)$ almost surely. Thus $(l_n)_* \mu \towk l_* \mu$ by Skorokhod's representation theorem. Then since the weak limit of Gaussians is Gaussian, $l_* \mu$ is Gaussian. Hence $\mu$ is Gaussian.
+
+	The uniqueness statement follows from \vref{prop:one-dim-marginals} since the one-dimensional marginals are uniquely determined as weak limits of sequences in $\{l_* \mu : l \in \calA\}$.
+\end{proof}
+
+Thus we need linear combinations of Dirac measures to be weak-$*$ dense. This is true, and we'll shove the proof into the appendix.
+\begin{restatable}[Weak-$*$ density of Dirac measures]{prop}{dirac}
+	\label{prop:dirac-density}
+	Suppose that $\calD \subset \unitbox$ is dense in $\unitbox$. Then 
+	\begin{equation}
+		\calA \defeq \spn\{\delta_x : x \in \calD\}
+	\end{equation}
+	is weak-$*$ dense in $C(\unitbox, \R)^*$.
+\end{restatable}
+
+Secondly, let's understand the continuity statement better. Suppose we've already proven there exists a Gaussian measure $\mu$ on $C([0, 1]^d, \R)$ such that $C(x, y) = C_{\mu}(\delta_x, \delta_y)$ for all $x, y \in [0, 1]^d$. Rather than working directly with $\mu$, it's more intuitive to work with a continuous random process $F: \Omega \to C([0, 1]^d, \R)$ that has law $\mu$. We'll use the notation $F_x(\omega) \defeq F(\omega)(x)$. Then $C(x, y) = C_{\mu}(\delta_x, \delta_y) = \text{Cov}(F_x, F_y)$. Thus the condition (2) on $C$ is equivalent to requiring
+\begin{equation}
+	\norm{F_x - F_y}_2 \defeq \sqrt{\E[(F_y - F_y)^2]} \leq K \abs{x - y}^{\alpha} \quad \forall x, y \in [0, 1]^d.
+\end{equation}
+So condition (2) gives $\alpha$-H\"older continuity of the map $[0, 1]^d \to L^2(\Omega)$ where $x \mapsto F_x$. We'd like this to instead be a pathwise statement, for fixed $\omega$ is the map $x \mapsto F_x(\omega)$ H\"older continuous? While we can't get $\alpha$-H\"older continuity, the the Kolmogorov Continuity Criterion says we can get arbitary close. In particular for almost every $\omega$, $x \mapsto F_x(\omega)$ is $\beta$-H\"older continuous for all $\beta \in (0, \alpha)$.
+
+It should be noted that condition (2) isn't only used to show pathwise H\"older continuity, it is used to ensure there even exists a Gaussian measure $\mu$ on  the space $C([0, 1]^d, \R)$ such that $C_{\mu}(\delta_x, \delta_y) = C(x, y)$ in the first place. We know Gaussian covariances are at least continuous so some continuity criterion is certainly needed. Maybe if we didn't need H\"older continuity we can give a weaker condition, but something needs to replace condition (2) to ensure existence.
+
+\begin{proof}[Proof of KCC]
+	By Kolmogorov's extension theorem, there exists a stochastic process $F: \Omega \to \boxspace$ such that for all $x_1, \ldots, x_n \in [0, 1]^d$, 
+	\begin{equation}
+		(F_{x_1}, \ldots, F_{x_n})^T
+		\sim N(0, \Sigma)
+	\end{equation}
+	where $\Sigma_{i,j} = C(x_i, x_j)$. Condition (1) ensures that $\Sigma$ is a valid covariance matrix. However Kolmogorov's extension theorem only gives that $F: \Omega \to \boxspace$ is measurable with respect to the product $\sigma$-algebra on $\boxspace$. This is a weak $\sigma$-algebra, meaning we have to be careful about what events we consider.
+
+	We want to determine H\"older continuity of $x \mapsto F_{x}(\omega)$. Fix $\beta \in (0, \alpha)$. Then $f: \unitbox \to \R$ would be $\beta$-H\"older continuous if
+	\begin{equation}
+		\sup_{x, y \in [0, 1]^d, x \neq y} \frac{\abs{f(x) - f(y)}}{\norm{x - y}^{\beta}} < \infty.
+	\end{equation}
+	However the quantity on the left is not a measurable function of $F$, so we approximate it. Let $\calD$ be the grid of dyadic points in $[0, 1]^d$. Note $\calD$ is countable and dense in $[0, 1]^d$. We consider the approximation $M_{\beta}(f): \boxspace \to \R$ by
+	\begin{equation}
+		M_{\beta}(f) = \sup_{x, y \in \calD, x \neq y} \frac{\abs{f(x) - f(y)}}{\norm{x - y}^{\beta}}.
+	\end{equation}
+	The function inside the supremum is measurable with respect to the product $\sigma$-algebra since it is a pointwise evaluation. Then $M_{\beta}$ is measurable with respect to the product $\sigma$-algebra as a countable supremum of measurable functions. If $M_{\beta}(f) < \infty$ then $f$ is $\beta$-H\"older continuous along the dyadic rationals, we want to extend this to the entirety of $f$. To assist with this we can define the regulariser $\reg_{\beta}: \boxspace \to C([0, 1], \R)$ by
+	\begin{equation}
+		\reg_{\beta}(f)(x) \defeq 
+		\begin{cases}
+			\lim_{s \in \calD, s \to x} f(s) & \text{if}\ M_{\beta}(f) < \infty \\
+			0 & \text{otherwise}.
+		\end{cases}
+	\end{equation}
+	\newcommand{\regindi}{\ensuremath{\indi_{\{M_{\beta}(f) < \infty\}}}}
+	\begin{claim}
+		$\reg_{\beta}: \boxspace \to C([0, 1]^d, \R)$ is well defined (in particular the limit in the definition exists and is independent of the sequence taken) and 
+		\begin{enumerate}
+			\item For all $f \in \boxspace$, $\reg_{\beta}(f) \in C^{\beta}([0, 1]^d, \R)$
+			\item $\reg_{\beta}(f)(x) = f(x) \regindi$ for all $x \in \calD$
+			\item $\reg_{\beta}$ is measurable with respect to the product $\sigma$-algebra on $\boxspace$ and the Borel $\sigma$-algebra on $C([0, 1]^d, \R)$ (under supremum norm).
+		\end{enumerate}
+	\end{claim}
+	\begin{subproof}
+	We'll only show (3) here. Since the Borel algebra on $C([0, 1]^d, \R)$ is generated by balls, it suffices to check that $\{f \in \boxspace : \norm{\reg_{\beta}(f) - f_0}_{\infty} < r\}$ is measurable for all $f_0 \in C([0, 1]^d, \R)$ and $r > 0$. By continuity of $\reg_{\beta}(f)$ and density of $\calD$,
+	\begin{align}
+		\norm{\reg_{\beta}(f) - f_0}_{\infty}
+		&= \sup_{x \in \calD} \abs{\reg_{\beta}f(x) - f_0(x)} \\
+		&= \sup_{x \in \calD} \abs{f(x) \regindi - f_0(x)}.
+	\end{align}
+	Thus
+	\begin{align}
+		&\{\norm{\reg_{\beta}(f) - f_0}_{\infty} < r\}
+		= \bigcap_{x \in \calD} \left\{ \abs{f(x) \regindi - f_0(x)} < r \right\} \\
+		=& \left[ \{M_{\beta}(f) = \infty\} \cap \{\norm{f_0}_{\infty} < r\} \right] \nonumber \\
+		 & \qquad \cup \left[ \{M_{\beta}(f) < \infty\} \cap \left( \cap_{x \in \calD} \{\abs{f(x) - f_0(x)} < r\} \right) \right].
+	\end{align}
+	The event $\{\norm{f_0}_{\infty} < r\}$ is an artifact of our construction and is always equal to $\emptyset$ or $\boxspace$, thus is measurable. Since $M_{\beta}$ is measurable, $\{M_{\beta}(f) < \infty\}$ and $\{M_{\beta}(f) = \infty\}$ is measurable. $\{\abs{f(x) - f_0(x)} < r\}$ depends only on pointwise evaluations of $f$ thus is measurable. Hence $\{\norm{\reg_{\beta}(f) - f_0} < r\}$ is measurable as a countable intesection and union of measurable sets.
+	\end{subproof}
+
+	Hence $\hat{F} = \reg_{\beta}(F)$ is a continuous stochastic process $\Omega \to C(\unitbox, \R)$. There's no point defining $\reg_{\beta}(F)$ if it doesn't carry over properties of $F$, so the first thing we'll do is show the two processes are modifications of each other. Rigorously we show that for all $x \in [0, 1]^d$, $\reg_{\beta}(F)_x = F_x$ almost surely\footnote{Note this means $\prob(\reg_{\beta}(F)_x = F_x) = 1$ for all $x$, not $\prob(\reg_{\beta}(F)_x = F_x \ \forall x) = 1$}. We do this is two steps, firstly for $x \in \calD$ and then for all $x \in [0, 1]^d$. When $x \in \calD$, $\reg_{\beta}(F)_x = F_x \indi_{\{M_{\beta}(F) < \infty\}}$. Thus it suffices to show $M_{\beta}(F) < \infty$ almost surely.
+	\begin{claim}
+		$M_{\beta}(F) < \infty$ almost surely.
+	\end{claim}
+	\begin{subproof}
+		We can actually show the stronger statement $\E[M_{\beta}(F)] < \infty$. INSERT REST OF PROOF.
+	\end{subproof}
+	
+	Now we extend this to all $x \in \unitbox$.
+	\begin{claim}
+		$\prob(\reg_{\beta}(F)_x = F_x) = 1$ for all $x \in [0, 1]^d$.
+	\end{claim}
+	\begin{subproof}
+		For any $x \in \unitbox$, let $x_n \to x$ where $x_n$ is a sequence in $\calD$. Then by condition (2) on $C$
+		\begin{align}
+			\norm{F_{x_n} - F_x}_2^2
+			&= \var(F_{x_n} - F_x) \\
+			&= C(x_n, x_n) - 2C(x_n, x) + C(x, x) \\
+			&\leq K \norm{x - x_n}^{\alpha} \xrightarrow{n \to \infty} 0.
+		\end{align}
+		Thus $F_{x_n} \to F_x$ in $L^2$. So there is some subsequence along which $F_x = \lim_n F_{x_{k_n}}$ almost surely. By continuity $\reg_{\beta}(F)_x = \lim_n \reg_{\beta}(F)_{x_{k_n}}$ always. Thus almost surely
+		\begin{equation}
+			\reg_{\beta}(F)_x = \lim_n \reg_{\beta}(F)_{x_{k_n}}
+			= \lim_n F_{x_{k_n}} = F_x.
+		\end{equation}
+	\end{subproof}
+
+	Let $\mu$ be the law of $\reg_{\beta}(F)$, this is a measure on $C(\unitbox, \R)$. 
+	\begin{claim}
+		$\mu$ satisfies the following properties.
+		\begin{enumerate}
+			\item $\mu$ is Gaussian.
+			\item For all $x, y \in \unitbox$, $C_{\mu}(\delta_x, \delta_y) = C(x, y)$.
+			\item $\mu(C^{\beta}(\unitbox, \R)) = 1$.
+			\item $\mu$ is uniquely determined by $C$ and independent of the $\beta \in (0, \alpha)$ chosen in the construction.
+		\end{enumerate}
+	\end{claim}
+	\begin{subproof}
+		For any finite set $x_1, \ldots, x_n \in \unitbox$, almost surely
+		\begin{equation}
+			(\reg_{\beta}(F)_{x_1}, \ldots, \reg_{\beta}(F)_{x_n})
+			= (F_{x_1}, \ldots, F_{x_n})
+		\end{equation}
+		thus is jointly Gaussian. Thus for all $\lambda \in \R^n$, $(\sum_{i=1}^n \lambda_i \delta_{x_i})_* \mu$ is Gaussian. In other words if we define
+		\begin{equation}
+			\calA \defeq \spn\{ \delta_x : x \in [0, 1]^d\}
+		\end{equation}
+		then $l_* \mu$ is Gaussian for all $l \in \calA$. Since $\calA$ is weak-$*$ dense in $C([0, 1]^d, \R)^*$ by \vref{prop:dirac-density}, $\mu$ is Gaussian by \vref{prop:weak-star-suff}.
+
+		For all $x, y \in [0, 1]^d$ we have
+		\begin{equation}
+			C_{\mu}(\delta_x, \delta_y) = \E[\reg_{\beta}(F)_x \reg_{\beta}(F)_y]
+			= \E[F_x F_y] = C(x, y).
+		\end{equation}
+
+		By construction, $\reg_{\beta}(F)$ is $\beta$-H\"older continuous thus $\mu(C^{\beta}(\unitbox, \R)) = 1$.
+
+		Finally since $C$ determines $l_* \mu$ for all $l \in \calA$, $\mu$ is uniquely determined by \vref{prop:weak-star-suff}. In particular $C$ is independent of $\beta$ thus $\mu$ is independent of $\beta$.
+	\end{subproof}
+
+	This finishes the proof.
+\end{proof}

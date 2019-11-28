@@ -1,0 +1,106 @@
+\chapter{Miscellaneous Theorems}
+
+\begin{prop}[Seperable metric spaces have a countable base of balls]
+	Let $(X, d)$ be a seperable metric space and $A \subset X$ be open. Let $D$ be a countable dense set of $X$. Then
+	\begin{equation}
+		A = \bigcup_{x \in D \cap A} \bigcup_{\substack{q \in \Q \\ B_q(x) \subset A}} B_q(x).
+	\end{equation}
+	In other words $\{B_q(x) : q \in \Q, x \in D\}$ is a countable base of the topology on $(X, d)$.
+\end{prop}
+
+\begin{proof}
+	Fix any $y \in A$. Then by openess there exists $r > 0$ such that $B_r(y) \subset A$. By density there exists $x \in B_{r/4}(y) \cap D$. Pick rational $q \in \left(\frac{1}{4}r, \frac{3}{4}r \right)$. Then $y \in B_q(x)$ and by triangle inequality $B_q(x) \subset B_{\frac{r}{4} + q}(y) \subset B_r(y) \subset A$.
+\end{proof}
+
+\begin{prop}[Approximation of norm in seperable spaces]
+	Suppose $\calB$ is a seperable Banach space. Then there exists countable many linear functions $l_n \in \calB^*$ such that
+	\begin{equation}
+		\norm{x} = \sup_n l_n(x) \quad \forall x \in \calB.
+	\end{equation}
+\end{prop}
+\begin{proof}
+	Let $\calD = \{x_n\}$ be a countable dense set of $\calB$. Then by Hahn-Banach, for each $x_n$ there exists $l_n \in \calB^*$ such that $\norm{l_n} \leq 1$ and $l_n(x_n) = \norm{x_n}$. Since $\norm{l_n} \leq 1$
+	\begin{equation}
+		\norm{x} \geq \sup_n l_n(x) \quad \forall x \in \calB.
+	\end{equation}
+	To show equality, for any $x \in \calB$ take a sequence $\{x_n\} \subset \calD$ such that $x_n \to x$ in $\calB$. Then
+	\begin{align}
+		\abs{l_n(x) - \norm{x}}
+		&= \abs{l_n(x) - \norm{x_n} + \norm{x_n} - \norm{x}} \\
+		&= \abs{l_n(x) - l_n(x_n) + \norm{x_n} - \norm{x}} \\
+		&\leq \abs{l_n(x - x_n)} + \abs{\norm{x_n} - \norm{x}} \\
+		&\leq \norm{x - x_n} + \abs{\norm{x_n}  - \norm{x}} \xrightarrow{n \to \infty} 0.
+	\end{align}
+	Therefore $l_n(x) \to \norm{x}$. Thus we have equality.
+\end{proof}
+
+\begin{prop}[Almost sure convergence implies weak convergence of laws]
+	Let $\mu_n, \mu$ be probability measures on a metric space $S$. Suppose there exists random variables $X_n, X: \Omega \to S$ defined on a common probability space such that $X_n \sim \mu_n$, $X \sim \mu$, and $X_n \to X$ almost surely. Then $\mu_n \towk \mu$.
+\end{prop}
+\begin{proof}
+	Let $f: S \to \R$ be bounded and continuous. Then
+	\begin{equation}
+		\int_S f(s) \, \mu_n(\dif x)
+		= \E[f(X_n)] \to E[f(X)] = \int_S f(x) \, \mu(\dif x)
+	\end{equation}
+	as $n \to \infty$ by the dominated convergence theorem. Thus $\mu_n \towk \mu$.
+\end{proof}
+
+The converse is also true assuming $\mu$ has seperable support, that if we have weak convergence we can find representations which converge almost surely. This is the Skorokhod representation theorem.
+
+\dirac*
+
+\begin{proof}
+	Suppose $\calA$ were not dense in $C(\unitbox, \R)^*$, say $l_0$ is not in the weak-* closure of $\calA$. Then by the Hahn-Banach seperation, there exists a weak-* continuous linear functional $L: C(\unitbox, \R)^* \to \R$ that seperates the closed convex set $\bar{\calA}$ and the compact convex set $\{l_0\}$, i.e. there exists $\alpha \in \R$ such that
+	\begin{equation}
+		L(l) \leq \alpha \leq L(l_0) \quad \forall l \in \bar{\calA}.
+	\end{equation}
+	Then as $\calA$ is a vector space, for all $l \in \calA$ and $\lambda \in \R$ we have $\lambda L(l) = L(\lambda l) \leq \alpha$. Therefore $L(l) = 0$. Since $L$ is continuous w.r.t.\ the weak-$*$ topology there exists $f \in C(\unitbox, \R)$ such that $L(l) = l(f)$ for all $l \in \calB^*$. Then $f(x) = L(\delta_x) = 0$ for all $x \in \calD$. Thus $f \equiv 0$ by density of $\calD$ and continuity of $f$. Hence $L \equiv 0$, contradiction.
+\end{proof}
+
+When we use this in the proof of KCC we actually have $\calD = \unitbox$ rendering density trivial.
+
+\begin{prop}[Gaussians converge weakly to Gaussians]
+	\label{prop:weak-convergence-gaussians}
+	Let $\mu_n$ be a sequence of Gaussian laws on $\calB$. Suppose $\mu_n \towk \mu$. Then $\mu$ is Gaussian.
+\end{prop}
+\begin{proof}
+	Start with $\calB = \R$, suppose each $\mu_n \sim N(\theta_n, \sigma_n)$. $(\mu_n)$ is a tight sequence since it is weakly convergent. By tightness there exists an bounded interval $[K, -K]$ such that for all $n$, $\mu_n([-K, K]) > \frac{1}{2}$. Then $\theta_n \in [-K, K]$ for all $n$ else over half the mass of some $\mu_n$ would lie outside $[-K, K]$. Similarly
+	\begin{equation}
+		\mu_n([-K, K]) = \int_{-K}^K \frac{1}{\sqrt{2 \pi \sigma^2}} e^{-\frac{1}{2\sigma^2}(x - \theta_n)^2} \dif x \leq K \sqrt{\frac{2}{\pi\sigma_n^2}}.
+		\end{equation}
+		Thus $(\sigma_n)$ must be bounded else the above quantity could be reduced below $\frac{1}{2}$. Hence there exist a subsequence along which $\theta = \lim_n \theta_{k_n}$ and $\sigma = \lim_n \sigma_{k_n}$ both exist. Then since $x \mapsto e^{i \xi x}$ is a continuous bounded function, by definition of weak convergence
+	\begin{equation}
+		\hat{\mu}(\xi) = \lim_n \hat{\mu_n}(\xi) = \lim_n \hat{\mu}_{k_n}(\xi) = \lim_n e^{i \theta_n \xi - \frac{1}{2} \sigma_n^2 \xi^2} = e^{i \theta \xi - \frac{1}{2} \sigma^2}.
+	\end{equation}
+	Since Fourier transforms uniquely determine probability measures, $\mu \sim N(\theta, \sigma^2)$.
+
+	For general $\calB$, if $\mu_n \towk \mu$ then $l_* \mu_n \to l_* \mu$ for all $l \in \calB^*$. Therefore $l_* \mu$ is Gaussian by the $\calB = \R$ case. Hence $\mu$ is Gaussian.
+\end{proof}
+
+\begin{prop}[Mutual Singularity and Total Variation]
+	Let $\mu$ and $\nu$ be probability measures on the measurable space $(E, \calE)$. Recall the total variation
+	\begin{equation}
+		\norm{\mu - \nu}_{TV} = \sup_{A \in \calE} \abs{\mu(A) - \nu(A)}.
+	\end{equation}
+	Then the following are equivalent:
+	\begin{enumerate}
+		\item $\mu$ and $\nu$ are mutually singular.
+		\item $\norm{\mu - \nu}_{TV} = 1$.
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	$(1) \implies (2)$ is clear. For the converse if $\norm{\mu - \nu}_{TV} = 1$ then there exists $\{A_n\} \subset \calE$ such that
+	\begin{equation}
+		\lim_n \abs{\mu(A_n) - \nu(A_n)} = 1
+	\end{equation}
+	The sequence $(\mu(A_n))$ and $(\nu(A_n))$ are bounded so by Bolzano-Weierstrass we can pass to a subsequence along which $\alpha \defeq \lim_n \mu(A_n)$ and $\beta \defeq \lim_n \nu(A_n)$ both exist. Then $\alpha, \beta \in [0, 1]$ but also $\abs{\alpha - \beta} = 1$. The only way this holds is if $\alpha = 0$ and $\beta = 1$ or $\alpha = 1$ and $\beta = 0$. WLOG we have the case $\alpha = 0$ and $\beta = 1$. In other words $\lim_n \mu(A_n) = 0$ so by passing to a further subsequence we can WLOG that
+	\begin{equation}
+		\mu(A_n) \leq 2^{-n}.
+	\end{equation}
+	Let $A = \{A_n\ \text{occurs infinitely often}\} = \cap_{n \geq 1} \cup_{k \geq n} A_k$. Then $\sum_n \mu(A_n) < \infty$ thus $\mu(A) = 0$ by the first Borel Cantelli lemma. Finally
+	 \begin{equation}
+		 \nu(A) = \lim_n \nu(\cup_{k \geq n} A_k) \geq \lim_n \nu(A_n) = 1.
+	 \end{equation}
+	 Thus $\mu(A) = 0$ and $\nu(A) = 1$, showing that $\mu$ and $\nu$ are mutually singular.
+\end{proof}
