@@ -3,12 +3,14 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{mathtools}
+\usepackage{diffcoeff}
 
 % Setting up referencing
 \usepackage[backend=biber]{biblatex}
 \addbibresource{references.bib}
 
 % Setting up theorem, claim, proof, etc. environments
+\usepackage{amsthm}
 \usepackage{thmtools}
 \usepackage{thm-restate}
 
@@ -29,17 +31,8 @@
 	sibling=defn]{prop}
 \declaretheorem[name=Corollary, thmbox=L, sibling=defn]{corollary}
 \declaretheorem[name=Remark, thmbox=S, sibling=defn]{remark}
+\declaretheorem[name=Example, thmbox=S, sibling=defn]{example}
 
-\usepackage{amsthm}
-
-\newtheorem{claim}{Claim}
-
-\newenvironment{subproof}[1][\proofname]{%
-  \renewcommand{\qedsymbol}{$\blacksquare$}%
-  \begin{proof}[#1]%
-}{%
-  \end{proof}%
-}
 
 \newcommand{\defeq}{\coloneqq}
 \newcommand{\op}{\text{op}}
@@ -90,6 +83,13 @@
 \maketitle
 
 \tableofcontents
+
+\chapter{Introduction}
+
+In this course we will study equations of the form
+\begin{equation}
+	\diffp{x}{t}
+\end{equation}
 
 \chapter{Gaussian Measure Theory}
 
@@ -415,7 +415,6 @@ Trace-class is a stronger property than boundedness, in particular there exists 
 
 \appendix
 
-\input{misc-theorems.tex}
 
 \printbibliography
 
